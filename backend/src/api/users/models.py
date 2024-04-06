@@ -71,7 +71,7 @@ class UserManager(BaseUserManager):
             is_staff=True,
         )
 
-    def create_admin(
+    def create_superuser(
         self,
         email: str,
         first_name: str,
