@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     # My apps
     "api.apps.ApiConfig",
     "api.users.apps.UsersConfig",
+    # 3rd part apps
+    "rest_framework",
 ]
 
 MIDDLEWARE = [
@@ -130,3 +132,9 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # ===============================================
 
 AUTH_USER_MODEL = "users.User"  # Use the custom user model
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    )
+}
