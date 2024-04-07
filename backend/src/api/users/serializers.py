@@ -1,3 +1,4 @@
+from typing import cast
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.tokens import Token
@@ -54,3 +55,12 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         # Save custom fields to token
         token["email"] = user.email
         return token
+
+    def validate(self, attrs):
+        data = cast(dict, super().validate(attrs))
+        # Serialize and include the user data in the response
+        user = UserSerializer(self.user).data
+        if not isinstance(user, dict):
+            raise serializers.ValidationError("User isn't valid")
+        data["user"] = user
+        return data
