@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "corsheaders",
     "rest_framework",
     "rest_framework_simplejwt.token_blacklist",
+    "django_rest_passwordreset",
 ]
 
 MIDDLEWARE = [
@@ -158,3 +159,14 @@ SIMPLE_JWT = {
 
 CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOWED_ORIGINS = [getenv("FRONTEND_URL", "http://localhost:3000")]
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = getenv("EMAIL_HOST")
+EMAIL_HOST_USER = getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = getenv("EMAIL_HOST_PASSWORD")
+EMAIL_PORT = getenv("EMAIL_PORT")
+
+DJANGO_REST_PASSWORDRESET_TOKEN_CONFIG = {
+    "CLASS": "django_rest_passwordreset.tokens.RandomStringTokenGenerator",
+    "OPTIONS": {"min_length": 20, "max_length": 30},
+}

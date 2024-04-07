@@ -19,7 +19,6 @@ from rest_framework.status import (
     HTTP_200_OK,
 )
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from rest_framework_simplejwt.serializers import TokenRefreshSerializer
 
 
 def get_tokens_for_user(user: User) -> dict:

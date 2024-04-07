@@ -6,6 +6,11 @@ from django.contrib.auth.models import (
     BaseUserManager,
     PermissionsMixin,
 )
+from django.dispatch import receiver
+from django.urls import reverse
+from django_rest_passwordreset.signals import reset_password_token_created
+from os import getenv
+from django.core.mail import EmailMultiAlternatives
 
 
 @unique
@@ -130,3 +135,60 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def has_module_perms(self, app_label):
         return True
+
+
+# https://pypi.org/project/django-rest-passwordreset/
+@receiver(reset_password_token_created)
+def password_reset_token_created(
+    sender, instance, reset_password_token, *args, **kwargs
+):
+    """
+    Handles password reset tokens
+    When a token is created, an e-mail needs to be sent to the user
+    :param sender: View Class that sent the signal
+    :param instance: View Instance that sent the signal
+    :param reset_password_token: Token Model Object
+    :param args:
+    :param kwargs:
+    :return:
+    """
+
+    print(f"Reset Password Token")
+    print(f"Key: {reset_password_token.key}")
+    print(f"User: {reset_password_token.user}")
+    print(f"Created: {reset_password_token.created_at}")
+    print(f"Instance: {instance}")
+    print(f"Sender: {sender}")
+    # Reset Password Token
+    # Key: a1427e817d9d034facadf8db3c1
+    # User: User(example@gmail.com)
+    # Created: 2024-04-07 08:15:42.997243+00:00
+    # Instance: <django_rest_passwordreset.views.ResetPasswordRequestToken object at 0x102e13010>
+    # Sender: <class 'django_rest_passwordreset.views.ResetPasswordRequestToken'>
+
+    # context = {
+    #     "current_user": reset_password_token.user,
+    #     "first_name": reset_password_token.user.first_name,
+    #     "last_name": reset_password_token.user.last_name,
+    #     "email": reset_password_token.user.email,
+    #     "reset_password_url": f"{reverse('forgot-password:reset-password-request')}?token={reset_password_token.key}",
+    #     "token": reset_password_token.key,
+    # }
+    frontend_pwd_reset_url = getenv("FRONTEND_PASSWORD_RESET_URL")
+
+    email_html_message = f"""
+    <p>Hello {reset_password_token.user.first_name},</p>
+    <p>You requested a password reset for your account.</p>
+    <p>Please click on the following link to reset your password:</p>
+    <p><a href="{frontend_pwd_reset_url}?token={reset_password_token.key}">Reset Password</a></p>
+    """
+
+    msg = EmailMultiAlternatives(
+        "Password Reset Request",
+        email_html_message,
+        "noreply@somehost.local",
+        [reset_password_token.user.email],
+    )
+
+    msg.attach_alternative(email_html_message, "text/html")
+    msg.send()
