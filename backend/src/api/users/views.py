@@ -119,13 +119,11 @@ def refresh_view(req: Request, *args, **kwargs) -> Response:
 @permission_classes([IsAuthenticated])
 def logout_view(req: Request, *args, **kwargs) -> Response:
     try:
-        if not isinstance(req.data, dict):
-            return Response(
-                {"error": "Invalid input. Expected JSON data"},
-                status=HTTP_400_BAD_REQUEST,
-            )
+        refresh_token = req.COOKIES.get("refresh")
+        if not refresh_token:
+            return Response({"error": "Unauthorized"}, status=HTTP_401_UNAUTHORIZED)
+        print(refresh_token)
 
-        refresh_token = req.data.get("refresh")
         token = RefreshToken(refresh_token)
         token.blacklist()
         return Response({"message": "Logout successful"}, status=HTTP_205_RESET_CONTENT)
