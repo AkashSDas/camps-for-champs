@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     # My apps
     "api.apps.ApiConfig",
     "api.users.apps.UsersConfig",
+    "api.camps.apps.CampsConfig",
     # 3rd part apps
     "corsheaders",
     "rest_framework",
