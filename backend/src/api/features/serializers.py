@@ -7,3 +7,8 @@ class FeatureSerializer(serializers.ModelSerializer):
         model = Feature
         fields = ("id", "feature_type", "label", "description")
         read_only_fields = ("id",)
+
+    def validate(self, attrs):
+        if "label" in attrs:
+            attrs["label"] = attrs["label"].lower()
+        return attrs
