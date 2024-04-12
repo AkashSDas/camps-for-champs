@@ -1,12 +1,67 @@
 from typing import cast
 from rest_framework import serializers
-from api.camps.models import Camp
+from api.camps.models import Camp, CampFeature
+from api.features.models import Feature
 from datetime import timedelta, datetime, time
 from api.tags.serializers import TagSerializer
 from api.tags.models import Tag
+from api.features.serializers import FeatureSerializer
 
 
 Time = type[time]
+
+
+class SimpleCampSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Camp
+        fields = ("id", "name")
+
+
+class CampFeatureSerializer(serializers.ModelSerializer):
+    # camp = serializers.PrimaryKeyRelatedField(read_only=True)
+    # feature = serializers.PrimaryKeyRelatedField(read_only=True)
+
+    # this results in recursion due to cyclic dependency since CampSerializer also uses it
+    # camp = CampSerializer(read_only=True)
+    camp = SimpleCampSerializer(read_only=True)
+    feature = FeatureSerializer(read_only=True)
+
+    # We've to add these new fields to the serializer to accept the data
+    # because camp and feature are read_only fields
+    camp_id = serializers.PrimaryKeyRelatedField(
+        queryset=Camp.objects.all(), source="camp", write_only=True
+    )
+    feature_id = serializers.PrimaryKeyRelatedField(
+        queryset=Feature.objects.all(), source="feature", write_only=True
+    )
+
+    class Meta:
+        model = CampFeature
+        fields = ("id", "camp", "feature", "is_available", "camp_id", "feature_id")
+        read_only_fields = ("id", "created_at", "updated_at", "camp", "feature")
+
+    def create(self, validated_data: dict) -> CampFeature:
+        camp = validated_data["camp"]
+        feature = validated_data["feature"]
+        exists = CampFeature.objects.filter(camp=camp, feature=feature).exists()
+        if exists:
+            raise serializers.ValidationError(
+                "This feature is already available for this camp.",
+                code="feature_already_available",
+            )
+        instance = self.Meta.model(**validated_data)
+        instance.save()
+        return instance
+
+    def update(self, instance: CampFeature, validated_data: dict) -> CampFeature:
+        # don't update camp and feature (since we don't want to change camp and feature
+        # we'll better delete and create a new one, because we don't want multiple
+        # camp-feature pairs with the same camp and feature)
+        instance.is_available = validated_data.get(
+            "is_available", instance.is_available
+        )
+        instance.save()
+        return instance
 
 
 def validate_checkin_and_checkout_time(check_in: Time, check_out: Time) -> None:
@@ -25,6 +80,7 @@ def validate_checkin_and_checkout_time(check_in: Time, check_out: Time) -> None:
 
 class CampSerializer(serializers.ModelSerializer):
     tags = serializers.PrimaryKeyRelatedField(many=True, queryset=Tag.objects.all())
+    features = CampFeatureSerializer(many=True, read_only=True)
 
     class Meta:
         model = Camp
@@ -42,6 +98,7 @@ class CampSerializer(serializers.ModelSerializer):
             "created_at",
             "updated_at",
             "created_by",
+            "features",
         )
         read_only_fields = (
             "id",

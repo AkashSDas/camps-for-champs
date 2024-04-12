@@ -3,6 +3,7 @@ from rest_framework.generics import (
     CreateAPIView,
     ListAPIView,
     RetrieveUpdateDestroyAPIView,
+    ListCreateAPIView,
 )
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -13,8 +14,8 @@ from rest_framework.status import (
     HTTP_200_OK,
     HTTP_201_CREATED,
 )
-from api.camps.models import Camp
-from api.camps.serializers import CampSerializer
+from api.camps.models import Camp, CampFeature
+from api.camps.serializers import CampSerializer, CampFeatureSerializer
 from api.users.permissions import IsAdminOrReadOnly
 
 
@@ -105,3 +106,15 @@ class CampRetriveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
         return Response(
             {"message": "Camp deleted successfully."}, status=HTTP_204_NO_CONTENT
         )
+
+
+class CampFeatureListCreateAPIView(ListCreateAPIView):
+    permission_classes = [IsAuthenticated, IsAdminOrReadOnly]
+    queryset = CampFeature.objects.all()
+    serializer_class = CampFeatureSerializer
+
+
+class CampFeatureRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAuthenticated, IsAdminOrReadOnly]
+    queryset = CampFeature.objects.all()
+    serializer_class = CampFeatureSerializer
