@@ -1,3 +1,5 @@
 from django.contrib import admin
+from api.camps.models import Camp, CampFeature
 
-# Register your models here.
+admin.site.register(Camp)
+admin.site.register(CampFeature)
