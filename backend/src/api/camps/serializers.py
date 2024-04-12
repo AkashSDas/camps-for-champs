@@ -1,5 +1,24 @@
+from typing import cast
 from rest_framework import serializers
 from api.camps.models import Camp
+from datetime import timedelta, datetime, time
+
+
+Time = type[time]
+
+
+def validate_checkin_and_checkout_time(check_in: Time, check_out: Time) -> None:
+    check_in_dt = datetime.combine(datetime.today(), check_in)  # type: ignore
+    check_out_dt = datetime.combine(datetime.today(), check_out)  # type: ignore
+
+    if check_in_dt >= check_out_dt:
+        raise serializers.ValidationError(
+            "Check in time must be less than check out time."
+        )
+    if check_out_dt - check_in_dt < timedelta(hours=4):
+        raise serializers.ValidationError(
+            "Duration of stay must be greater than 4 hours."
+        )
 
 
 class CampSerializer(serializers.ModelSerializer):
@@ -28,10 +47,33 @@ class CampSerializer(serializers.ModelSerializer):
         )
 
     def validate(self, attrs):
-        if attrs["check_in_at"] >= attrs["check_out_at"]:
-            raise serializers.ValidationError(
-                "Check-in time must be before check-out time."
-            )
+        if self.instance is None:
+            # Create
+
+            check_in_at = cast(type[time], attrs["check_in_at"])
+            check_out_at = cast(type[time], attrs["check_out_at"])
+            validate_checkin_and_checkout_time(check_in_at, check_out_at)
+        else:
+            # Update
+
+            check_in_at = attrs.get("check_in_at")
+            check_out_at = attrs.get("check_out_at")
+
+            if check_in_at and check_out_at:
+                check_in_at = cast(type[time], check_in_at)
+                check_out_at = cast(type[time], check_out_at)
+                validate_checkin_and_checkout_time(check_in_at, check_out_at)
+            elif check_in_at:
+                check_in_at = cast(type[time], check_in_at)
+                validate_checkin_and_checkout_time(
+                    check_in_at, self.instance.check_out_at
+                )
+            elif check_out_at:
+                check_out_at = cast(type[time], check_out_at)
+                validate_checkin_and_checkout_time(
+                    self.instance.check_in_at, check_out_at
+                )
+
         # attrs["created_by"] = self.context["request"].user
         return attrs
 
