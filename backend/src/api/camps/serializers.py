@@ -2,6 +2,8 @@ from typing import cast
 from rest_framework import serializers
 from api.camps.models import Camp
 from datetime import timedelta, datetime, time
+from api.tags.serializers import TagSerializer
+from api.tags.models import Tag
 
 
 Time = type[time]
@@ -22,6 +24,8 @@ def validate_checkin_and_checkout_time(check_in: Time, check_out: Time) -> None:
 
 
 class CampSerializer(serializers.ModelSerializer):
+    tags = serializers.PrimaryKeyRelatedField(many=True, queryset=Tag.objects.all())
+
     class Meta:
         model = Camp
         # fields = "__all__"
@@ -94,3 +98,8 @@ class CampSerializer(serializers.ModelSerializer):
                 "Occupancy count must be greater than 10."
             )
         return value
+
+    def to_representation(self, instance: Camp) -> dict:
+        representation = super().to_representation(instance)
+        representation["tags"] = TagSerializer(instance.tags.all(), many=True).data
+        return representation
