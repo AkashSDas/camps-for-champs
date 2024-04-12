@@ -15,6 +15,7 @@ class TagSerializer(serializers.ModelSerializer):
     # Serializer is implicitly converting "label" field's value to string, and
     # that's why we'll have value as string in the validate_label method.
     def validate_label(self, value: str) -> str:
+        value = value.strip()
         if len(value) > 100:
             raise serializers.ValidationError("Label is too long")
         if len(value) < 3:

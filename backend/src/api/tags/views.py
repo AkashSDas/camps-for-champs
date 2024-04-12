@@ -1,9 +1,14 @@
-from typing import Optional
+from typing import Optional, cast
 from rest_framework.response import Response
 from rest_framework.request import Request
 from rest_framework.decorators import api_view, permission_classes
 from api.tags.serializers import TagSerializer
-from rest_framework.status import HTTP_201_CREATED, HTTP_404_NOT_FOUND, HTTP_200_OK
+from rest_framework.status import (
+    HTTP_201_CREATED,
+    HTTP_404_NOT_FOUND,
+    HTTP_200_OK,
+    HTTP_400_BAD_REQUEST,
+)
 from rest_framework.permissions import IsAuthenticated
 from api.tags.models import Tag
 from rest_framework.pagination import PageNumberPagination
@@ -15,6 +20,15 @@ from api.users.permissions import IsAdminOrReadOnly
 def create_tag(req: Request, *args, **kwargs) -> Response:
     serializer = TagSerializer(data=req.data)
     serializer.is_valid(raise_exception=True)
+    exists = Tag.objects.filter(
+        label=cast(dict, serializer.validated_data)["label"]
+    ).exists()
+
+    if exists:
+        return Response(
+            {"message": "Tag with this name already exists"},
+            status=HTTP_400_BAD_REQUEST,
+        )
     tag = serializer.save()
 
     return Response(
