@@ -1,6 +1,6 @@
 from typing import Optional
 from rest_framework import serializers
-from api.reviews.models import Review
+from api.reviews.models import Review, Rating
 
 
 class GetReviewSerializer(serializers.ModelSerializer):
@@ -27,3 +27,18 @@ class GetReviewSerializer(serializers.ModelSerializer):
             "id": author.pk,
             "fullname": author.full_name,
         }
+
+
+class CreateReviewSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Review
+        fields = ("rating", "comment")
+
+    def save(self, **kwargs):
+        return super().save(**kwargs)
+
+    def validate_rating(self, value: int) -> int:
+        if value < 1 or value > 5:
+            raise serializers.ValidationError("Rating must be between 1 and 5")
+        return value
