@@ -1,6 +1,6 @@
 from typing import Optional
 from rest_framework import serializers
-from api.reviews.models import Review, Rating
+from api.reviews.models import Review
 
 
 class GetReviewSerializer(serializers.ModelSerializer):
@@ -42,3 +42,12 @@ class CreateReviewSerializer(serializers.ModelSerializer):
         if value < 1 or value > 5:
             raise serializers.ValidationError("Rating must be between 1 and 5")
         return value
+
+
+class ChangePublicStatusReviewSerializer(serializers.Serializer):
+    is_public = serializers.BooleanField()
+
+    def save(self, review: Review):
+        review.is_public = self.validated_data["is_public"]  # type: ignore
+        review.save()
+        return review

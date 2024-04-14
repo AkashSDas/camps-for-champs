@@ -1,10 +1,14 @@
-from typing import Literal
+from typing import Literal, cast
 from django.http import QueryDict
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.request import Request
 from rest_framework.response import Response
 from api.reviews.models import Review
-from api.reviews.serializers import GetReviewSerializer, CreateReviewSerializer
+from api.reviews.serializers import (
+    GetReviewSerializer,
+    CreateReviewSerializer,
+    ChangePublicStatusReviewSerializer,
+)
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.serializers import ValidationError
 from rest_framework.status import (
@@ -17,6 +21,8 @@ from contextlib import suppress
 from api.camps.models import Camp
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import PermissionDenied
+from api.users.permissions import IsAdminOrReadOnly
+from .permissions import IsReviewOwner
 
 Param = Literal["limit", "offset", "camp"]
 
@@ -88,3 +94,77 @@ def camp_reviews_list_create(req: Request, camp_id: int, *args, **kwargs) -> Res
     return Response(
         {"message": "Method not allowed"}, status=HTTP_405_METHOD_NOT_ALLOWED
     )
+
+
+@api_view(["GET", "PUT", "DELETE"])
+def camp_review_retrieve_update_delete(
+    req: Request, camp_id: int, review_id: int, *args, **kwargs
+) -> Response:
+    exists = Camp.objects.filter(pk=camp_id).exists()
+    if not exists:
+        return Response({"message": "Camp not found"}, status=HTTP_404_NOT_FOUND)
+
+    exists = Review.objects.filter(pk=review_id).exists()
+    if not exists:
+        return Response({"message": "Review not found"}, status=HTTP_404_NOT_FOUND)
+
+    review = Review.objects.get(pk=review_id)
+    if req.method == "GET":
+        serializer = GetReviewSerializer(review)
+        return Response({"review": serializer.data})
+    elif req.method == "PUT":
+        is_authenticated = IsAuthenticated().has_permission(req, review.author)
+        is_owner = IsReviewOwner().has_object_permission(req, None, review)
+        if not is_authenticated or not is_owner:
+            raise PermissionDenied()
+
+        serializer = CreateReviewSerializer(review, data=req.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(
+                {
+                    "message": "Review updated successfully",
+                    "review": serializer.data,
+                }
+            )
+
+        return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+    elif req.method == "DELETE":
+        is_authenticated = IsAuthenticated().has_permission(req, review.author)
+        is_owner = IsReviewOwner().has_object_permission(req, None, review)
+        if not is_authenticated or not is_owner:
+            raise PermissionDenied()
+
+        review.delete()
+        return Response({"message": "Review deleted successfully"})
+
+    return Response(
+        {"message": "Method not allowed"}, status=HTTP_405_METHOD_NOT_ALLOWED
+    )
+
+
+@api_view(["PATCH"])
+@permission_classes([IsAuthenticated, IsAdminOrReadOnly])
+def change_public_status_of_camp_review(
+    req: Request, camp_id: int, review_id: int, *args, **kwargs
+) -> Response:
+    exists = Camp.objects.filter(pk=camp_id).exists()
+    if not exists:
+        return Response({"message": "Camp not found"}, status=HTTP_404_NOT_FOUND)
+
+    exists = Review.objects.filter(pk=review_id).exists()
+    if not exists:
+        return Response({"message": "Review not found"}, status=HTTP_404_NOT_FOUND)
+
+    serializer = ChangePublicStatusReviewSerializer(data=req.data)
+    if serializer.is_valid():
+        review = Review.objects.get(pk=review_id)
+        cast(ChangePublicStatusReviewSerializer, serializer).save(review)
+        return Response(
+            {
+                "message": "Review public status changed successfully",
+                "review": GetReviewSerializer(review).data,
+            }
+        )
+
+    return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
