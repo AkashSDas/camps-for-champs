@@ -19,9 +19,10 @@ class Review(models.Model):
     rating = models.IntegerField(choices=[(tag.value, tag.name) for tag in Rating])
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    comment = models.TextField(null=True, blank=True, max_length=500)
+    comment = models.TextField(null=False, blank=True, max_length=500)
     helpful_count = models.IntegerField(default=0)
     report_review_count = models.IntegerField(default=0)
+    is_public = models.BooleanField(default=True)
 
     class Meta:
         db_table = "reviews"
