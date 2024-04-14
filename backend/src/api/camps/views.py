@@ -1,4 +1,3 @@
-from tabnanny import check
 from rest_framework.generics import (
     CreateAPIView,
     ListAPIView,

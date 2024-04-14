@@ -5,4 +5,5 @@ urlpatterns = [
     path("tags/", include("api.tags.urls")),
     path("features/", include("api.features.urls")),
     path("camps/", include("api.camps.urls")),
+    path("", include("api.reviews.urls")),
 ]
