@@ -1,6 +1,6 @@
-import Navbar from "@app/components/shared/navbar/Navbar";
+import { Navbar } from "@app/components/shared/navbar/Navbar";
 import { theme } from "@app/lib/styles";
-import { Box, styled } from "@mui/material";
+import { Box } from "@mui/material";
 import Head from "next/head";
 
 export default function Home() {

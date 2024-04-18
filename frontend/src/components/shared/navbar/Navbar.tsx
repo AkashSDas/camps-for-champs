@@ -1,12 +1,4 @@
-import {
-    AppBar,
-    Button,
-    IconButton,
-    List,
-    ListItem,
-    Stack,
-    styled,
-} from "@mui/material";
+import { AppBar, Button, IconButton, Stack, styled } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -14,7 +6,7 @@ const LogoImage = styled(Image)({
     cursor: "pointer",
 });
 
-export default function Navbar(): React.JSX.Element {
+export function Navbar(): React.JSX.Element {
     return (
         <AppBar
             position="static"
