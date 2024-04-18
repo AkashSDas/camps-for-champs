@@ -1,6 +1,56 @@
+import { headingFont } from "@app/pages/_app";
 import { createTheme } from "@mui/material";
 
 export const theme = createTheme({
+    components: {
+        MuiIconButton: {
+            styleOverrides: {
+                root: {
+                    borderRadius: "10px",
+                    "& .MuiTouchRipple-root .MuiTouchRipple-child": {
+                        borderRadius: "10px",
+                    },
+                },
+            },
+        },
+        MuiButton: {
+            variants: [
+                {
+                    props: { variant: "text" },
+                    style: {
+                        fontFamily: "inherit",
+                        color: "primary.500",
+                        textTransform: "none",
+                        fontSize: "1rem",
+                        fontWeight: 500,
+                        "&:hover": {
+                            bgcolor: "primary.50",
+                        },
+                        borderRadius: "10px",
+                        paddingInline: "16px",
+                        height: "44px",
+                    },
+                },
+                {
+                    props: { variant: "contained" },
+                    style: {
+                        fontFamily: headingFont.style.fontFamily,
+                        color: "white",
+                        textTransform: "none",
+                        fontSize: "1rem",
+                        fontWeight: 500,
+                        bgcolor: "primary.500",
+                        "&:hover": {
+                            bgcolor: "primary.600",
+                        },
+                        borderRadius: "10px",
+                        paddingInline: "16px",
+                        height: "44px",
+                    },
+                },
+            ],
+        },
+    },
     palette: {
         action: {
             active: "#495e40",

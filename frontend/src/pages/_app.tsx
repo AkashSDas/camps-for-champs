@@ -5,7 +5,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@mui/material";
 import { theme } from "@app/lib/styles";
 
-const headingFont = Bungee({ weight: ["400"], subsets: ["latin"] });
+export const headingFont = Bungee({ weight: ["400"], subsets: ["latin"] });
 const bodyFont = Sora({ subsets: ["latin"] });
 
 export default function App({ Component, pageProps }: AppProps) {
