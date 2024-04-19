@@ -1,4 +1,4 @@
-import { headingFont } from "@app/pages/_app";
+import { headingFont, bodyFont } from "@app/pages/_app";
 import { createTheme } from "@mui/material";
 
 const greyColors = {
@@ -16,6 +16,104 @@ const greyColors = {
 
 export const theme = createTheme({
     components: {
+        MuiDialogContentText: {
+            styleOverrides: {
+                root: {
+                    color: greyColors["700"],
+                },
+            },
+        },
+        MuiTextField: {
+            variants: [
+                {
+                    props: { variant: "outlined" },
+                    style: {
+                        "& .MuiFormLabel-root": {
+                            fontFamily: bodyFont.style.fontFamily,
+                            fontWeight: 400,
+                            color: greyColors["600"],
+                            // "&[data-shrink='true']": {
+                            //     color: greyColors["600"],
+                            // },
+                        },
+                        "& .MuiOutlinedInput-root": {
+                            "& input": {
+                                fontFamily: bodyFont.style.fontFamily,
+                                "&::placeholder": {
+                                    fontFamily: bodyFont.style.fontFamily,
+                                },
+                            },
+                            "& fieldset": {
+                                borderRadius: "12px",
+                                border: "1.5px solid",
+                                borderColor: greyColors["300"],
+                                fontFamily: bodyFont.style.fontFamily,
+                            },
+                        },
+                        "& .MuiFormHelperText-root": {
+                            fontFamily: bodyFont.style.fontFamily,
+                            fontWeight: 500,
+                        },
+                    },
+                },
+            ],
+        },
+        MuiTypography: {
+            variants: [
+                {
+                    props: { variant: "h1" },
+                    style: {
+                        fontFamily: headingFont.style.fontFamily,
+                        color: greyColors["900"],
+                    },
+                },
+                {
+                    props: { variant: "h2" },
+                    style: {
+                        fontFamily: headingFont.style.fontFamily,
+                        fontSize: "39.06px",
+                        color: greyColors["900"],
+                    },
+                },
+                {
+                    props: { variant: "h3" },
+                    style: {
+                        fontFamily: headingFont.style.fontFamily,
+                        color: greyColors["900"],
+                    },
+                },
+                {
+                    props: { variant: "h4" },
+                    style: {
+                        fontFamily: headingFont.style.fontFamily,
+                        color: greyColors["900"],
+                    },
+                },
+                {
+                    props: { variant: "h5" },
+                    style: {
+                        fontFamily: headingFont.style.fontFamily,
+                        color: greyColors["900"],
+                    },
+                },
+                {
+                    props: { variant: "body1" },
+                    style: { fontFamily: bodyFont.style.fontFamily },
+                },
+                {
+                    props: { variant: "body2" },
+                    style: { fontFamily: bodyFont.style.fontFamily },
+                },
+                {
+                    props: { variant: "subtitle1" },
+                    style: { fontFamily: bodyFont.style.fontFamily },
+                },
+                {
+                    props: { variant: "subtitle2" },
+                    style: { fontFamily: bodyFont.style.fontFamily },
+                },
+            ],
+        },
         MuiIconButton: {
             styleOverrides: {
                 root: {
@@ -133,6 +231,7 @@ export const theme = createTheme({
             "700": "#774d4d",
             "800": "#5c3b3c",
             "900": "#462d2e",
+            main: "#DB4D4F",
         },
     },
 });

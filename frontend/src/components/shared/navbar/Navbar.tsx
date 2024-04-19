@@ -1,3 +1,5 @@
+import { SignupModal } from "@app/components/auth/signup-modal/SignupModal";
+import { useAuthStore } from "@app/store/auth";
 import { AppBar, Button, IconButton, Stack, styled } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
@@ -7,6 +9,11 @@ const LogoImage = styled(Image)({
 });
 
 export function Navbar(): React.JSX.Element {
+    const { openSignupModal, openLoginModal } = useAuthStore((state) => ({
+        openSignupModal: state.openSignupModal,
+        openLoginModal: state.openLoginModal,
+    }));
+
     return (
         <AppBar
             position="static"
@@ -78,11 +85,14 @@ export function Navbar(): React.JSX.Element {
                     };
                 }}
             >
-                <Button variant="text">Login</Button>
+                <Button variant="text" onClick={openLoginModal}>
+                    Login
+                </Button>
 
                 <Button
                     variant="contained"
                     disableElevation
+                    onClick={openSignupModal}
                     startIcon={
                         <Image
                             src="/figmoji/tent-with-tree.png"
@@ -96,6 +106,8 @@ export function Navbar(): React.JSX.Element {
                     Join the Thrill
                 </Button>
             </Stack>
+
+            <SignupModal />
         </AppBar>
     );
 }
