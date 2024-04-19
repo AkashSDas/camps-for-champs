@@ -1,6 +1,19 @@
 import { headingFont } from "@app/pages/_app";
 import { createTheme } from "@mui/material";
 
+const greyColors = {
+    "50": "#fdfdfd",
+    "100": "#f6f6f6",
+    "200": "#f1f1f1",
+    "300": "#dcdddc",
+    "400": "#c5c6c4",
+    "500": "#969895",
+    "600": "#676a66",
+    "700": "#545853",
+    "800": "#383c37",
+    "900": "#313530",
+};
+
 export const theme = createTheme({
     components: {
         MuiIconButton: {
@@ -19,15 +32,12 @@ export const theme = createTheme({
                     props: { variant: "text" },
                     style: {
                         fontFamily: "inherit",
-                        color: "primary.500",
+                        color: greyColors["700"],
                         textTransform: "none",
                         fontSize: "1rem",
                         fontWeight: 500,
-                        "&:hover": {
-                            bgcolor: "primary.50",
-                        },
                         borderRadius: "10px",
-                        paddingInline: "16px",
+                        paddingInline: "20px",
                         height: "44px",
                     },
                 },
@@ -44,7 +54,7 @@ export const theme = createTheme({
                             bgcolor: "primary.600",
                         },
                         borderRadius: "10px",
-                        paddingInline: "16px",
+                        paddingInline: "20px",
                         height: "44px",
                     },
                 },
@@ -65,7 +75,7 @@ export const theme = createTheme({
             focusOpacity: 0.12,
         },
         text: {
-            primary: "#151a14",
+            primary: "#545853",
             secondary: "#495e40",
             disabled: "#676a66",
         },
@@ -75,18 +85,7 @@ export const theme = createTheme({
             white: "#ffffff",
         },
         mode: "light",
-        grey: {
-            "50": "#fdfdfd",
-            "100": "#f6f6f6",
-            "200": "#f1f1f1",
-            "300": "#dcdddc",
-            "400": "#c5c6c4",
-            "500": "#969895",
-            "600": "#676a66",
-            "700": "#545853",
-            "800": "#383c37",
-            "900": "#313530",
-        },
+        grey: greyColors,
         primary: {
             "50": "#edefec",
             "100": "#c7cdc4",
