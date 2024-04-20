@@ -89,7 +89,6 @@ class RefreshView(TokenRefreshView):
 
 
 @api_view(["POST"])
-@permission_classes([IsAuthenticated])
 def refresh_view(req: Request, *args, **kwargs) -> Response:
     refresh_token = req.COOKIES.get("refresh")
     if not refresh_token:
@@ -98,10 +97,7 @@ def refresh_view(req: Request, *args, **kwargs) -> Response:
     try:
         new_refresh_token = RefreshToken(refresh_token)
         res = Response(
-            {
-                "access": str(new_refresh_token.access_token),
-                "user": UserSerializer(req.user).data,
-            },
+            {"access": str(new_refresh_token.access_token)},
             status=HTTP_200_OK,
         )
 
@@ -118,6 +114,16 @@ def refresh_view(req: Request, *args, **kwargs) -> Response:
         return Response(
             {"error": "Invalid or expired token"}, status=HTTP_401_UNAUTHORIZED
         )
+
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def me_view(req: Request, *args, **kwargs) -> Response:
+    try:
+        user = cast(User, req.user)
+        return Response(UserSerializer(user).data)
+    except Exception as e:
+        return Response({"detail": str(e)}, status=HTTP_400_BAD_REQUEST)
 
 
 @api_view(["POST"])
