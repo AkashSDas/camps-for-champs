@@ -21,11 +21,11 @@ const Bounce = styled("div")`
     opacity: 1;
     animation: ${bounce} 0.6s infinite alternate;
 
-    &:nth-child(2) {
+    &:nth-of-type(2) {
         animation-delay: 0.2s;
     }
 
-    &:nth-child(3) {
+    &:nth-of-type(3) {
         animation-delay: 0.4s;
     }
 `;
@@ -49,7 +49,7 @@ export function Loader(props: Props): React.JSX.Element {
     const bgColor = getBgColor(props.variant);
 
     return (
-        <BouncingLoader>
+        <BouncingLoader data-testid="loader">
             <Bounce sx={{ bgcolor: bgColor }} />
             <Bounce sx={{ bgcolor: bgColor }} />
             <Bounce sx={{ bgcolor: bgColor }} />
