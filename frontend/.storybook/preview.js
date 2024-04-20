@@ -7,6 +7,8 @@ import { ThemeProvider } from "@mui/material/styles";
 import { theme } from "../src/lib/styles";
 import React from "react";
 import { Bungee, Sora } from "next/font/google";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { queryClient } from "@app/lib/react-query";
 
 export const headingFont = Bungee({ weight: ["400"], subsets: ["latin"] });
 const bodyFont = Sora({ subsets: ["latin"] });
@@ -23,11 +25,15 @@ const preview = {
     },
     decorators: [
         (Story) => (
-            <div className={`${headingFont.className} ${bodyFont.className}`}>
-                <ThemeProvider theme={theme}>
-                    <Story />
-                </ThemeProvider>
-            </div>
+            <QueryClientProvider client={queryClient}>
+                <div
+                    className={`${headingFont.className} ${bodyFont.className}`}
+                >
+                    <ThemeProvider theme={theme}>
+                        <Story />
+                    </ThemeProvider>
+                </div>
+            </QueryClientProvider>
         ),
     ],
 };
