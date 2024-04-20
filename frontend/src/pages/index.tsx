@@ -18,7 +18,7 @@ export default function Home() {
                 <link rel="icon" href="/logo-icon.ico" />
             </Head>
 
-            <Navbar />
+            <Navbar variant="light" />
         </Box>
     );
 }

@@ -20,7 +20,6 @@ import { useMutation } from "@tanstack/react-query";
 import { signup } from "@app/services/auth";
 import { useState } from "react";
 import { queryClient } from "@app/lib/react-query";
-import { useRouter } from "next/router";
 import { Toast } from "@app/components/shared/toast/Toast";
 import { Loader } from "@app/components/shared/loader/Loader";
 

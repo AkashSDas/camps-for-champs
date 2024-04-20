@@ -14,12 +14,16 @@ const LogoImage = styled(Image)({
     cursor: "pointer",
 });
 
-export function Navbar(): React.JSX.Element {
+type Props = {
+    variant?: "base" | "light";
+};
+
+export function Navbar(props: Props): React.JSX.Element {
     const { openSignupModal, openLoginModal } = useAuthStore((state) => ({
         openSignupModal: state.openSignupModal,
         openLoginModal: state.openLoginModal,
     }));
-    const { isLoggedIn, isPending } = useUser();
+    const { isLoggedIn } = useUser();
 
     const logoutMutation = useMutation({
         mutationFn: logout,
@@ -35,7 +39,10 @@ export function Navbar(): React.JSX.Element {
             elevation={0}
             sx={(theme) => {
                 return {
-                    bgcolor: "primary.50",
+                    bgcolor: props.variant === "light" ? "primary.50" : "white",
+                    borderBottom:
+                        props.variant === "light" ? "none" : "1px solid",
+                    borderBottomColor: "grey.300",
                     flexDirection: "row",
                     gap: "16px",
                     alignItems: "center",

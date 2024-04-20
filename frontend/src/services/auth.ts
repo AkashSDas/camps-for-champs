@@ -1,6 +1,7 @@
 import { type LoginSchemaType } from "@app/components/auth/login-modal/LoginModal";
 import { type SignUpSchemaType } from "@app/components/auth/signup-modal/SignupModal";
 import { endpoints, fetchFromAPI } from "@app/lib/api";
+import { ForgotPasswordSchemaType } from "@app/pages/forgot-password";
 import { transformUser, type UserFromApiResponse } from "@app/utils/user";
 
 export async function refreshToken() {
@@ -127,5 +128,33 @@ export async function logout() {
     return {
         success: false,
         message: response.error?.message ?? "Unknown error",
+    };
+}
+
+export async function forgotPassword(payload: ForgotPasswordSchemaType) {
+    type SuccessResponse = { status: string };
+    type ErrorResponse = { email: string[] };
+
+    const res = await fetchFromAPI<SuccessResponse | ErrorResponse>(
+        endpoints.forgotPasssword,
+        { method: "POST", data: payload, timeout: 30 * 1000 } // 30 seconds
+    );
+    const { data, status } = res;
+
+    if (status == 200 && data != null && "status" in data) {
+        data;
+        return { success: true, message: "Instruction mail is sent" };
+    } else if (
+        status == 400 &&
+        data != null &&
+        "email" in data &&
+        Array.isArray(data.email)
+    ) {
+        return { success: false, message: "Email not found" };
+    }
+
+    return {
+        success: false,
+        message: res.error?.message ?? "Unknown error",
     };
 }
