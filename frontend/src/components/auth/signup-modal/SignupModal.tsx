@@ -231,7 +231,7 @@ export function SignupModal(): React.JSX.Element {
                 message={
                     mutation.error instanceof Error
                         ? mutation.error.message
-                        : "An error occurred"
+                        : mutation.data?.message ?? "An error occurred"
                 }
             />
         </>

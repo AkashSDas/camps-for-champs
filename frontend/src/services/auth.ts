@@ -42,7 +42,8 @@ export async function signup(payload: SignUpSchemaType) {
         {
             method: "POST",
             data: {
-                ...payload,
+                email: payload.email,
+                password: payload.password,
                 first_name: payload.firstName,
                 last_name: payload.lastName,
             },
@@ -62,7 +63,8 @@ export async function signup(payload: SignUpSchemaType) {
         if ("message" in data) {
             return { success: false, message: data.message };
         } else if ("email" in data && Array.isArray(data.email)) {
-            return { success: false, message: data.email[0] as string };
+            // const err = data.email[0] as string
+            return { success: false, message: "Email already used" };
         }
     }
 
