@@ -19,6 +19,7 @@ from rest_framework.status import (
     HTTP_200_OK,
 )
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from deprecated import deprecated
 
 
 def get_tokens_for_user(user: User) -> dict:
@@ -66,6 +67,7 @@ class LoginView(TokenObtainPairView):
         return res
 
 
+@deprecated(reason="Use refresh_view instead", version="1.0", action="error")
 class RefreshView(TokenRefreshView):
     serializer_class = CustomTokenRefreshSerializer
 
@@ -96,7 +98,10 @@ def refresh_view(req: Request, *args, **kwargs) -> Response:
     try:
         new_refresh_token = RefreshToken(refresh_token)
         res = Response(
-            {"access": str(new_refresh_token.access_token)},
+            {
+                "access": str(new_refresh_token.access_token),
+                "user": UserSerializer(req.user).data,
+            },
             status=HTTP_200_OK,
         )
 
