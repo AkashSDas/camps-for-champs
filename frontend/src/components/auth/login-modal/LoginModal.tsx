@@ -176,7 +176,8 @@ export function LoginModal(): React.JSX.Element {
                         <DialogContentText
                             variant="subtitle2"
                             component={Link}
-                            href="/reset-password"
+                            href="/forgot-password"
+                            onClick={onClose}
                         >
                             Forgot password?
                         </DialogContentText>

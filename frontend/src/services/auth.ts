@@ -2,6 +2,7 @@ import { type LoginSchemaType } from "@app/components/auth/login-modal/LoginModa
 import { type SignUpSchemaType } from "@app/components/auth/signup-modal/SignupModal";
 import { endpoints, fetchFromAPI } from "@app/lib/api";
 import { ForgotPasswordSchemaType } from "@app/pages/forgot-password";
+import { ResetPasswordSchemaType } from "@app/pages/reset-password";
 import { transformUser, type UserFromApiResponse } from "@app/utils/user";
 
 export async function refreshToken() {
@@ -151,6 +152,36 @@ export async function forgotPassword(payload: ForgotPasswordSchemaType) {
         Array.isArray(data.email)
     ) {
         return { success: false, message: "Email not found" };
+    }
+
+    return {
+        success: false,
+        message: res.error?.message ?? "Unknown error",
+    };
+}
+
+export async function resetPassword(payload: ResetPasswordSchemaType) {
+    type SuccessResponse = { status: string };
+    type ErrorResponse = { email: string[] } | { detail: string };
+
+    const res = await fetchFromAPI<SuccessResponse | ErrorResponse>(
+        endpoints.resetPasssword,
+        { method: "POST", data: payload }
+    );
+    const { data, status } = res;
+
+    if (status == 200 && data != null && "status" in data) {
+        data;
+        return { success: true, message: "Password reset successfully" };
+    } else if (
+        status == 400 &&
+        data != null &&
+        "email" in data &&
+        Array.isArray(data.email)
+    ) {
+        return { success: false, message: "Email not found" };
+    } else if (status == 404 && data != null && "detail" in data) {
+        return { success: false, message: data.detail };
     }
 
     return {

@@ -76,4 +76,5 @@ export var endpoints = Object.freeze({
     login: "users/login/",
     logout: "users/logout/",
     forgotPasssword: "users/forgot-password/",
+    resetPasssword: "users/forgot-password/confirm/",
 });
