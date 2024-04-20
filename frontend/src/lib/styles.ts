@@ -16,6 +16,14 @@ const greyColors = {
 
 export const theme = createTheme({
     components: {
+        MuiAlert: {
+            styleOverrides: {
+                root: {
+                    fontFamily: bodyFont.style.fontFamily,
+                    fontWeight: 500,
+                },
+            },
+        },
         MuiDialogContentText: {
             styleOverrides: {
                 root: {
