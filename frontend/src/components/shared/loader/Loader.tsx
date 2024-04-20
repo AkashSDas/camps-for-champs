@@ -18,7 +18,6 @@ const Bounce = styled("div")`
     height: 12px;
     margin: 3px 4px;
     border-radius: 50%;
-    background-color: #a3a1a1;
     opacity: 1;
     animation: ${bounce} 0.6s infinite alternate;
 
@@ -31,12 +30,29 @@ const Bounce = styled("div")`
     }
 `;
 
-export function Loader(): React.JSX.Element {
+type Props = {
+    variant?: "primary" | "neutral";
+};
+
+function getBgColor(variant: Props["variant"]) {
+    switch (variant) {
+        case "primary":
+            return "primary.700";
+        case "neutral":
+            return "grey.500";
+        default:
+            return "primary.700";
+    }
+}
+
+export function Loader(props: Props): React.JSX.Element {
+    const bgColor = getBgColor(props.variant);
+
     return (
         <BouncingLoader>
-            <Bounce />
-            <Bounce />
-            <Bounce />
+            <Bounce sx={{ bgcolor: bgColor }} />
+            <Bounce sx={{ bgcolor: bgColor }} />
+            <Bounce sx={{ bgcolor: bgColor }} />
         </BouncingLoader>
     );
 }
