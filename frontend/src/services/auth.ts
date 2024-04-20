@@ -35,7 +35,7 @@ export async function signup(payload: SignUpSchemaType) {
         access: string;
         message: string;
     };
-    type ErrorResponse = Record<string, unknown>;
+    type ErrorResponse = { message: string } | { email: string[] };
 
     const res = await fetchFromAPI<SuccessResponse | ErrorResponse>(
         endpoints.signup,
@@ -51,10 +51,11 @@ export async function signup(payload: SignUpSchemaType) {
     const { data, status } = res;
 
     if (status == 201 && data != null && "user" in data) {
+        data;
         return {
             success: true,
             message: "Account created successfully",
-            user: data.user,
+            user: transformUser(data.user),
             accessToken: data.access,
         };
     } else if (status == 400 && data != null) {
