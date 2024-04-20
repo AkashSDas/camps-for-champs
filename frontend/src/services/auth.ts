@@ -4,7 +4,7 @@ import { endpoints, fetchFromAPI } from "@app/lib/api";
 import { transformUser, type UserFromApiResponse } from "@app/utils/user";
 
 export async function refreshToken() {
-    type SuccessResponse = { user: UserFromApiResponse; access: string };
+    type SuccessResponse = { access: string };
     type ErrorResponse = { detail: string };
 
     const res = await fetchFromAPI<SuccessResponse | ErrorResponse>(
@@ -13,11 +13,10 @@ export async function refreshToken() {
     );
     const { data, status } = res;
 
-    if (status === 200 && data != null && "user" in data) {
+    if (status === 200 && data != null && "access" in data) {
         return {
             success: true,
             message: "Successfully refreshed access token",
-            user: transformUser(data.user),
             accessToken: data.access,
         };
     } else if (status == 401 && data != null && "detail" in data) {

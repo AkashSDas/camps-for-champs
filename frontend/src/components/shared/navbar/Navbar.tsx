@@ -1,5 +1,6 @@
 import { LoginModal } from "@app/components/auth/login-modal/LoginModal";
 import { SignupModal } from "@app/components/auth/signup-modal/SignupModal";
+import { useUser } from "@app/hooks/auth";
 import { useAuthStore } from "@app/store/auth";
 import { AppBar, Button, IconButton, Stack, styled } from "@mui/material";
 import Image from "next/image";
@@ -14,6 +15,7 @@ export function Navbar(): React.JSX.Element {
         openSignupModal: state.openSignupModal,
         openLoginModal: state.openLoginModal,
     }));
+    const { isLoggedIn, isPending } = useUser();
 
     return (
         <AppBar
@@ -86,26 +88,30 @@ export function Navbar(): React.JSX.Element {
                     };
                 }}
             >
-                <Button variant="text" onClick={openLoginModal}>
-                    Login
-                </Button>
+                {isLoggedIn ? null : (
+                    <>
+                        <Button variant="text" onClick={openLoginModal}>
+                            Login
+                        </Button>
 
-                <Button
-                    variant="contained"
-                    disableElevation
-                    onClick={openSignupModal}
-                    startIcon={
-                        <Image
-                            src="/figmoji/tent-with-tree.png"
-                            alt="Tent with Tree"
-                            width={23.81}
-                            height={23.42}
-                            style={{ display: "inline-block" }}
-                        />
-                    }
-                >
-                    Join the Thrill
-                </Button>
+                        <Button
+                            variant="contained"
+                            disableElevation
+                            onClick={openSignupModal}
+                            startIcon={
+                                <Image
+                                    src="/figmoji/tent-with-tree.png"
+                                    alt="Tent with Tree"
+                                    width={23.81}
+                                    height={23.42}
+                                    style={{ display: "inline-block" }}
+                                />
+                            }
+                        >
+                            Join the Thrill
+                        </Button>
+                    </>
+                )}
             </Stack>
 
             <SignupModal />

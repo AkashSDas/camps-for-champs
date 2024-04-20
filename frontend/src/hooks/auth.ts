@@ -1,10 +1,28 @@
+import { fetchFromAPI } from "@app/lib/api";
 import { refreshToken } from "@app/services/auth";
+import { UserFromApiResponse, transformUser } from "@app/utils/user";
 import { useQuery } from "@tanstack/react-query";
 
 export function useUser() {
     const { data, status } = useQuery({
         queryKey: ["user"],
-        queryFn: refreshToken,
+        async queryFn() {
+            const { accessToken } = await refreshToken();
+            console.log({ accessToken });
+            if (!accessToken) {
+                return { user: null, accessToken: null };
+            }
+
+            const res = await fetchFromAPI<UserFromApiResponse>("users/me/", {
+                headers: { Authorization: `Bearer ${accessToken}` },
+            });
+
+            if (res.success && res.data) {
+                return { user: transformUser(res.data), accessToken };
+            }
+
+            return { user: null, accessToken: null };
+        },
         retry: false,
         refetchOnWindowFocus: false,
         refetchInterval: 4.5 * 60 * 1000, // 4.5 minutes
@@ -21,6 +39,6 @@ export function useUser() {
         isLoggedIn: !!data?.user && !!data?.accessToken,
         user: data?.user,
         accessToken: data?.accessToken,
-        status,
+        isPending: status === "pending",
     };
 }
