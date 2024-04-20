@@ -1,3 +1,4 @@
+import { LoginModal } from "@app/components/auth/login-modal/LoginModal";
 import { SignupModal } from "@app/components/auth/signup-modal/SignupModal";
 import { useAuthStore } from "@app/store/auth";
 import { AppBar, Button, IconButton, Stack, styled } from "@mui/material";
@@ -108,6 +109,7 @@ export function Navbar(): React.JSX.Element {
             </Stack>
 
             <SignupModal />
+            <LoginModal />
         </AppBar>
     );
 }

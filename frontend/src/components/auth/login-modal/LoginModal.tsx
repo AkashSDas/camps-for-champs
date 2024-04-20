@@ -16,41 +16,34 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import { Close } from "@mui/icons-material";
 import { useAuthStore } from "@app/store/auth";
+import Link from "next/link";
 
-const SignUpSchema = z.object({
+const LoginSchema = z.object({
     email: z.string({ required_error: "Required" }).email(),
-    firstName: z
-        .string({ required_error: "Required" })
-        .min(3, { message: "Minimum 3 characters required" })
-        .max(20, { message: "Maximum 20 characters allowed" }),
-    lastName: z
-        .string({ required_error: "Required" })
-        .min(3, { message: "Minimum 3 characters required" })
-        .max(20, { message: "Maximum 20 characters allowed" }),
     password: z
         .string({ required_error: "Required" })
         .min(8, { message: "Minimum 8 characters required" })
         .max(20, { message: "Maximum 20 characters allowed" }),
 });
 
-type SignUpSchemaType = z.infer<typeof SignUpSchema>;
+type LoginSchemaType = z.infer<typeof LoginSchema>;
 
-export function SignupModal(): React.JSX.Element {
+export function LoginModal(): React.JSX.Element {
     const {
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm<SignUpSchemaType>({ resolver: zodResolver(SignUpSchema) });
+    } = useForm<LoginSchemaType>({ resolver: zodResolver(LoginSchema) });
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
-    const { onClose, isOpen, openLoginModal } = useAuthStore((state) => ({
-        onClose: state.closeSignupModal,
-        isOpen: state.isSignupModalOpen,
-        openLoginModal: state.openLoginModal,
+    const { onClose, isOpen, openSignupModal } = useAuthStore((state) => ({
+        onClose: state.closeLoginModal,
+        isOpen: state.isLoginModalOpen,
+        openSignupModal: state.openSignupModal,
     }));
 
-    function handleLoginClick(): void {
-        openLoginModal();
+    function handleSignupClick(): void {
+        openSignupModal();
         onClose();
     }
 
@@ -69,7 +62,7 @@ export function SignupModal(): React.JSX.Element {
                 },
             }}
         >
-            <DialogTitle variant="h2">Signup</DialogTitle>
+            <DialogTitle variant="h2">Login</DialogTitle>
             <IconButton
                 aria-label="Close"
                 sx={(theme) => ({
@@ -85,7 +78,7 @@ export function SignupModal(): React.JSX.Element {
 
             <DialogContent>
                 <DialogContentText fontWeight={500} mb="1.5rem">
-                    Join the trill today and meet the nature tomorrow!
+                    {`Welcome back! Let's get you outside.`}
                 </DialogContentText>
 
                 <Stack
@@ -102,36 +95,6 @@ export function SignupModal(): React.JSX.Element {
                             error={!!errors.email}
                             helperText={errors.email?.message}
                         />
-
-                        <Stack
-                            direction="row"
-                            gap="1.5rem"
-                            sx={(theme) => ({
-                                [theme.breakpoints.down("sm")]: {
-                                    flexDirection: "column",
-                                },
-                            })}
-                        >
-                            <TextField
-                                label="First name"
-                                placeholder="First name"
-                                variant="outlined"
-                                {...register("firstName")}
-                                error={!!errors.firstName}
-                                helperText={errors.firstName?.message}
-                                sx={{ width: "100%" }}
-                            />
-
-                            <TextField
-                                label="Last name"
-                                placeholder="Last name"
-                                variant="outlined"
-                                {...register("lastName")}
-                                error={!!errors.lastName}
-                                helperText={errors.lastName?.message}
-                                sx={{ width: "100%" }}
-                            />
-                        </Stack>
 
                         <TextField
                             label="Password"
@@ -156,31 +119,34 @@ export function SignupModal(): React.JSX.Element {
                                 />
                             }
                         >
-                            Signup
+                            Login
                         </Button>
                     </Stack>
                 </Stack>
 
                 <Stack gap="0.5rem" mt="1.5rem">
                     <DialogContentText variant="subtitle2">
-                        Already have an account?{" "}
+                        {`Don't have an account`}?{" "}
                         <DialogContentText
                             variant="subtitle2"
                             component="span"
-                            onClick={handleLoginClick}
+                            onClick={handleSignupClick}
                             sx={{
                                 textDecoration: "underline",
                                 cursor: "pointer",
                                 fontWeight: 500,
                             }}
                         >
-                            Login
+                            Signup
                         </DialogContentText>
                     </DialogContentText>
 
-                    <DialogContentText variant="subtitle2">
-                        By continuing, you agree to our terms and privacy
-                        policy.
+                    <DialogContentText
+                        variant="subtitle2"
+                        component={Link}
+                        href="/reset-password"
+                    >
+                        Forgot password?
                     </DialogContentText>
                 </Stack>
             </DialogContent>
