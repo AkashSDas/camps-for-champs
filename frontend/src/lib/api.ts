@@ -16,10 +16,21 @@ type ApiResponse<T> = {
 
 export async function fetchFromAPI<T>(
     url: string,
-    opts?: AxiosRequestConfig
+    opts?: AxiosRequestConfig,
+    useAuth = false
 ): Promise<ApiResponse<T>> {
     try {
-        const res = await axiosInstance<T>(url, opts);
+        const res = await axiosInstance<T>(url, {
+            ...opts,
+            headers: {
+                ...opts?.headers,
+                ...(useAuth
+                    ? {
+                          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+                      }
+                    : {}),
+            },
+        });
 
         return {
             status: res.status,
@@ -63,4 +74,5 @@ export var endpoints = Object.freeze({
     refreshToken: "users/login/refresh/",
     signup: "users/signup/",
     login: "users/login/",
+    logout: "users/logout/",
 });

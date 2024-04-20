@@ -10,6 +10,7 @@ export function useUser() {
             const { accessToken } = await refreshToken();
             console.log({ accessToken });
             if (!accessToken) {
+                localStorage.removeItem("accessToken");
                 return { user: null, accessToken: null };
             }
 
@@ -18,9 +19,11 @@ export function useUser() {
             });
 
             if (res.success && res.data) {
+                localStorage.setItem("accessToken", accessToken);
                 return { user: transformUser(res.data), accessToken };
             }
 
+            localStorage.removeItem("accessToken");
             return { user: null, accessToken: null };
         },
         retry: false,

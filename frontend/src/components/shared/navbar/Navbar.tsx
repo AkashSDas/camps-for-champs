@@ -1,10 +1,14 @@
 import { LoginModal } from "@app/components/auth/login-modal/LoginModal";
 import { SignupModal } from "@app/components/auth/signup-modal/SignupModal";
 import { useUser } from "@app/hooks/auth";
+import { queryClient } from "@app/lib/react-query";
+import { logout } from "@app/services/auth";
 import { useAuthStore } from "@app/store/auth";
 import { AppBar, Button, IconButton, Stack, styled } from "@mui/material";
+import { useMutation } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
+import { Loader } from "../loader/Loader";
 
 const LogoImage = styled(Image)({
     cursor: "pointer",
@@ -16,6 +20,13 @@ export function Navbar(): React.JSX.Element {
         openLoginModal: state.openLoginModal,
     }));
     const { isLoggedIn, isPending } = useUser();
+
+    const logoutMutation = useMutation({
+        mutationFn: logout,
+        async onSuccess(data, variables, context) {
+            await queryClient.invalidateQueries({ queryKey: ["user"] });
+        },
+    });
 
     return (
         <AppBar
@@ -88,7 +99,16 @@ export function Navbar(): React.JSX.Element {
                     };
                 }}
             >
-                {isLoggedIn ? null : (
+                {isLoggedIn ? (
+                    <>
+                        <Button
+                            variant="text"
+                            onClick={() => logoutMutation.mutateAsync()}
+                        >
+                            {logoutMutation.isPending ? <Loader /> : "Logout"}
+                        </Button>
+                    </>
+                ) : (
                     <>
                         <Button variant="text" onClick={openLoginModal}>
                             Login

@@ -106,3 +106,26 @@ export async function login(payload: LoginSchemaType) {
         message: res.error?.message ?? "Unknown error",
     };
 }
+
+export async function logout() {
+    type SuccessResponse = { message: string };
+    type ErrorResponse = { message: string };
+
+    var response = await fetchFromAPI<SuccessResponse | ErrorResponse>(
+        endpoints.logout,
+        { method: "POST" },
+        true
+    );
+
+    if (response.status === 200) {
+        return {
+            success: true,
+            message: response.data?.message,
+        };
+    }
+
+    return {
+        success: false,
+        message: response.error?.message ?? "Unknown error",
+    };
+}
