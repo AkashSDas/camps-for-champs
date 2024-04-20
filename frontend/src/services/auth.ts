@@ -1,4 +1,5 @@
-import { SignUpSchemaType } from "@app/components/auth/signup-modal/SignupModal";
+import { type LoginSchemaType } from "@app/components/auth/login-modal/LoginModal";
+import { type SignUpSchemaType } from "@app/components/auth/signup-modal/SignupModal";
 import { endpoints, fetchFromAPI } from "@app/lib/api";
 import { transformUser, type UserFromApiResponse } from "@app/utils/user";
 
@@ -66,6 +67,39 @@ export async function signup(payload: SignUpSchemaType) {
             // const err = data.email[0] as string
             return { success: false, message: "Email already used" };
         }
+    }
+
+    return {
+        success: false,
+        message: res.error?.message ?? "Unknown error",
+    };
+}
+
+export async function login(payload: LoginSchemaType) {
+    type SuccessResponse = { user: UserFromApiResponse; access: string };
+    type ErrorResponse = { detail: string };
+
+    const res = await fetchFromAPI<SuccessResponse | ErrorResponse>(
+        endpoints.login,
+        { method: "POST", data: payload }
+    );
+    const { data, status } = res;
+
+    if (status == 200 && data != null && "user" in data) {
+        data;
+        return {
+            success: true,
+            message: "Logged in",
+            user: transformUser(data.user),
+            accessToken: data.access,
+        };
+    } else if (
+        status == 401 &&
+        data != null &&
+        "detail" in data &&
+        typeof data.detail === "string"
+    ) {
+        return { success: false, message: data.detail };
     }
 
     return {

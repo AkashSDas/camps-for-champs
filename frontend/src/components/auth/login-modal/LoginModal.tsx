@@ -17,6 +17,12 @@ import Image from "next/image";
 import { Close } from "@mui/icons-material";
 import { useAuthStore } from "@app/store/auth";
 import Link from "next/link";
+import { queryClient } from "@app/lib/react-query";
+import { login } from "@app/services/auth";
+import { useMutation } from "@tanstack/react-query";
+import { useState } from "react";
+import { Toast } from "@app/components/shared/toast/Toast";
+import { Loader } from "@app/components/shared/loader/Loader";
 
 const LoginSchema = z.object({
     email: z.string({ required_error: "Required" }).email(),
@@ -26,13 +32,14 @@ const LoginSchema = z.object({
         .max(20, { message: "Maximum 20 characters allowed" }),
 });
 
-type LoginSchemaType = z.infer<typeof LoginSchema>;
+export type LoginSchemaType = z.infer<typeof LoginSchema>;
 
 export function LoginModal(): React.JSX.Element {
     const {
         register,
         handleSubmit,
         formState: { errors },
+        reset,
     } = useForm<LoginSchemaType>({ resolver: zodResolver(LoginSchema) });
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
@@ -41,6 +48,25 @@ export function LoginModal(): React.JSX.Element {
         isOpen: state.isLoginModalOpen,
         openSignupModal: state.openSignupModal,
     }));
+    const [showSuccessSnackbar, setShowSuccessSnackbar] = useState(false);
+    const [showErrorSnackbar, setShowErrorSnackbar] = useState(false);
+
+    const mutation = useMutation({
+        mutationFn: login,
+        async onSuccess(data, variables, context) {
+            if (data.success) {
+                setShowSuccessSnackbar(true);
+                await queryClient.invalidateQueries({ queryKey: ["user"] });
+                reset();
+                onClose();
+            } else {
+                setShowErrorSnackbar(true);
+            }
+        },
+        onError(error, variables, context) {
+            setShowErrorSnackbar(true);
+        },
+    });
 
     function handleSignupClick(): void {
         openSignupModal();
@@ -48,108 +74,133 @@ export function LoginModal(): React.JSX.Element {
     }
 
     return (
-        <Dialog
-            open={isOpen}
-            onClose={onClose}
-            fullScreen={fullScreen}
-            PaperProps={{
-                sx: {
-                    borderRadius: "24px",
-                    width: "600px",
-                    [theme.breakpoints.down("sm")]: {
-                        borderRadius: "0px",
+        <>
+            <Dialog
+                open={isOpen}
+                onClose={onClose}
+                fullScreen={fullScreen}
+                PaperProps={{
+                    sx: {
+                        borderRadius: "24px",
+                        width: "600px",
+                        [theme.breakpoints.down("sm")]: {
+                            borderRadius: "0px",
+                        },
                     },
-                },
-            }}
-        >
-            <DialogTitle variant="h2">Login</DialogTitle>
-            <IconButton
-                aria-label="Close"
-                sx={(theme) => ({
-                    position: "absolute",
-                    right: "24px",
-                    top: "16px",
-                    color: theme.palette.grey[500],
-                })}
-                onClick={onClose}
+                }}
             >
-                <Close />
-            </IconButton>
-
-            <DialogContent>
-                <DialogContentText fontWeight={500} mb="1.5rem">
-                    {`Welcome back! Let's get you outside.`}
-                </DialogContentText>
-
-                <Stack
-                    component="form"
-                    gap="1.5rem"
-                    onSubmit={handleSubmit((data) => console.log(data))}
+                <DialogTitle variant="h2">Login</DialogTitle>
+                <IconButton
+                    aria-label="Close"
+                    sx={(theme) => ({
+                        position: "absolute",
+                        right: "24px",
+                        top: "16px",
+                        color: theme.palette.grey[500],
+                    })}
+                    onClick={onClose}
                 >
-                    <Stack gap="1.5rem">
-                        <TextField
-                            label="Email address"
-                            placeholder="Email address"
-                            variant="outlined"
-                            {...register("email")}
-                            error={!!errors.email}
-                            helperText={errors.email?.message}
-                        />
+                    <Close />
+                </IconButton>
 
-                        <TextField
-                            label="Password"
-                            placeholder="Password"
-                            variant="outlined"
-                            {...register("password")}
-                            error={!!errors.password}
-                            helperText={errors.password?.message}
-                        />
+                <DialogContent>
+                    <DialogContentText fontWeight={500} mb="1.5rem">
+                        {`Welcome back! Let's get you outside.`}
+                    </DialogContentText>
 
-                        <Button
-                            type="submit"
-                            variant="contained"
-                            disableElevation
-                            startIcon={
-                                <Image
-                                    src="/figmoji/tent-with-tree.png"
-                                    alt="Tent with Tree"
-                                    width={23.81}
-                                    height={23.42}
-                                    style={{ display: "inline-block" }}
-                                />
-                            }
-                        >
-                            Login
-                        </Button>
+                    <Stack
+                        component="form"
+                        gap="1.5rem"
+                        onSubmit={handleSubmit((data) =>
+                            mutation.mutateAsync(data)
+                        )}
+                    >
+                        <Stack gap="1.5rem">
+                            <TextField
+                                label="Email address"
+                                placeholder="Email address"
+                                variant="outlined"
+                                {...register("email")}
+                                error={!!errors.email}
+                                helperText={errors.email?.message}
+                            />
+
+                            <TextField
+                                label="Password"
+                                placeholder="Password"
+                                variant="outlined"
+                                {...register("password")}
+                                error={!!errors.password}
+                                helperText={errors.password?.message}
+                            />
+
+                            <Button
+                                type="submit"
+                                variant="contained"
+                                disableElevation
+                                startIcon={
+                                    mutation.isPending ? null : (
+                                        <Image
+                                            src="/figmoji/tent-with-tree.png"
+                                            alt="Tent with Tree"
+                                            width={23.81}
+                                            height={23.42}
+                                            style={{ display: "inline-block" }}
+                                        />
+                                    )
+                                }
+                                disabled={mutation.isPending}
+                            >
+                                {mutation.isPending ? <Loader /> : "Login"}
+                            </Button>
+                        </Stack>
                     </Stack>
-                </Stack>
 
-                <Stack gap="0.5rem" mt="1.5rem">
-                    <DialogContentText variant="subtitle2">
-                        {`Don't have an account`}?{" "}
+                    <Stack gap="0.5rem" mt="1.5rem">
+                        <DialogContentText variant="subtitle2">
+                            {`Don't have an account`}?{" "}
+                            <DialogContentText
+                                variant="subtitle2"
+                                component="span"
+                                onClick={handleSignupClick}
+                                sx={{
+                                    textDecoration: "underline",
+                                    cursor: "pointer",
+                                    fontWeight: 500,
+                                }}
+                            >
+                                Signup
+                            </DialogContentText>
+                        </DialogContentText>
+
                         <DialogContentText
                             variant="subtitle2"
-                            component="span"
-                            onClick={handleSignupClick}
-                            sx={{
-                                textDecoration: "underline",
-                                cursor: "pointer",
-                                fontWeight: 500,
-                            }}
+                            component={Link}
+                            href="/reset-password"
                         >
-                            Signup
+                            Forgot password?
                         </DialogContentText>
-                    </DialogContentText>
+                    </Stack>
+                </DialogContent>
+            </Dialog>
 
-                    <DialogContentText
-                        variant="subtitle2"
-                        component={Link}
-                        href="/reset-password"
-                    >
-                        Forgot password?
-                    </DialogContentText>
-                </Stack>
-            </DialogContent>
-        </Dialog>
+            <Toast
+                open={showSuccessSnackbar}
+                onClose={() => setShowSuccessSnackbar(false)}
+                severity="success"
+                message="Logged in successfully"
+            />
+
+            <Toast
+                open={showErrorSnackbar}
+                onClose={() => setShowErrorSnackbar(false)}
+                severity="error"
+                message={
+                    mutation.error instanceof Error
+                        ? mutation.error.message
+                        : mutation.data?.message ?? "An error occurred"
+                }
+            />
+        </>
     );
 }

@@ -62,4 +62,5 @@ export async function fetchFromAPI<T>(
 export var endpoints = Object.freeze({
     refreshToken: "users/refresh-token/",
     signup: "users/signup/",
+    login: "users/login/",
 });

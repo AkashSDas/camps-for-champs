@@ -22,6 +22,7 @@ import { useState } from "react";
 import { queryClient } from "@app/lib/react-query";
 import { useRouter } from "next/router";
 import { Toast } from "@app/components/shared/toast/Toast";
+import { Loader } from "@app/components/shared/loader/Loader";
 
 const SignUpSchema = z.object({
     email: z.string({ required_error: "Required" }).email(),
@@ -55,7 +56,6 @@ export function SignupModal(): React.JSX.Element {
         isOpen: state.isSignupModalOpen,
         openLoginModal: state.openLoginModal,
     }));
-    const router = useRouter();
     const [showSuccessSnackbar, setShowSuccessSnackbar] = useState(false);
     const [showErrorSnackbar, setShowErrorSnackbar] = useState(false);
 
@@ -67,7 +67,6 @@ export function SignupModal(): React.JSX.Element {
                 await queryClient.invalidateQueries({ queryKey: ["user"] });
                 reset();
                 onClose();
-                await router.push("/");
             } else {
                 setShowErrorSnackbar(true);
             }
@@ -178,16 +177,19 @@ export function SignupModal(): React.JSX.Element {
                                 variant="contained"
                                 disableElevation
                                 startIcon={
-                                    <Image
-                                        src="/figmoji/tent-with-tree.png"
-                                        alt="Tent with Tree"
-                                        width={23.81}
-                                        height={23.42}
-                                        style={{ display: "inline-block" }}
-                                    />
+                                    mutation.isPending ? null : (
+                                        <Image
+                                            src="/figmoji/tent-with-tree.png"
+                                            alt="Tent with Tree"
+                                            width={23.81}
+                                            height={23.42}
+                                            style={{ display: "inline-block" }}
+                                        />
+                                    )
                                 }
+                                disabled={mutation.isPending}
                             >
-                                Signup
+                                {mutation.isPending ? <Loader /> : "Signup"}
                             </Button>
                         </Stack>
                     </Stack>
