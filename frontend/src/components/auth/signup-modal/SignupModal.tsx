@@ -55,7 +55,14 @@ export function SignupModal(): React.JSX.Element {
     }
 
     return (
-        <Dialog open={isOpen} onClose={onClose} fullScreen={fullScreen}>
+        <Dialog
+            open={isOpen}
+            onClose={onClose}
+            fullScreen={fullScreen}
+            PaperProps={{
+                sx: { borderRadius: "24px" },
+            }}
+        >
             <DialogTitle variant="h2">Signup</DialogTitle>
             <IconButton
                 aria-label="Close"
