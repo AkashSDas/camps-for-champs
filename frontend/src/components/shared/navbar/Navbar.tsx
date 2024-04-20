@@ -9,6 +9,7 @@ import { useMutation } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
 import { Loader } from "../loader/Loader";
+import { MobileNavMenu } from "../mobile-nav-menu/MobileNavMenu";
 
 const LogoImage = styled(Image)({
     cursor: "pointer",
@@ -57,33 +58,7 @@ export function Navbar(props: Props): React.JSX.Element {
                 };
             }}
         >
-            <IconButton
-                sx={(theme) => {
-                    return {
-                        height: "40px",
-                        width: "40px",
-                        bgcolor: "grey.50",
-                        border: "1.5px solid",
-                        borderColor: "grey.400",
-                        "&:hover": {
-                            bgcolor: "grey.100",
-                        },
-                        "& .MuiTouchRipple-root .MuiTouchRipple-child": {
-                            bgcolor: "grey.500",
-                        },
-                        [theme.breakpoints.up("md")]: {
-                            display: "none",
-                        },
-                    };
-                }}
-            >
-                <Image
-                    src="/icons/menu-line-horizontal.svg"
-                    alt="Menu bar"
-                    width={28}
-                    height={28}
-                />
-            </IconButton>
+            <MobileNavMenu />
 
             <Link href="/">
                 <LogoImage
