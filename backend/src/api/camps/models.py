@@ -20,6 +20,12 @@ class Camp(models.Model):
     created_by = models.ForeignKey(
         User, on_delete=models.SET_NULL, related_name="camps", blank=False, null=True
     )
+    latitude = models.DecimalField(
+        max_digits=9, decimal_places=6, blank=False, null=True
+    )
+    longitude = models.DecimalField(
+        max_digits=9, decimal_places=6, blank=False, null=True
+    )
 
 
 class CampFeature(models.Model):
