@@ -66,6 +66,7 @@ export function Navbar(props: Props): React.JSX.Element {
                     alt="Camps for Champs"
                     width={107.55}
                     height={48.74}
+                    priority
                 />
             </Link>
 

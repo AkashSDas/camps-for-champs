@@ -2,10 +2,11 @@ import { Navbar } from "@app/components/shared/navbar/Navbar";
 import { theme } from "@app/lib/styles";
 import { Box } from "@mui/material";
 import Head from "next/head";
+import { SearchCampsInput } from "@app/components/shared/search-camps-input/SearchCampsInput";
 
 export default function Home() {
     return (
-        <Box sx={{ bgcolor: "primary.200" }}>
+        <Box>
             <style global jsx>{`
                 body {
                     background-color: ${(theme.palette.primary as any)["50"]};
@@ -19,6 +20,8 @@ export default function Home() {
             </Head>
 
             <Navbar variant="light" />
+
+            <SearchCampsInput />
         </Box>
     );
 }

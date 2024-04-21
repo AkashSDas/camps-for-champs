@@ -7,6 +7,7 @@ export function DatesInput(): React.JSX.Element {
             label="Dates"
             placeholder="Add dates"
             sx={{ flexGrow: 1, input: { cursor: "pointer" } }}
+            fullWidth
             disabled
             InputProps={{
                 startAdornment: (

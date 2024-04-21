@@ -7,6 +7,7 @@ export function GuestsInput(): React.JSX.Element {
             label="GuestsInput"
             placeholder="Add guests"
             sx={{ flexGrow: 1, input: { cursor: "pointer" } }}
+            fullWidth
             disabled
             InputProps={{
                 startAdornment: (
