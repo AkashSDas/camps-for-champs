@@ -1,4 +1,3 @@
-import { Search } from "@mui/icons-material";
 import { Button, Stack } from "@mui/material";
 import dynamic from "next/dynamic";
 import Image from "next/image";
