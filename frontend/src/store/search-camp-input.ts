@@ -1,0 +1,34 @@
+import { MapboxSearchResponse } from "@app/hooks/search";
+import { create } from "zustand";
+
+type SearchCampInputStore = {
+    location?: MapboxSearchResponse["suggestions"][number] | null;
+    setLocation: (
+        location: MapboxSearchResponse["suggestions"][number] | null
+    ) => void;
+    checkInDate: Date | null;
+    setCheckInDate: (date: Date | null) => void;
+    checkOutDate: Date | null;
+    setCheckOutDate: (date: Date | null) => void;
+    adultGuestsCount: number;
+    setAdultGuestsCount: (count: number) => void;
+    childGuestsCount: number;
+    setChildGuestsCount: (count: number) => void;
+    anyPets: boolean;
+    setAnyPets: (value: boolean) => void;
+};
+
+export const useSearchCampInputStore = create<SearchCampInputStore>((set) => ({
+    location: null,
+    setLocation: (location) => set({ location }),
+    checkInDate: null,
+    setCheckInDate: (checkInDate) => set({ checkInDate }),
+    checkOutDate: null,
+    setCheckOutDate: (checkOutDate) => set({ checkOutDate }),
+    adultGuestsCount: 1,
+    setAdultGuestsCount: (adultGuestsCount) => set({ adultGuestsCount }),
+    childGuestsCount: 0,
+    setChildGuestsCount: (childGuestsCount) => set({ childGuestsCount }),
+    anyPets: false,
+    setAnyPets: (anyPets) => set({ anyPets }),
+}));
