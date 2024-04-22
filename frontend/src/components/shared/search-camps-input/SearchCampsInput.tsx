@@ -48,7 +48,7 @@ export function SearchCampsInput(): React.JSX.Element {
                     height: "60px",
                     borderRadius: "14px",
                     px: "2rem",
-                    width: "fit-content",
+                    width: "360px",
                 }}
                 disableElevation
             >
