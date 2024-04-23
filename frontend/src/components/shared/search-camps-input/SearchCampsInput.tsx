@@ -29,18 +29,22 @@ export function SearchCampsInput(): React.JSX.Element {
     return (
         <Stack
             component="form"
-            sx={{
+            sx={(theme) => ({
                 flexDirection: "row",
                 alignItems: "center",
                 justifyContent: "space-around",
                 p: "2rem",
-                mx: "auto",
                 borderRadius: "20px",
                 maxWidth: "1312px",
                 width: "100%",
                 bgcolor: "#F4F7F3",
                 gap: "1rem",
-            }}
+                [theme.breakpoints.down("sm")]: {
+                    flexDirection: "column",
+                    gap: "1.5rem",
+                    p: "1rem",
+                },
+            })}
         >
             <LocationInput />
             <DatesInput />
@@ -57,12 +61,15 @@ export function SearchCampsInput(): React.JSX.Element {
                     />
                 }
                 variant="contained"
-                sx={{
+                sx={(theme) => ({
                     height: "60px",
                     borderRadius: "14px",
                     px: "2rem",
                     width: "360px",
-                }}
+                    [theme.breakpoints.down("sm")]: {
+                        width: "100%",
+                    },
+                })}
                 disableElevation
                 onClick={handleSearchClick}
             >
