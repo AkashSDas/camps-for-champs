@@ -3,6 +3,7 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import { DatesInput } from "./DatesInput";
 import { GuestsInput } from "./GuestsInput";
+import { useSearchCampInputStore } from "@app/store/search-camp-input";
 
 const LocationInput = dynamic(
     async function () {
@@ -12,6 +13,19 @@ const LocationInput = dynamic(
 );
 
 export function SearchCampsInput(): React.JSX.Element {
+    const searchInfo = useSearchCampInputStore((state) => ({
+        adultsCount: state.adultGuestsCount,
+        childrenCount: state.childGuestsCount,
+        petsCount: state.petsCount,
+        location: state.location,
+        checkInDate: state.checkInDate,
+        checkOutDate: state.checkOutDate,
+    }));
+
+    function handleSearchClick(): void {
+        console.log(searchInfo);
+    }
+
     return (
         <Stack
             component="form"
@@ -50,6 +64,7 @@ export function SearchCampsInput(): React.JSX.Element {
                     width: "360px",
                 }}
                 disableElevation
+                onClick={handleSearchClick}
             >
                 Search
             </Button>

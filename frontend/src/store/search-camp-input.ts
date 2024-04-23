@@ -14,8 +14,8 @@ type SearchCampInputStore = {
     setAdultGuestsCount: (count: number) => void;
     childGuestsCount: number;
     setChildGuestsCount: (count: number) => void;
-    anyPets: boolean;
-    setAnyPets: (value: boolean) => void;
+    petsCount: number;
+    setPetsCount: (count: number) => void;
 };
 
 export const useSearchCampInputStore = create<SearchCampInputStore>((set) => ({
@@ -29,6 +29,6 @@ export const useSearchCampInputStore = create<SearchCampInputStore>((set) => ({
     setAdultGuestsCount: (adultGuestsCount) => set({ adultGuestsCount }),
     childGuestsCount: 0,
     setChildGuestsCount: (childGuestsCount) => set({ childGuestsCount }),
-    anyPets: false,
-    setAnyPets: (anyPets) => set({ anyPets }),
+    petsCount: 0,
+    setPetsCount: (petsCount) => set({ petsCount }),
 }));
