@@ -30,6 +30,7 @@ export function SearchCampsInput(): React.JSX.Element {
         <Stack
             component="form"
             sx={(theme) => ({
+                boxShadow: `0px 4px 12px rgba(101, 110, 96, 0.2)`,
                 flexDirection: "row",
                 alignItems: "center",
                 justifyContent: "space-around",
@@ -42,7 +43,8 @@ export function SearchCampsInput(): React.JSX.Element {
                 [theme.breakpoints.down("sm")]: {
                     flexDirection: "column",
                     gap: "1.5rem",
-                    p: "1rem",
+                    px: "1rem",
+                    py: "2rem",
                 },
             })}
         >

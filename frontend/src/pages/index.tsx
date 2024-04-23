@@ -1,12 +1,13 @@
 import { Navbar } from "@app/components/shared/navbar/Navbar";
 import { theme } from "@app/lib/styles";
-import { Box } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import Head from "next/head";
 import { SearchCampsInput } from "@app/components/shared/search-camps-input/SearchCampsInput";
+import { Banner } from "@app/components/shared/banner/Banner";
 
 export default function Home() {
     return (
-        <Box>
+        <Box mb="6rem">
             <style global jsx>{`
                 body {
                     background-color: ${(theme.palette.primary as any)["50"]};
@@ -21,7 +22,10 @@ export default function Home() {
 
             <Navbar variant="light" />
 
-            <SearchCampsInput />
+            <Stack alignItems="center" gap="48px" mt="48px" mx="1rem">
+                <Banner />
+                <SearchCampsInput />
+            </Stack>
         </Box>
     );
 }
