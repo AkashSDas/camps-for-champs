@@ -3,7 +3,10 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import { DatesInput } from "./DatesInput";
 import { GuestsInput } from "./GuestsInput";
-import { useSearchCampInputStore } from "@app/store/search-camp-input";
+import {
+    SearchCampInputStore,
+    useSearchCampInputStore,
+} from "@app/store/search-camp-input";
 
 const LocationInput = dynamic(
     async function () {
@@ -12,10 +15,25 @@ const LocationInput = dynamic(
     { ssr: false }
 );
 
-export function SearchCampsInput(): React.JSX.Element {
+type Props = {
+    elevation?: boolean;
+    onSearchClick: (
+        values: Pick<
+            SearchCampInputStore,
+            | "adultGuestsCount"
+            | "childGuestsCount"
+            | "petsCount"
+            | "location"
+            | "checkInDate"
+            | "checkOutDate"
+        >
+    ) => void;
+};
+
+export function SearchCampsInput(props: Props): React.JSX.Element {
     const searchInfo = useSearchCampInputStore((state) => ({
-        adultsCount: state.adultGuestsCount,
-        childrenCount: state.childGuestsCount,
+        adultGuestsCount: state.adultGuestsCount,
+        childGuestsCount: state.childGuestsCount,
         petsCount: state.petsCount,
         location: state.location,
         checkInDate: state.checkInDate,
@@ -23,14 +41,16 @@ export function SearchCampsInput(): React.JSX.Element {
     }));
 
     function handleSearchClick(): void {
-        console.log(searchInfo);
+        props.onSearchClick(searchInfo);
     }
 
     return (
         <Stack
             component="form"
             sx={(theme) => ({
-                boxShadow: `0px 4px 12px rgba(101, 110, 96, 0.2)`,
+                boxShadow: props.elevation
+                    ? `0px 4px 12px rgba(101, 110, 96, 0.2)`
+                    : "none",
                 flexDirection: "row",
                 alignItems: "center",
                 justifyContent: "space-around",

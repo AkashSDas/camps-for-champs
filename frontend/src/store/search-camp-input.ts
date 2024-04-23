@@ -1,7 +1,7 @@
 import { MapboxSearchResponse } from "@app/hooks/search";
 import { create } from "zustand";
 
-type SearchCampInputStore = {
+export type SearchCampInputStore = {
     location?: MapboxSearchResponse["suggestions"][number] | null;
     setLocation: (
         location: MapboxSearchResponse["suggestions"][number] | null

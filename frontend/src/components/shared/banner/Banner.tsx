@@ -50,6 +50,7 @@ export function Banner(): React.JSX.Element {
                     flexDirection: "column",
                     gap: "1.5rem",
                     p: "1rem",
+                    display: "none",
                 },
             })}
         >
@@ -60,7 +61,7 @@ export function Banner(): React.JSX.Element {
                         fontSize: "72px",
                         fontWeight: "bold",
                         [theme.breakpoints.down("sm")]: {
-                            fontSize: "60px",
+                            fontSize: "48px",
                         },
                     })}
                 >
@@ -72,7 +73,7 @@ export function Banner(): React.JSX.Element {
                             fontSize: "72px",
                             fontWeight: "bold",
                             [theme.breakpoints.down("sm")]: {
-                                fontSize: "60px",
+                                fontSize: "48px",
                             },
                         })}
                     >

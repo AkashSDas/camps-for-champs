@@ -1,5 +1,11 @@
 import { useSearchLocations } from "@app/hooks/search";
-import { Autocomplete, Stack, TextField, Typography } from "@mui/material";
+import {
+    Autocomplete,
+    Stack,
+    TextField,
+    Typography,
+    useTheme,
+} from "@mui/material";
 import Image from "next/image";
 import { Loader } from "../loader/Loader";
 import { useSearchCampInputStore } from "@app/store/search-camp-input";
@@ -10,6 +16,7 @@ export function LocationInput(): React.JSX.Element {
         location: state.location,
         setLocation: state.setLocation,
     }));
+    const theme = useTheme();
 
     async function handleSearch(v: string): Promise<void> {
         console.log({ location });
@@ -60,6 +67,9 @@ export function LocationInput(): React.JSX.Element {
                             borderColor: "grey.400",
                             width: "400px",
                             boxShadow: "0px 2px 12px rgba(0, 0, 0, 0.15)",
+                            [theme.breakpoints.down("sm")]: {
+                                width: "100%",
+                            },
                         },
                     },
                 }}

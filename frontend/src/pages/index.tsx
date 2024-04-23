@@ -22,9 +22,24 @@ export default function Home() {
 
             <Navbar variant="light" />
 
-            <Stack alignItems="center" gap="48px" mt="48px" mx="1rem">
+            <Stack
+                alignItems="center"
+                gap="48px"
+                mt="48px"
+                mx="1rem"
+                sx={(theme) => ({
+                    [theme.breakpoints.down("sm")]: {
+                        mt: "24px",
+                    },
+                })}
+            >
                 <Banner />
-                <SearchCampsInput />
+                <SearchCampsInput
+                    elevation
+                    onSearchClick={(searchValues) => {
+                        console.log({ searchValues });
+                    }}
+                />
             </Stack>
         </Box>
     );
