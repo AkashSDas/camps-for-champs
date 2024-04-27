@@ -63,9 +63,13 @@ class CampCreateListAPIView(CreateAPIView, ListAPIView):
         return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
     def list(self, req: Request, *args, **kwargs) -> Response:
+        paginator = PageNumberPagination()
+        paginator.page_size = 10
         queryset = self.get_queryset()
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data, status=HTTP_200_OK)
+        queryset = queryset.order_by("-per_night_cost")
+        result_page = paginator.paginate_queryset(queryset, req)
+        serializer = CampSerarchResultSerialiazer(result_page, many=True)
+        return paginator.get_paginated_response(serializer.data)
 
 
 class CampRetriveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
