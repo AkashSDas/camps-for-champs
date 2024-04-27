@@ -1,5 +1,5 @@
 from dataclasses import fields
-from typing import cast
+from typing import Any, cast
 from rest_framework import serializers
 from api.camps.models import Camp, CampFeature, CampImage, CampImageManager
 from api.features.models import Feature
@@ -7,6 +7,7 @@ from datetime import timedelta, datetime, time
 from api.tags.serializers import TagSerializer
 from api.tags.models import Tag
 from api.features.serializers import FeatureSerializer
+from api.reviews.serializers import GetReviewSerializer
 
 
 Time = type[time]
@@ -181,3 +182,111 @@ class CampImageUploadSerializer(serializers.ModelSerializer):
     class Meta:
         model = CampImage
         fields = ("camp", "image", "alt_text")
+
+
+# {
+#     "adultGuestsCount": 3,
+#     "childGuestsCount": 2,
+#     "petsCount": 1,
+#     "location": {
+#         "name": "Mumbai Cushion",
+#         "mapbox_id": "dXJuOm1ieHBvaTpiZTZjOTI5My03YTAwLTQxNTktYjQ5MS1jMjMwOWNjMWNmMzc",
+#         "feature_type": "poi",
+#         "address": "Sr No 239/4",
+#         "full_address": "Sr No 239/4, Mulshi, 411057, India",
+#         "place_formatted": "Mulshi, 411057, India",
+#         "context": {
+#             "country": {
+#                 "name": "India",
+#                 "country_code": "IN",
+#                 "country_code_alpha_3": "IND"
+#             },
+#             "postcode": {
+#                 "id": "dXJuOm1ieHBsYzpBdVVPYXc",
+#                 "name": "411057"
+#             },
+#             "place": {
+#                 "id": "dXJuOm1ieHBsYzpBY0FJYXc",
+#                 "name": "Mulshi"
+#             },
+#             "neighborhood": {
+#                 "id": "dXJuOm1ieHBsYzpBOFdzYXc",
+#                 "name": "Hinjewadi Rajiv Gandhi Infotech Park"
+#             },
+#             "address": {
+#                 "name": "Sr No 239/4",
+#                 "address_number": "no 239/4",
+#                 "street_name": "sr"
+#             },
+#             "street": {
+#                 "name": "sr"
+#             }
+#         },
+#         "language": "en",
+#         "maki": "marker",
+#         "poi_category": [
+#             "services",
+#             "self storage"
+#         ],
+#         "poi_category_ids": [
+#             "services",
+#             "storage"
+#         ],
+#         "external_ids": {
+#             "foursquare": "d363b26faf704d0dde80ae6e"
+#         },
+#         "metadata": {}
+#     },
+#     "checkInDate": "2024-04-29T18:30:00.000Z",
+#     "checkOutDate": "2024-04-29T18:30:00.000Z"
+# }
+
+
+# create serailizer with above search input. these are optional fields
+class CampSearchSerializer(serializers.Serializer):
+    adultGuestsCount = serializers.IntegerField(required=False, min_value=1)
+    childGuestsCount = serializers.IntegerField(required=False, min_value=1)
+    petsCount = serializers.IntegerField(required=False, min_value=1)
+    # location -> [72.775662, 18.979543, 72.978723, 19.273803,]
+    location = serializers.ListField(
+        child=serializers.FloatField(), required=False, min_length=4, max_length=4
+    )
+    checkInDate = serializers.DateTimeField(required=False)
+    checkOutDate = serializers.DateTimeField(required=False)
+
+    def validate(self, attrs):
+        if "checkInDate" in attrs and "checkOutDate" in attrs:
+            check_in_date = attrs["checkInDate"]
+            check_out_date = attrs["checkOutDate"]
+            if check_in_date > check_out_date:
+                raise serializers.ValidationError(
+                    "Check in date must be less than check out date."
+                )
+
+        if "location" in attrs:
+            location = attrs["location"]
+            if location[0] > location[2] or location[1] > location[3]:
+                raise serializers.ValidationError("Invalid location coordinates.")
+
+        return attrs
+
+
+class CampSerarchResultSerialiazer(CampSerializer):
+    reviews = serializers.SerializerMethodField()
+    average_rating = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Camp
+        fields = CampSerializer.Meta.fields + (
+            "reviews",
+            "average_rating",
+        )
+
+    def get_reviews(self, instance: Camp):
+        reviews = cast(Any, instance).reviews.all()
+        return GetReviewSerializer(reviews, many=True).data
+
+    def get_average_rating(self, obj):
+        avg_rating = obj.average_rating()
+        avg_rating = avg_rating if avg_rating else 0
+        return round(avg_rating, 2)

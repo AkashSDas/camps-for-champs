@@ -5,9 +5,11 @@ from api.camps.views import (
     CampFeatureListCreateAPIView,
     CampFeatureRetrieveUpdateDestroyAPIView,
     CampImageViewSet,
+    search_camps_view,
 )
 
 urlpatterns = [
+    path("search/", search_camps_view, name="search-camps"),
     path("", CampCreateListAPIView.as_view(), name="camps"),
     path("<int:pk>/", CampRetriveUpdateDestroyAPIView.as_view(), name="camp"),
     path("features/", CampFeatureListCreateAPIView.as_view(), name="camp-features"),

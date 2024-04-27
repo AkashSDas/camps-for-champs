@@ -1,3 +1,4 @@
+from datetime import date, timedelta
 from typing import Any, cast
 from rest_framework.generics import (
     CreateAPIView,
@@ -5,6 +6,7 @@ from rest_framework.generics import (
     RetrieveUpdateDestroyAPIView,
     ListCreateAPIView,
 )
+from rest_framework.decorators import api_view
 from rest_framework import viewsets
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -18,12 +20,16 @@ from rest_framework.status import (
 from api.camps.models import Camp, CampFeature
 from api.camps.serializers import (
     CampImageSerializer,
+    CampSerarchResultSerialiazer,
     CampSerializer,
     CampFeatureSerializer,
     CampImageUploadSerializer,
+    CampSearchSerializer,
 )
 from api.users.permissions import IsAdminOrReadOnly
-from django.db.models import Count, F
+from django.db.models import F, Q, Sum, Avg, Count
+from django.db.models.functions import Coalesce
+from rest_framework.pagination import PageNumberPagination
 
 
 # Multiple views are inherited in this class to keep the URL route same
@@ -177,3 +183,116 @@ class CampImageViewSet(viewsets.ViewSet):
             )
 
         return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+
+
+@api_view(["GET"])
+def search_camps_view(req: Request) -> Response:
+    serializer = CampSearchSerializer(data=req.data)
+    if serializer.is_valid(raise_exception=True):
+        data = cast(dict, serializer.validated_data)
+        queryset = Camp.objects.all()
+
+        location = data.get("location")  # [72.775662, 18.979543, 72.978723, 19.273803,]
+        if isinstance(location, list) and len(location) == 4:
+            queryset = queryset.filter(
+                latitude__range=[location[1], location[3]],
+                longitude__range=[location[0], location[2]],
+            )
+
+        total_guests = 0
+        total_guests = total_guests + data.get("adultGuestsCount", 0)
+        total_guests = total_guests + data.get("childGuestsCount", 0)
+        total_guests = total_guests + round(data.get("petsCount", 0) / 2)
+
+        check_in = data.get("checkInDate", date.today() + timedelta(days=1))
+        check_out = data.get("checkOutDate", check_in + timedelta(days=1))
+
+        # get total occupancy count during check in and check out period
+
+        queryset = (
+            queryset.annotate(
+                occupied_count=Coalesce(
+                    Sum(
+                        "occupancies__adult_guests_count",
+                        filter=(
+                            (
+                                Q(occupancies__check_out__gte=check_in)
+                                & Q(occupancies__check_in__lte=check_in)
+                            )
+                            | (
+                                Q(occupancies__check_in__lte=check_out)
+                                & Q(occupancies__check_out__gte=check_out)
+                            )
+                            | (
+                                Q(occupancies__check_in__lte=check_in)
+                                & Q(occupancies__check_out__gte=check_out)
+                            )
+                            | (
+                                Q(occupancies__check_in__gte=check_in)
+                                & Q(occupancies__check_out__lte=check_out)
+                            )
+                        ),
+                    )
+                    + Sum(
+                        "occupancies__child_guests_count",
+                        filter=(
+                            (
+                                Q(occupancies__check_out__gte=check_in)
+                                & Q(occupancies__check_in__lte=check_in)
+                            )
+                            | (
+                                Q(occupancies__check_in__lte=check_out)
+                                & Q(occupancies__check_out__gte=check_out)
+                            )
+                            | (
+                                Q(occupancies__check_in__lte=check_in)
+                                & Q(occupancies__check_out__gte=check_out)
+                            )
+                            | (
+                                Q(occupancies__check_in__gte=check_in)
+                                & Q(occupancies__check_out__lte=check_out)
+                            )
+                        ),
+                    )
+                    + Sum(
+                        "occupancies__pets_count",
+                        filter=(
+                            (
+                                Q(occupancies__check_out__gte=check_in)
+                                & Q(occupancies__check_in__lte=check_in)
+                            )
+                            | (
+                                Q(occupancies__check_in__lte=check_out)
+                                & Q(occupancies__check_out__gte=check_out)
+                            )
+                            | (
+                                Q(occupancies__check_in__lte=check_in)
+                                & Q(occupancies__check_out__gte=check_out)
+                            )
+                            | (
+                                Q(occupancies__check_in__gte=check_in)
+                                & Q(occupancies__check_out__lte=check_out)
+                            )
+                        ),
+                    )
+                    / 2,
+                    0,
+                ),
+            ).filter(
+                Q(occupancy_count__gte=F("occupied_count") + total_guests),
+            )
+            # .annotate(
+            #     average_rating=Coalesce(Avg("reviews__rating"), 0.0),
+            # )
+            .order_by("-per_night_cost")
+        )
+
+        paginator = PageNumberPagination()
+        paginator.page_size = cast(int, req.query_params.get("limit", 10))
+        paginated_queryset = paginator.paginate_queryset(queryset, req)
+
+        return paginator.get_paginated_response(
+            {"camps": CampSerarchResultSerialiazer(paginated_queryset, many=True).data}
+        )
+
+    return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
