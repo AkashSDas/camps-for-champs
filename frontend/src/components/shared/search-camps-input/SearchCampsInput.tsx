@@ -48,9 +48,9 @@ export function SearchCampsInput(props: Props): React.JSX.Element {
         <Stack
             component="form"
             sx={(theme) => ({
-                boxShadow: props.elevation
-                    ? `0px 4px 12px rgba(101, 110, 96, 0.2)`
-                    : "none",
+                // boxShadow: props.elevation
+                //     ? `0px 4px 12px rgba(101, 110, 96, 0.2)`
+                //     : "none",
                 flexDirection: "row",
                 alignItems: "center",
                 justifyContent: "space-around",

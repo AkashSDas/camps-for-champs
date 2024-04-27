@@ -9,23 +9,23 @@ import {
 } from "@mui/material";
 import Image from "next/image";
 
-const GradientText = styled(Typography)({
-    backgroundImage: `linear-gradient(to right, #656E60 20%, #ADBCA5 30%, #656E60 70%, #ADBCA5 80%)`,
-    WebkitBackgroundClip: "text",
-    backgroundClip: "text",
-    WebkitTextFillColor: "transparent",
-    textFillColor: "transparent",
-    backgroundSize: "500% auto",
-    animation: "textShine 5s ease-in-out infinite alternate",
-    "@keyframes textShine": {
-        "0%": {
-            backgroundPosition: "0% 50%",
-        },
-        "100%": {
-            backgroundPosition: "100% 50%",
-        },
-    },
-}) as typeof Typography;
+// const GradientText = styled(Typography)({
+//     backgroundImage: `linear-gradient(to right, #656E60 20%, #ADBCA5 30%, #656E60 70%, #ADBCA5 80%)`,
+//     WebkitBackgroundClip: "text",
+//     backgroundClip: "text",
+//     WebkitTextFillColor: "transparent",
+//     textFillColor: "transparent",
+//     backgroundSize: "500% auto",
+//     animation: "textShine 5s ease-in-out infinite alternate",
+//     "@keyframes textShine": {
+//         "0%": {
+//             backgroundPosition: "0% 50%",
+//         },
+//         "100%": {
+//             backgroundPosition: "100% 50%",
+//         },
+//     },
+// }) as typeof Typography;
 
 export function Banner(): React.JSX.Element {
     const { openSignupModal } = useAuthStore((state) => ({
@@ -36,7 +36,7 @@ export function Banner(): React.JSX.Element {
     return (
         <Stack
             sx={(theme) => ({
-                boxShadow: `0px 4px 12px rgba(101, 110, 96, 0.2)`,
+                // boxShadow: `0px 4px 12px rgba(101, 110, 96, 0.2)`,
                 flexDirection: "row",
                 alignItems: "center",
                 justifyContent: "space-between",
@@ -66,7 +66,7 @@ export function Banner(): React.JSX.Element {
                     })}
                 >
                     Get some time to{" "}
-                    <GradientText
+                    <Typography
                         component="span"
                         variant="h1"
                         sx={(theme) => ({
@@ -78,7 +78,7 @@ export function Banner(): React.JSX.Element {
                         })}
                     >
                         live
-                    </GradientText>
+                    </Typography>
                 </Typography>
 
                 <Typography variant="body1">

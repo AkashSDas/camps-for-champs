@@ -25,7 +25,7 @@ export default function Home() {
             <Stack
                 alignItems="center"
                 gap="48px"
-                mt="48px"
+                mt="118px"
                 mx="1rem"
                 sx={(theme) => ({
                     [theme.breakpoints.down("sm")]: {
