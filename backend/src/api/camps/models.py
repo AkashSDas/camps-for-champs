@@ -32,3 +32,22 @@ class CampFeature(models.Model):
     camp = models.ForeignKey(Camp, on_delete=models.CASCADE, related_name="features")
     feature = models.ForeignKey(Feature, on_delete=models.CASCADE, related_name="camps")
     is_available = models.BooleanField(blank=False, null=False)
+
+
+class CampImageManager(models.Manager):
+    def camp_preview_images(self, limit=10):
+        return (
+            self.all()
+            .order_by("-created_at")[:limit]
+            .annotate(total_images=models.Count("id"))
+        )
+
+
+class CampImage(models.Model):
+    camp = models.ForeignKey(Camp, on_delete=models.CASCADE, related_name="images")
+    image_url = models.URLField(blank=False, null=False)
+    provider_id = models.CharField(max_length=255, blank=True, null=True)
+    alt_text = models.CharField(max_length=255, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    objects = CampImageManager()

@@ -1,6 +1,6 @@
 from typing import cast
 from rest_framework import serializers
-from api.camps.models import Camp, CampFeature
+from api.camps.models import Camp, CampFeature, CampImage, CampImageManager
 from api.features.models import Feature
 from datetime import timedelta, datetime, time
 from api.tags.serializers import TagSerializer
@@ -78,9 +78,24 @@ def validate_checkin_and_checkout_time(check_in: Time, check_out: Time) -> None:
         )
 
 
+class CampImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CampImage
+        fields = (
+            "id",
+            "camp",
+            "image_url",
+            "provider_id",
+            "alt_text",
+            "created_at",
+        )
+        read_only_fields = ("id", "created_at")
+
+
 class CampSerializer(serializers.ModelSerializer):
     tags = serializers.PrimaryKeyRelatedField(many=True, queryset=Tag.objects.all())
     features = CampFeatureSerializer(many=True, read_only=True)
+    images = serializers.SerializerMethodField()
 
     class Meta:
         model = Camp
@@ -99,13 +114,13 @@ class CampSerializer(serializers.ModelSerializer):
             "updated_at",
             "created_by",
             "features",
+            "images",
         )
-        read_only_fields = (
-            "id",
-            "created_at",
-            "updated_at",
-            "created_by",
-        )
+        read_only_fields = ("id", "created_at", "updated_at", "created_by", "images")
+
+    def get_images(self, instance: Camp):
+        images = cast(CampImageManager, CampImage.objects).camp_preview_images(limit=10)
+        return CampImageSerializer(images, many=True).data
 
     def validate(self, attrs):
         if self.instance is None:
