@@ -1,9 +1,11 @@
+from typing import cast
 from rest_framework.generics import (
     CreateAPIView,
     ListAPIView,
     RetrieveUpdateDestroyAPIView,
     ListCreateAPIView,
 )
+from rest_framework import viewsets
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
@@ -14,7 +16,11 @@ from rest_framework.status import (
     HTTP_201_CREATED,
 )
 from api.camps.models import Camp, CampFeature
-from api.camps.serializers import CampSerializer, CampFeatureSerializer
+from api.camps.serializers import (
+    CampSerializer,
+    CampFeatureSerializer,
+    CampImageUploadSerializer,
+)
 from api.users.permissions import IsAdminOrReadOnly
 
 
@@ -117,3 +123,37 @@ class CampFeatureRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated, IsAdminOrReadOnly]
     queryset = CampFeature.objects.all()
     serializer_class = CampFeatureSerializer
+
+
+class CampImageUploadViewSet(viewsets.ViewSet):
+    def create(self, req: Request, pk: int, *args, **kwargs) -> Response:
+        camp = Camp.objects.filter(id=pk).first()
+        if not camp:
+            return Response(
+                {"message": "Camp not found with the given id."},
+                status=HTTP_400_BAD_REQUEST,
+            )
+
+        image = cast(dict, req.data).get("image")
+        alt_text = cast(dict, req.data).get("alt_text")
+        if not image:
+            return Response(
+                {"message": "Image is required."},
+                status=HTTP_400_BAD_REQUEST,
+            )
+
+        serializer = CampImageUploadSerializer(
+            data={"camp": camp.pk, "image": image, "alt_text": alt_text}
+        )
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+
+            return Response(
+                {
+                    "message": "Image uploaded successfully.",
+                    "image": serializer.data,
+                },
+                status=HTTP_201_CREATED,
+            )
+
+        return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)

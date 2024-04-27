@@ -51,6 +51,8 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework_simplejwt.token_blacklist",
     "django_rest_passwordreset",
+    "cloudinary_storage",
+    "cloudinary",
 ]
 
 MIDDLEWARE = [
@@ -175,3 +177,12 @@ DJANGO_REST_PASSWORDRESET_TOKEN_CONFIG = {
     "CLASS": "django_rest_passwordreset.tokens.RandomStringTokenGenerator",
     "OPTIONS": {"min_length": 20, "max_length": 30},
 }
+
+CLOUDINARY_STORAGE = {
+    "CLOUD_NAME": getenv("CLOUDINARY_STORAGE_CLOUD_NAME"),
+    "API_KEY": getenv("CLOUDINARY_STORAGE_API_KEY"),
+    "API_SECRET": getenv("CLOUDINARY_STORAGE_API_SECRET"),
+}
+
+MEDIA_URL = "/camps-for-champs/"
+DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"

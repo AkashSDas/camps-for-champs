@@ -12,6 +12,8 @@ python-dotenv = "*"
 django-rest-passwordreset = "*"
 deprecated = "*"
 pillow = "*"
+cloudinary = "*"
+django-cloudinary-storage = "*"
 
 [dev-packages]
 

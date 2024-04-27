@@ -45,8 +45,7 @@ class CampImageManager(models.Manager):
 
 class CampImage(models.Model):
     camp = models.ForeignKey(Camp, on_delete=models.CASCADE, related_name="images")
-    image_url = models.URLField(blank=False, null=False)
-    provider_id = models.CharField(max_length=255, blank=True, null=True)
+    image = models.ImageField(upload_to="images/camps/")
     alt_text = models.CharField(max_length=255, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 

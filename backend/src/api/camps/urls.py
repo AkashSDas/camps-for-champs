@@ -4,6 +4,7 @@ from api.camps.views import (
     CampRetriveUpdateDestroyAPIView,
     CampFeatureListCreateAPIView,
     CampFeatureRetrieveUpdateDestroyAPIView,
+    CampImageUploadViewSet,
 )
 
 urlpatterns = [
@@ -14,5 +15,10 @@ urlpatterns = [
         "features/<int:pk>/",
         CampFeatureRetrieveUpdateDestroyAPIView.as_view(),
         name="camp-feature",
+    ),
+    path(
+        "<int:pk>/images/",
+        CampImageUploadViewSet.as_view({"post": "create"}),
+        name="camp-images",
     ),
 ]

@@ -1,3 +1,4 @@
+from dataclasses import fields
 from typing import cast
 from rest_framework import serializers
 from api.camps.models import Camp, CampFeature, CampImage, CampImageManager
@@ -84,8 +85,7 @@ class CampImageSerializer(serializers.ModelSerializer):
         fields = (
             "id",
             "camp",
-            "image_url",
-            "provider_id",
+            "image",
             "alt_text",
             "created_at",
         )
@@ -175,3 +175,9 @@ class CampSerializer(serializers.ModelSerializer):
         representation = super().to_representation(instance)
         representation["tags"] = TagSerializer(instance.tags.all(), many=True).data
         return representation
+
+
+class CampImageUploadSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CampImage
+        fields = ("camp", "image", "alt_text")
