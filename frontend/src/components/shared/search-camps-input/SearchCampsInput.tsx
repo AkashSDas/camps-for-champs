@@ -7,6 +7,7 @@ import {
     SearchCampInputStore,
     useSearchCampInputStore,
 } from "@app/store/search-camp-input";
+import { useSearchLocations } from "@app/hooks/search";
 
 const LocationInput = dynamic(
     async function () {
@@ -31,6 +32,7 @@ type Props = {
 };
 
 export function SearchCampsInput(props: Props): React.JSX.Element {
+    const { retrieveLocation } = useSearchLocations();
     const searchInfo = useSearchCampInputStore((state) => ({
         adultGuestsCount: state.adultGuestsCount,
         childGuestsCount: state.childGuestsCount,
@@ -40,8 +42,11 @@ export function SearchCampsInput(props: Props): React.JSX.Element {
         checkOutDate: state.checkOutDate,
     }));
 
-    function handleSearchClick(): void {
+    async function handleSearchClick(): Promise<void> {
         props.onSearchClick(searchInfo);
+        if (searchInfo.location) {
+            const result = await retrieveLocation(searchInfo.location);
+        }
     }
 
     return (

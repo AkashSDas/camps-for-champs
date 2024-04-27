@@ -35,9 +35,13 @@ export function LocationInput(): React.JSX.Element {
                 selectOnFocus
                 disableClearable
                 fullWidth
-                value={location?.name}
+                value={location?.name ?? ""}
                 onChange={(_, value): void => {
-                    const found = locations?.find((loc) => loc.name === value);
+                    if (typeof value === "string") return;
+                    const found = locations?.find(
+                        (loc) => loc.name === value.name
+                    );
+                    console.log({ value, found });
                     setLocation((found ?? null) as any);
                 }}
                 options={locations ?? []}

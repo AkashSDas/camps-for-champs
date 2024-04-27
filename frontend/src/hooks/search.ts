@@ -16,7 +16,87 @@ export type MapboxSearchResponse = Awaited<
 export function useSearchLocations() {
     const searchBox = useSearchBoxCore({ accessToken: TOKEN, limit: LIMIT });
 
-    const mutation = useMutation({
+    const retrieveMutation = useMutation({
+        async mutationFn(
+            location: MapboxSearchResponse["suggestions"][number]
+        ) {
+            const controller = new AbortController();
+
+            try {
+                // const result = await searchBox.retrieve(location, {
+                //     sessionToken: "test",
+                //     signal: controller.signal,
+                // });
+
+                // return result;
+
+                return {
+                    type: "FeatureCollection",
+                    features: [
+                        {
+                            type: "Feature",
+                            geometry: {
+                                coordinates: [72.871827, 19.131244],
+                                type: "Point",
+                            },
+                            properties: {
+                                name: "Mumbai Suburban",
+                                name_preferred: "Mumbai Suburban",
+                                mapbox_id: "dXJuOm1ieHBsYzpONFpy",
+                                feature_type: "district",
+                                full_address:
+                                    "Mumbai Suburban, Maharashtra, India",
+                                place_formatted: "Maharashtra, India",
+                                context: {
+                                    country: {
+                                        id: "dXJuOm1ieHBsYzpJbXM",
+                                        name: "India",
+                                        country_code: "IN",
+                                        country_code_alpha_3: "IND",
+                                    },
+                                    region: {
+                                        id: "dXJuOm1ieHBsYzpBY1Jy",
+                                        name: "Maharashtra",
+                                        region_code: "MH",
+                                        region_code_full: "IN-MH",
+                                    },
+                                    district: {
+                                        id: "dXJuOm1ieHBsYzpONFpy",
+                                        name: "Mumbai Suburban",
+                                    },
+                                },
+                                coordinates: {
+                                    latitude: 19.131244,
+                                    longitude: 72.871827,
+                                },
+                                bbox: [
+                                    72.775662, 18.979543, 72.978723, 19.273803,
+                                ],
+                                language: "en",
+                                maki: "marker",
+                                metadata: {},
+                            },
+                        },
+                    ],
+                    attribution:
+                        "© 2024 Mapbox and its suppliers. All rights reserved. Use of this data is subject to the Mapbox Terms of Service. (https://www.mapbox.com/about/maps/)",
+                    url: "https://api.mapbox.com/search/searchbox/v1/retrieve/dXJuOm1ieHBsYzpONFpy?access_token=pk.eyJ1IjoiYWthc2hzZGFzIiwiYSI6ImNsdjh4enAxZTBsZzEya3JyYXdnOGxncnYifQ.WJyjKyYv6vOzujglgPCQbw&session_token=test",
+                };
+            } catch (err) {
+                if (err instanceof Error && err.name === "AbortError") {
+                    console.log("Fetch aborted");
+                } else {
+                    console.error(err);
+                }
+
+                controller.abort();
+            }
+
+            return null;
+        },
+    });
+
+    const suggestMutation = useMutation({
         async mutationFn(searchInput: string) {
             if (searchInput && searchInput.length > 3) {
                 const controller = new AbortController();
@@ -247,9 +327,10 @@ export function useSearchLocations() {
     });
 
     return {
-        searchLocations: debounce(mutation.mutateAsync, 3000),
-        locations: mutation.data,
-        isPending: mutation.isPending,
-        isError: mutation.isError,
+        searchLocations: debounce(suggestMutation.mutateAsync, 3000),
+        retrieveLocation: retrieveMutation.mutateAsync,
+        locations: suggestMutation.data,
+        isPending: suggestMutation.isPending,
+        isError: suggestMutation.isError,
     };
 }

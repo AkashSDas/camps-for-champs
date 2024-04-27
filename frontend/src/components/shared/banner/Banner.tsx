@@ -131,6 +131,7 @@ export function Banner(): React.JSX.Element {
                     alt="Banner"
                     fill
                     loading="lazy"
+                    priority={false}
                     style={{ objectFit: "cover" }}
                 />
             </Box>

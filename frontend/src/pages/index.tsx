@@ -2,8 +2,18 @@ import { Navbar } from "@app/components/shared/navbar/Navbar";
 import { theme } from "@app/lib/styles";
 import { Box, Stack } from "@mui/material";
 import Head from "next/head";
-import { SearchCampsInput } from "@app/components/shared/search-camps-input/SearchCampsInput";
 import { Banner } from "@app/components/shared/banner/Banner";
+import { SearchCampsInput as SearchInput } from "@app/components/shared/search-camps-input/SearchCampsInput";
+import dynamic from "next/dynamic";
+
+const SearchCampsInput = dynamic(
+    async function () {
+        return import(
+            "@app/components/shared/search-camps-input/SearchCampsInput"
+        ).then((mod: any) => mod.SearchCampsInput);
+    },
+    { ssr: false }
+) as typeof SearchInput;
 
 export default function Home() {
     return (
