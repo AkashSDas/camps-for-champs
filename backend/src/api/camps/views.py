@@ -1,4 +1,4 @@
-from typing import cast
+from typing import Any, cast
 from rest_framework.generics import (
     CreateAPIView,
     ListAPIView,
@@ -17,11 +17,13 @@ from rest_framework.status import (
 )
 from api.camps.models import Camp, CampFeature
 from api.camps.serializers import (
+    CampImageSerializer,
     CampSerializer,
     CampFeatureSerializer,
     CampImageUploadSerializer,
 )
 from api.users.permissions import IsAdminOrReadOnly
+from django.db.models import Count, F
 
 
 # Multiple views are inherited in this class to keep the URL route same
@@ -125,7 +127,25 @@ class CampFeatureRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     serializer_class = CampFeatureSerializer
 
 
-class CampImageUploadViewSet(viewsets.ViewSet):
+class CampImageViewSet(viewsets.ViewSet):
+    permission_classes_by_action = {
+        "list": [],
+        "create": [IsAuthenticated, IsAdminOrReadOnly],
+    }
+
+    def list(self, req: Request, pk: int, *args, **kwargs) -> Response:
+        camp = Camp.objects.filter(id=pk).first()
+        print(camp)
+        if not camp:
+            return Response(
+                {"message": "Camp not found with the given id."},
+                status=HTTP_400_BAD_REQUEST,
+            )
+
+        images = cast(Any, camp).images.all().order_by("-created_at")
+        serializer = CampImageSerializer(images, many=True)
+        return Response({"images": serializer.data}, status=HTTP_200_OK)
+
     def create(self, req: Request, pk: int, *args, **kwargs) -> Response:
         camp = Camp.objects.filter(id=pk).first()
         if not camp:
