@@ -2,7 +2,7 @@ from typing import Any, cast
 from rest_framework import serializers
 from api.camps.models import Camp, CampFeature, CampImage, CampImageManager
 from api.features.models import Feature
-from datetime import timedelta, datetime, time
+from datetime import time
 from api.tags.serializers import TagSerializer
 from api.tags.models import Tag
 from api.features.serializers import FeatureSerializer
@@ -264,20 +264,20 @@ class CampSerializer(serializers.ModelSerializer):
 
 # create serailizer with above search input. these are optional fields
 class CampSearchSerializer(serializers.Serializer):
-    adultGuestsCount = serializers.IntegerField(required=False, min_value=1)
-    childGuestsCount = serializers.IntegerField(required=False, min_value=1)
-    petsCount = serializers.IntegerField(required=False, min_value=1)
+    adult_guests_count = serializers.IntegerField(required=False, min_value=1)
+    child_guests_count = serializers.IntegerField(required=False, min_value=1)
+    pets_count = serializers.IntegerField(required=False, min_value=1)
     # location -> [72.775662, 18.979543, 72.978723, 19.273803,]
     location = serializers.ListField(
         child=serializers.FloatField(), required=False, min_length=4, max_length=4
     )
-    checkInDate = serializers.DateTimeField(required=False)
-    checkOutDate = serializers.DateTimeField(required=False)
+    check_in_date = serializers.DateTimeField(required=False)
+    check_out_date = serializers.DateTimeField(required=False)
 
     def validate(self, attrs):
-        if "checkInDate" in attrs and "checkOutDate" in attrs:
-            check_in_date = attrs["checkInDate"]
-            check_out_date = attrs["checkOutDate"]
+        if "check_in_date" in attrs and "check_out_date" in attrs:
+            check_in_date = attrs["check_in_date"]
+            check_out_date = attrs["check_out_date"]
             if check_in_date > check_out_date:
                 raise serializers.ValidationError(
                     "Check in date must be less than check out date."

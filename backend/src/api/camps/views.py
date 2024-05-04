@@ -223,12 +223,12 @@ def search_camps_view(req: Request) -> Response:
             )
 
         total_guests = 0
-        total_guests = total_guests + data.get("adultGuestsCount", 0)
-        total_guests = total_guests + data.get("childGuestsCount", 0)
-        total_guests = total_guests + round(data.get("petsCount", 0) / 2)
+        total_guests = total_guests + data.get("adult_guests_count", 0)
+        total_guests = total_guests + data.get("child_guests_count", 0)
+        total_guests = total_guests + round(data.get("pets_count", 0) / 2)
 
-        check_in = data.get("checkInDate", date.today() + timedelta(days=1))
-        check_out = data.get("checkOutDate", check_in + timedelta(days=1))
+        check_in = data.get("check_in_date", date.today() + timedelta(days=1))
+        check_out = data.get("check_out_date", check_in + timedelta(days=1))
 
         # get total occupancy count during check in and check out period
 
