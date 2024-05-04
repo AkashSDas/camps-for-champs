@@ -32,6 +32,7 @@ class FeatureType(Enum):
     HIGHLIGHT = "highlight"  # family friendly, pet friendly, etc.
     SURROUNDING = "surrounding"  # mountain view, sea view, etc.
     ACTIVITY = "activity"  # hiking, biking, etc.
+    AMENITY = "amenity"  # fireplace, kitchen, etc.
 
 
 # ================================

@@ -67,6 +67,48 @@ dummy_data = {
             "description": "Access to nearby swimming spots.",
         },
     ],
+    FeatureType.AMENITY: [
+        {
+            "label": "Fireplace",
+            "description": "A fireplace to keep you warm.",
+        },
+        {
+            "label": "Pet-friendly",
+            "description": "Pets are allowed.",
+        },
+        {
+            "label": "Wi-Fi",
+            "description": "Free Wi-Fi available.",
+        },
+        {
+            "label": "Kitchen",
+            "description": "A kitchen for cooking.",
+        },
+        {
+            "label": "Shower",
+            "description": "Hot water shower available.",
+        },
+        {
+            "label": "Parking",
+            "description": "Parking available.",
+        },
+        {
+            "label": "Electricity",
+            "description": "Electricity available.",
+        },
+        {
+            "label": "Toilet",
+            "description": "Toilet available.",
+        },
+        {
+            "label": "BBQ",
+            "description": "BBQ available.",
+        },
+        {
+            "label": "Swimming pool",
+            "description": "Swimming pool available.",
+        },
+    ],
 }
 """Dummy data for seeding features."""
 

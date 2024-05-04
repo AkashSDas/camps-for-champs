@@ -128,7 +128,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         return f"{self.first_name} {self.last_name}"
 
     def __str__(self) -> str:
-        return f"User({self.email})"
+        return self.email
 
     def has_perm(self, perm, obj=None):
         return True

@@ -1,4 +1,3 @@
-from dataclasses import fields
 from typing import Any, cast
 from rest_framework import serializers
 from api.camps.models import Camp, CampFeature, CampImage, CampImageManager
@@ -11,6 +10,10 @@ from api.reviews.serializers import GetReviewSerializer
 
 
 Time = type[time]
+
+# =========================================
+# Camp feature serializer
+# =========================================
 
 
 class SimpleCampSerializer(serializers.ModelSerializer):
@@ -62,22 +65,14 @@ class CampFeatureSerializer(serializers.ModelSerializer):
         instance.is_available = validated_data.get(
             "is_available", instance.is_available
         )
+        instance.description = validated_data.get("description", instance.description)
         instance.save()
         return instance
 
 
-def validate_checkin_and_checkout_time(check_in: Time, check_out: Time) -> None:
-    check_in_dt = datetime.combine(datetime.today(), check_in)  # type: ignore
-    check_out_dt = datetime.combine(datetime.today(), check_out)  # type: ignore
-
-    if check_in_dt >= check_out_dt:
-        raise serializers.ValidationError(
-            "Check in time must be less than check out time."
-        )
-    if check_out_dt - check_in_dt < timedelta(hours=4):
-        raise serializers.ValidationError(
-            "Duration of stay must be greater than 4 hours."
-        )
+# =========================================
+# Camp image serializer
+# =========================================
 
 
 class CampImageSerializer(serializers.ModelSerializer):
@@ -91,6 +86,17 @@ class CampImageSerializer(serializers.ModelSerializer):
             "created_at",
         )
         read_only_fields = ("id", "created_at")
+
+
+class CampImageUploadSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CampImage
+        fields = ("camp", "image", "alt_text")
+
+
+# =========================================
+# Camp serializer
+# =========================================
 
 
 class CampSerializer(serializers.ModelSerializer):
@@ -129,7 +135,7 @@ class CampSerializer(serializers.ModelSerializer):
 
             check_in_at = cast(type[time], attrs["check_in_at"])
             check_out_at = cast(type[time], attrs["check_out_at"])
-            validate_checkin_and_checkout_time(check_in_at, check_out_at)
+            self.validate_checkin_and_checkout_time(check_in_at, check_out_at)
         else:
             # Update
 
@@ -139,15 +145,15 @@ class CampSerializer(serializers.ModelSerializer):
             if check_in_at and check_out_at:
                 check_in_at = cast(type[time], check_in_at)
                 check_out_at = cast(type[time], check_out_at)
-                validate_checkin_and_checkout_time(check_in_at, check_out_at)
+                self.validate_checkin_and_checkout_time(check_in_at, check_out_at)
             elif check_in_at:
                 check_in_at = cast(type[time], check_in_at)
-                validate_checkin_and_checkout_time(
+                self.validate_checkin_and_checkout_time(
                     check_in_at, self.instance.check_out_at
                 )
             elif check_out_at:
                 check_out_at = cast(type[time], check_out_at)
-                validate_checkin_and_checkout_time(
+                self.validate_checkin_and_checkout_time(
                     self.instance.check_in_at, check_out_at
                 )
 
@@ -177,11 +183,25 @@ class CampSerializer(serializers.ModelSerializer):
         representation["tags"] = TagSerializer(instance.tags.all(), many=True).data
         return representation
 
+    def validate_checkin_and_checkout_time(
+        self, check_in: Time, check_out: Time
+    ) -> None:
+        check_in_dt = datetime.combine(datetime.today(), check_in)  # type: ignore
+        check_out_dt = datetime.combine(datetime.today(), check_out)  # type: ignore
 
-class CampImageUploadSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CampImage
-        fields = ("camp", "image", "alt_text")
+        if check_in_dt >= check_out_dt:
+            raise serializers.ValidationError(
+                "Check in time must be less than check out time."
+            )
+        if check_out_dt - check_in_dt < timedelta(hours=4):
+            raise serializers.ValidationError(
+                "Duration of stay must be greater than 4 hours."
+            )
+
+
+# =========================================
+# Camp search serializer
+# =========================================
 
 
 # {

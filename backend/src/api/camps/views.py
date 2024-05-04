@@ -31,6 +31,10 @@ from django.db.models import F, Q, Sum, Avg, Count
 from django.db.models.functions import Coalesce
 from rest_framework.pagination import PageNumberPagination
 
+# ========================================
+# Camp views
+# ========================================
+
 
 # Multiple views are inherited in this class to keep the URL route same
 # else will have to create separate URL routes for each view
@@ -125,6 +129,11 @@ class CampRetriveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
         )
 
 
+# ========================================
+# Camp feature views
+# ========================================
+
+
 class CampFeatureListCreateAPIView(ListCreateAPIView):
     permission_classes = [IsAuthenticated, IsAdminOrReadOnly]
     queryset = CampFeature.objects.all()
@@ -135,6 +144,11 @@ class CampFeatureRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated, IsAdminOrReadOnly]
     queryset = CampFeature.objects.all()
     serializer_class = CampFeatureSerializer
+
+
+# ========================================
+# Camp image views
+# ========================================
 
 
 class CampImageViewSet(viewsets.ViewSet):
@@ -187,6 +201,11 @@ class CampImageViewSet(viewsets.ViewSet):
             )
 
         return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+
+
+# ========================================
+# Search camp views
+# ========================================
 
 
 @api_view(["GET"])

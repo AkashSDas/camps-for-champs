@@ -6,8 +6,18 @@ from api.users.models import User
 from api.tags.models import Tag
 from api.features.models import Feature
 
+# ========================================
+# Camp model
+# ========================================
+
 
 class Camp(models.Model):
+    """
+    A model for storing camp core info like its info, location, cost, and count.
+    Some fields have relations with other models like tags, and created_by user.
+    Some models that are related to this model are CampFeature, CampImage
+    """
+
     name = models.CharField(max_length=255, unique=True, blank=False, null=False)
     about = models.TextField(blank=False, null=False)
     check_in_at = models.TimeField(blank=False, null=False)
@@ -32,17 +42,58 @@ class Camp(models.Model):
     )
 
     def average_rating(self: Any):
+        """Get average rating of the camp from reviews."""
         return self.reviews.aggregate(Avg("rating"))["rating__avg"]
+
+    def __str__(self) -> str:
+        return self.name
+
+
+# ========================================
+# Camp feature model
+# ========================================
+
+
+def validate_description(value: Any) -> None:
+    if isinstance(value, str) and len(value.strip()) < 10:
+        raise ValueError("Description is too short")
 
 
 class CampFeature(models.Model):
+    """
+    A "bucket" model for linking camps with features, and giving extra info about feature's
+    availabiliy/not-availability for a camp.
+    """
+
     camp = models.ForeignKey(Camp, on_delete=models.CASCADE, related_name="features")
     feature = models.ForeignKey(Feature, on_delete=models.CASCADE, related_name="camps")
+    description = models.TextField(
+        blank=False,
+        null=False,
+        max_length=1024,
+        validators=[validate_description],
+    )
     is_available = models.BooleanField(blank=False, null=False)
+
+    def __str__(self) -> str:
+        return f"{self.camp.name} - {self.feature.label}"
+
+    class Meta:
+        verbose_name = "Camp Feature"
+        verbose_name_plural = "Camp Features"
+
+
+# ========================================
+# Camp image model
+# ========================================
 
 
 class CampImageManager(models.Manager):
+    """Custom camp image manager."""
+
     def camp_preview_images(self, limit=10):
+        """Get few images when initially displaying camp."""
+
         return (
             self.all()
             .order_by("-created_at")[:limit]
@@ -51,18 +102,39 @@ class CampImageManager(models.Manager):
 
 
 class CampImage(models.Model):
+    """
+    Camp images are store using this model. This model has a relation with the camp model.
+    """
+
     camp = models.ForeignKey(Camp, on_delete=models.CASCADE, related_name="images")
     image = models.ImageField(upload_to="images/camps/")
-    alt_text = models.CharField(max_length=255, blank=True, null=True)
+    alt_text = models.CharField(max_length=256, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     objects = CampImageManager()
 
+    class Meta:
+        verbose_name = "Camp Image"
+        verbose_name_plural = "Camp Images"
+
+
+# ========================================
+# Camp occupancy model
+# ========================================
+
 
 class CampOccupancyManager(models.Manager):
+    """Manager with methods for custom filtering."""
+
     def check_camp_availability(
         self, camp_id: int, check_in: datetime, check_out: datetime
-    ):
+    ) -> "CampOccupancyManager":
+        """
+        Filter the queryset to get "bookings" (occupancy) which overlap with check in and check out
+        dates. This method is useful to check whether occupancy is full or not during a specific
+        time period.
+        """
+
         queryset = self.filter(camp=camp_id)
 
         # Get guests count during check_in and check_out
@@ -94,6 +166,11 @@ class CampOccupancyManager(models.Manager):
 
 
 class CampOccupancy(models.Model):
+    """
+    Whenever a booking for a camp is done, the occpuancy of the camp for those check in and check out duration
+    have to be blocked so that for the next booking we can check whether the camp has space available or not.
+    """
+
     camp = models.ForeignKey(Camp, on_delete=models.CASCADE, related_name="occupancies")
     check_in = models.DateField(blank=False, null=False)
     check_out = models.DateField(blank=False, null=False)
@@ -102,3 +179,7 @@ class CampOccupancy(models.Model):
     pets_count = models.PositiveIntegerField(blank=False, null=False, default=0)
 
     objects = CampOccupancyManager()
+
+    class Meta:
+        verbose_name = "Camp Occupancy"
+        verbose_name_plural = "Camp Occupancies"
