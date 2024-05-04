@@ -38,13 +38,14 @@ export default function Home() {
                 mt="118px"
                 mx="1rem"
                 sx={(theme) => ({
-                    [theme.breakpoints.down("sm")]: {
-                        mt: "24px",
-                    },
+                    [theme.breakpoints.down("sm")]: { mt: "24px" },
                 })}
             >
                 <Banner />
                 <SearchCampsInput
+                    rootSx={(theme) => ({
+                        [theme.breakpoints.down("sm")]: { mt: "4rem" },
+                    })}
                     elevation
                     onSearchClick={(searchValues) => {
                         console.log({ searchValues });
