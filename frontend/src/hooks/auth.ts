@@ -8,7 +8,6 @@ export function useUser() {
         queryKey: ["user"],
         async queryFn() {
             const { accessToken } = await refreshToken();
-            console.log({ accessToken });
             if (!accessToken) {
                 localStorage.removeItem("accessToken");
                 return { user: null, accessToken: null };
