@@ -2,6 +2,10 @@ from typing import Any
 from django.db import models
 from django.forms import ValidationError
 
+# ================================
+# Validators
+# ================================
+
 
 def validate_label(value: Any):
     if not isinstance(value, str):
@@ -10,12 +14,22 @@ def validate_label(value: Any):
         raise ValidationError("Label is too short")
 
 
+# ================================
+# Models
+# ================================
+
+
 class Tag(models.Model):
+    """
+    This model is used to store general tags, and this can be used in other models
+    like `Camp` and attaching tags to a camp.
+    """
+
     label = models.CharField(
         unique=True,
         blank=False,
         null=False,
-        max_length=100,
+        max_length=128,
         db_index=True,
         verbose_name="Tag label",
         help_text="Enter a tag label",

@@ -3,6 +3,10 @@ from api.tags.models import Tag
 
 
 class TagSerializer(serializers.ModelSerializer):
+    """
+    Model serializer for the Tag model. Label is lowercased and then saved.
+    """
+
     class Meta:
         model = Tag
         fields = ("id", "label")

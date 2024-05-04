@@ -4,11 +4,11 @@ from typing import Literal
 from django.core.management.base import BaseCommand
 from api.features.models import Feature, FeatureType
 
-# python manage.py seed --mode=refresh
+# python manage.py seed_features --mode=refresh
 Mode = Literal["refresh", "clear"]
 """
 Mode of the seed command:
-- refresh: Clear all data and creates addresses
+- refresh: Clear all data and creates new ones
 - clear: Clear all data and do not create any object
 """
 
@@ -75,7 +75,9 @@ class Command(BaseCommand):
     help = "Seed feature data for testing and development."
 
     def add_arguments(self, parser) -> None:
-        parser.add_argument("--mode", type=str, help="Mode")
+        parser.add_argument(
+            "--mode", type=str, help="Mode of the seed command: refresh / clear"
+        )
 
     def handle(self, *args, **options) -> None:
         self.stdout.write("[seed:features]: START")
