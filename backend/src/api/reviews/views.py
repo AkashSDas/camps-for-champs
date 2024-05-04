@@ -54,6 +54,8 @@ def parse_query_params(params: QueryDict) -> dict:
 
 @api_view(["GET", "POST"])
 def camp_reviews_list_create(req: Request, camp_id: int, *args, **kwargs) -> Response:
+    """Camp reviews list and create views."""
+
     exists = Camp.objects.filter(pk=camp_id).exists()
     if not exists:
         return Response({"message": "Camp not found"}, status=HTTP_404_NOT_FOUND)
@@ -100,6 +102,8 @@ def camp_reviews_list_create(req: Request, camp_id: int, *args, **kwargs) -> Res
 def camp_review_retrieve_update_delete(
     req: Request, camp_id: int, review_id: int, *args, **kwargs
 ) -> Response:
+    """Camp review retrieve, update, and delete views."""
+
     exists = Camp.objects.filter(pk=camp_id).exists()
     if not exists:
         return Response({"message": "Camp not found"}, status=HTTP_404_NOT_FOUND)
@@ -148,6 +152,8 @@ def camp_review_retrieve_update_delete(
 def change_public_status_of_camp_review(
     req: Request, camp_id: int, review_id: int, *args, **kwargs
 ) -> Response:
+    """Change the public status of a review."""
+
     exists = Camp.objects.filter(pk=camp_id).exists()
     if not exists:
         return Response({"message": "Camp not found"}, status=HTTP_404_NOT_FOUND)

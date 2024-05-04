@@ -4,6 +4,8 @@ from api.reviews.models import Review
 
 
 class GetReviewSerializer(serializers.ModelSerializer):
+    """Serializer for getting a review."""
+
     author = serializers.SerializerMethodField()
 
     class Meta:
@@ -19,6 +21,8 @@ class GetReviewSerializer(serializers.ModelSerializer):
         )
 
     def get_author(self, obj: Review) -> Optional[dict]:
+        """Get the author of the review and populate the author field."""
+
         author = obj.author
         if author is None:
             return None
@@ -30,6 +34,7 @@ class GetReviewSerializer(serializers.ModelSerializer):
 
 
 class CreateReviewSerializer(serializers.ModelSerializer):
+    """Serializer for creating a review."""
 
     class Meta:
         model = Review
@@ -39,12 +44,16 @@ class CreateReviewSerializer(serializers.ModelSerializer):
         return super().save(**kwargs)
 
     def validate_rating(self, value: int) -> int:
+        """Validate the rating field."""
+
         if value < 1 or value > 5:
             raise serializers.ValidationError("Rating must be between 1 and 5")
         return value
 
 
 class ChangePublicStatusReviewSerializer(serializers.Serializer):
+    """Serializer for changing the public status of a review."""
+
     is_public = serializers.BooleanField()
 
     def save(self, review: Review):
