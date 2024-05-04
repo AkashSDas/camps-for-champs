@@ -1,4 +1,4 @@
-import { MapboxSearchResponse } from "@app/hooks/search";
+import { MapboxSearchResponse } from "@app/hooks/mapbox";
 import { create } from "zustand";
 
 export type SearchCampInputStore = {

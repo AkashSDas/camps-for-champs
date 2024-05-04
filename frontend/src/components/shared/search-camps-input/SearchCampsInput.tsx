@@ -4,11 +4,8 @@ import Image from "next/image";
 import { DatesInput } from "./DatesInput";
 import { GuestsInput } from "./GuestsInput";
 import { useSearchCampInputStore } from "@app/store/search-camp-input";
-import {
-    type MapboxBBox,
-    type SearchCampsQueryValues,
-    useSearchLocations,
-} from "@app/hooks/search";
+import { type MapboxBBox, useSearchLocations } from "@app/hooks/mapbox";
+import { type SearchCampsQueryValues } from "@app/hooks/camp-search";
 
 const LocationInput = dynamic(
     async function () {

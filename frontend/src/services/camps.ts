@@ -1,4 +1,4 @@
-import { type SearchCampsQueryValues } from "@app/hooks/search";
+import { type SearchCampsQueryValues } from "@app/hooks/camp-search";
 import { endpoints, fetchFromAPI } from "@app/lib/api";
 import { Optional } from "@tanstack/react-query";
 import { z } from "zod";
@@ -135,9 +135,9 @@ const SearchCampsSuccessSchema = z.object({
 // ========================================
 
 export async function searchCamps(
-    query: Partial<SearchCampsQueryValues> = {},
-    limit = 5,
-    page = 1
+    query: Partial<SearchCampsQueryValues>,
+    limit: number,
+    page: number
 ) {
     type SuccessResponse = z.infer<typeof SearchCampsSuccessSchema>;
     type ErrorResponse = { detail: string };
@@ -165,7 +165,13 @@ export async function searchCamps(
 
     if (status === 200 && data != null && "results" in data) {
         const parsedData = SearchCampsSuccessSchema.parse(data);
-        return { success: true, data: parsedData.results.camps };
+        return {
+            success: true,
+            camps: parsedData.results.camps,
+            count: parsedData.count,
+            next: parsedData.next,
+            previous: parsedData.previous,
+        };
     } else if (status == 400 && data != null && "detail" in data) {
         return { success: false, message: data.detail };
     }

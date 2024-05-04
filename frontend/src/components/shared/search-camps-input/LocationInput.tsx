@@ -1,4 +1,4 @@
-import { useSearchLocations } from "@app/hooks/search";
+import { useSearchLocations } from "@app/hooks/mapbox";
 import {
     Autocomplete,
     Stack,

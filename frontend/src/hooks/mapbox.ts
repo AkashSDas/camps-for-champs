@@ -1,8 +1,10 @@
-import { searchCamps } from "@app/services/camps";
-import { SearchCampInputStore } from "@app/store/search-camp-input";
+// Only add Mapbox related hooks here since other hook in this file when
+// imported else where will give `document is not defined` error because
+// Mapbox is not available on the server side.
+
 import { useSearchBoxCore } from "@mapbox/search-js-react";
 import { debounce } from "@mui/material";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 
 const TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN as string;
 const LIMIT = 1;
@@ -340,41 +342,5 @@ export function useSearchLocations() {
         locations: suggestMutation.data,
         isPending: suggestMutation.isPending,
         isError: suggestMutation.isError,
-    };
-}
-
-export type SearchCampsQueryValues = Pick<
-    SearchCampInputStore,
-    | "adultGuestsCount"
-    | "childGuestsCount"
-    | "petsCount"
-    | "checkInDate"
-    | "checkOutDate"
-> & {
-    location?: MapboxBBox | undefined;
-};
-
-export function useSearchCamps(
-    searchValues: Partial<SearchCampsQueryValues> = {}
-) {
-    const { data, isLoading, isError, error } = useQuery({
-        queryKey: [
-            "searchCamps",
-            searchValues.adultGuestsCount,
-            searchValues.childGuestsCount,
-            searchValues.petsCount,
-            searchValues.location,
-            searchValues.checkInDate,
-            searchValues.checkOutDate,
-        ],
-        queryFn: () => searchCamps(searchValues),
-        staleTime: 1000 * 60 * 5,
-    });
-
-    return {
-        camps: data?.data ?? [],
-        isLoading,
-        isError,
-        error,
     };
 }
