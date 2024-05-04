@@ -1,12 +1,6 @@
+import { useUser } from "@app/hooks/auth";
 import { useAuthStore } from "@app/store/auth";
-import {
-    Box,
-    Button,
-    Stack,
-    Typography,
-    styled,
-    useTheme,
-} from "@mui/material";
+import { Box, Button, Stack, Typography, useTheme } from "@mui/material";
 import Image from "next/image";
 
 // const GradientText = styled(Typography)({
@@ -27,11 +21,16 @@ import Image from "next/image";
 //     },
 // }) as typeof Typography;
 
-export function Banner(): React.JSX.Element {
+export function Banner(): React.JSX.Element | null {
     const { openSignupModal } = useAuthStore((state) => ({
         openSignupModal: state.openSignupModal,
     }));
     const theme = useTheme();
+    const { isLoggedIn } = useUser();
+
+    if (isLoggedIn) {
+        return null;
+    }
 
     return (
         <Stack

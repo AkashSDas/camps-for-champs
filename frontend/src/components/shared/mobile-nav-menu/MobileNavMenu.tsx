@@ -1,19 +1,22 @@
+import { useUser } from "@app/hooks/auth";
 import { bodyFont } from "@app/pages/_app";
 import { useAuthStore } from "@app/store/auth";
 import { ArrowForwardIos, Close } from "@mui/icons-material";
 import {
     Button,
-    ButtonBase,
     Dialog,
     DialogContent,
     Divider,
     IconButton,
     Stack,
-    Typography,
     styled,
 } from "@mui/material";
 import Image from "next/image";
 import { useState } from "react";
+import { Loader } from "../loader/Loader";
+import { queryClient } from "@app/lib/react-query";
+import { logout } from "@app/services/auth";
+import { useMutation } from "@tanstack/react-query";
 
 const MenuButton = styled(Button)((theme) => {
     return {
@@ -32,6 +35,14 @@ export function MobileNavMenu(): React.JSX.Element {
         openLoginModal: state.openLoginModal,
         openSignupModal: state.openSignupModal,
     }));
+    const { isLoggedIn } = useUser();
+
+    const logoutMutation = useMutation({
+        mutationFn: logout,
+        async onSuccess(data, variables, context) {
+            await queryClient.invalidateQueries({ queryKey: ["user"] });
+        },
+    });
 
     function changeOpen(v: typeof open) {
         return () => setOpen(v);
@@ -107,25 +118,42 @@ export function MobileNavMenu(): React.JSX.Element {
                             About
                         </MenuButton>
 
-                        <MenuButton
-                            endIcon={<ArrowForwardIos />}
-                            onClick={() => {
-                                openLoginModal();
-                                setOpen(false);
-                            }}
-                        >
-                            Login
-                        </MenuButton>
+                        {isLoggedIn ? (
+                            <>
+                                <MenuButton
+                                    endIcon={<ArrowForwardIos />}
+                                    onClick={() => logoutMutation.mutateAsync()}
+                                >
+                                    {logoutMutation.isPending ? (
+                                        <Loader />
+                                    ) : (
+                                        "Logout"
+                                    )}
+                                </MenuButton>
+                            </>
+                        ) : (
+                            <>
+                                <MenuButton
+                                    endIcon={<ArrowForwardIos />}
+                                    onClick={() => {
+                                        openLoginModal();
+                                        setOpen(false);
+                                    }}
+                                >
+                                    Login
+                                </MenuButton>
 
-                        <MenuButton
-                            endIcon={<ArrowForwardIos />}
-                            onClick={() => {
-                                openSignupModal();
-                                setOpen(false);
-                            }}
-                        >
-                            Signup
-                        </MenuButton>
+                                <MenuButton
+                                    endIcon={<ArrowForwardIos />}
+                                    onClick={() => {
+                                        openSignupModal();
+                                        setOpen(false);
+                                    }}
+                                >
+                                    Signup
+                                </MenuButton>
+                            </>
+                        )}
                     </Stack>
                 </DialogContent>
             </Dialog>
