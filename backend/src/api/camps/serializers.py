@@ -135,27 +135,27 @@ class CampSerializer(serializers.ModelSerializer):
 
             check_in_at = cast(type[time], attrs["check_in_at"])
             check_out_at = cast(type[time], attrs["check_out_at"])
-            self.validate_checkin_and_checkout_time(check_in_at, check_out_at)
+            # self.validate_checkin_and_checkout_time(check_in_at, check_out_at)
         else:
             # Update
 
             check_in_at = attrs.get("check_in_at")
             check_out_at = attrs.get("check_out_at")
 
-            if check_in_at and check_out_at:
-                check_in_at = cast(type[time], check_in_at)
-                check_out_at = cast(type[time], check_out_at)
-                self.validate_checkin_and_checkout_time(check_in_at, check_out_at)
-            elif check_in_at:
-                check_in_at = cast(type[time], check_in_at)
-                self.validate_checkin_and_checkout_time(
-                    check_in_at, self.instance.check_out_at
-                )
-            elif check_out_at:
-                check_out_at = cast(type[time], check_out_at)
-                self.validate_checkin_and_checkout_time(
-                    self.instance.check_in_at, check_out_at
-                )
+            # if check_in_at and check_out_at:
+            #     check_in_at = cast(type[time], check_in_at)
+            #     check_out_at = cast(type[time], check_out_at)
+            #     self.validate_checkin_and_checkout_time(check_in_at, check_out_at)
+            # elif check_in_at:
+            #     check_in_at = cast(type[time], check_in_at)
+            #     self.validate_checkin_and_checkout_time(
+            #         check_in_at, self.instance.check_out_at
+            #     )
+            # elif check_out_at:
+            #     check_out_at = cast(type[time], check_out_at)
+            #     self.validate_checkin_and_checkout_time(
+            #         self.instance.check_in_at, check_out_at
+            #     )
 
         # attrs["created_by"] = self.context["request"].user
         return attrs
@@ -183,20 +183,20 @@ class CampSerializer(serializers.ModelSerializer):
         representation["tags"] = TagSerializer(instance.tags.all(), many=True).data
         return representation
 
-    def validate_checkin_and_checkout_time(
-        self, check_in: Time, check_out: Time
-    ) -> None:
-        check_in_dt = datetime.combine(datetime.today(), check_in)  # type: ignore
-        check_out_dt = datetime.combine(datetime.today(), check_out)  # type: ignore
+    # def validate_checkin_and_checkout_time(
+    #     self, check_in: Time, check_out: Time
+    # ) -> None:
+    #     check_in_dt = datetime.combine(datetime.today(), check_in)  # type: ignore
+    #     check_out_dt = datetime.combine(datetime.today(), check_out)  # type: ignore
 
-        if check_in_dt >= check_out_dt:
-            raise serializers.ValidationError(
-                "Check in time must be less than check out time."
-            )
-        if check_out_dt - check_in_dt < timedelta(hours=4):
-            raise serializers.ValidationError(
-                "Duration of stay must be greater than 4 hours."
-            )
+    #     if check_in_dt >= check_out_dt:
+    #         raise serializers.ValidationError(
+    #             "Check in time must be less than check out time."
+    #         )
+    #     if check_out_dt - check_in_dt < timedelta(hours=4):
+    #         raise serializers.ValidationError(
+    #             "Duration of stay must be greater than 4 hours."
+    #         )
 
 
 # =========================================
