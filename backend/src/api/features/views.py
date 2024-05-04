@@ -6,6 +6,11 @@ from api.users.permissions import IsAdminOrReadOnly
 
 
 class FeatureViewSet(ModelViewSet):
+    """
+    General camp features CRUD viewset. `list` and `retrieve` actions are public, but
+    all other actions are restricted to authenticated users with admin permissions.
+    """
+
     queryset = Feature.objects.all().order_by("feature_type", "label")
     serializer_class = FeatureSerializer
     permission_classes_by_action = {
