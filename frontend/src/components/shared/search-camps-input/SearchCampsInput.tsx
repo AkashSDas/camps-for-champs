@@ -1,13 +1,14 @@
-import { Button, Stack } from "@mui/material";
+import { Button, Stack, SxProps, Theme } from "@mui/material";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { DatesInput } from "./DatesInput";
 import { GuestsInput } from "./GuestsInput";
+import { useSearchCampInputStore } from "@app/store/search-camp-input";
 import {
-    SearchCampInputStore,
-    useSearchCampInputStore,
-} from "@app/store/search-camp-input";
-import { useSearchLocations } from "@app/hooks/search";
+    type MapboxBBox,
+    type SearchCampsQueryValues,
+    useSearchLocations,
+} from "@app/hooks/search";
 
 const LocationInput = dynamic(
     async function () {
@@ -17,18 +18,9 @@ const LocationInput = dynamic(
 );
 
 type Props = {
+    rootSx?: SxProps<Theme> | undefined;
     elevation?: boolean;
-    onSearchClick: (
-        values: Pick<
-            SearchCampInputStore,
-            | "adultGuestsCount"
-            | "childGuestsCount"
-            | "petsCount"
-            | "location"
-            | "checkInDate"
-            | "checkOutDate"
-        >
-    ) => void;
+    onSearchClick: (values: SearchCampsQueryValues) => Promise<void>;
 };
 
 export function SearchCampsInput(props: Props): React.JSX.Element {
@@ -43,35 +35,59 @@ export function SearchCampsInput(props: Props): React.JSX.Element {
     }));
 
     async function handleSearchClick(): Promise<void> {
-        props.onSearchClick(searchInfo);
+        let location: undefined | MapboxBBox = undefined;
+
         if (searchInfo.location) {
             const result = await retrieveLocation(searchInfo.location);
+            if (
+                result &&
+                Array.isArray(result.features) &&
+                result.features.length > 0 &&
+                result.features[0].properties?.bbox
+            ) {
+                location = result.features[0].properties.bbox as MapboxBBox;
+            } else {
+                alert("Invalid location");
+                return;
+            }
         }
+
+        props.onSearchClick({
+            adultGuestsCount: searchInfo.adultGuestsCount,
+            childGuestsCount: searchInfo.childGuestsCount,
+            petsCount: searchInfo.petsCount,
+            location: location,
+            checkInDate: searchInfo.checkInDate,
+            checkOutDate: searchInfo.checkOutDate,
+        });
     }
 
     return (
         <Stack
             component="form"
-            sx={(theme) => ({
-                // boxShadow: props.elevation
-                //     ? `0px 4px 12px rgba(101, 110, 96, 0.2)`
-                //     : "none",
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-around",
-                p: "2rem",
-                borderRadius: "20px",
-                maxWidth: "1312px",
-                width: "100%",
-                bgcolor: "#F4F7F3",
-                gap: "1rem",
-                [theme.breakpoints.down("sm")]: {
-                    flexDirection: "column",
-                    gap: "1.5rem",
-                    px: "1rem",
-                    py: "2rem",
-                },
-            })}
+            sx={[
+                (theme) => ({
+                    // boxShadow: props.elevation
+                    //     ? `0px 4px 12px rgba(101, 110, 96, 0.2)`
+                    //     : "none",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-around",
+                    p: "2rem",
+                    borderRadius: "20px",
+                    maxWidth: "1312px",
+                    width: "100%",
+                    bgcolor: "#F4F7F3",
+                    gap: "1rem",
+                    [theme.breakpoints.down("sm")]: {
+                        flexDirection: "column",
+                        gap: "1.5rem",
+                        px: "1rem",
+                        py: "2rem",
+                    },
+                }),
+                props.rootSx as any,
+            ]}
         >
             <LocationInput />
             <DatesInput />

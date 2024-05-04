@@ -47,7 +47,7 @@ export default function Home() {
                         [theme.breakpoints.down("sm")]: { mt: "4rem" },
                     })}
                     elevation
-                    onSearchClick={(searchValues) => {
+                    onSearchClick={async (searchValues) => {
                         console.log({ searchValues });
                     }}
                 />
