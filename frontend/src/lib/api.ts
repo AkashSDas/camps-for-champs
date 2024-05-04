@@ -71,10 +71,14 @@ export async function fetchFromAPI<T>(
 }
 
 export const endpoints = Object.freeze({
+    // Auth
     refreshToken: "users/login/refresh/",
     signup: "users/signup/",
     login: "users/login/",
     logout: "users/logout/",
     forgotPasssword: "users/forgot-password/",
     resetPasssword: "users/forgot-password/confirm/",
+
+    // Camps
+    searchCamps: "camps/search/",
 });
