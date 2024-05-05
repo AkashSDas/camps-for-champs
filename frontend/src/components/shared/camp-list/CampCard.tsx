@@ -154,6 +154,7 @@ export function CampCard(props: Props) {
                     >
                         {images.map((image, index) => (
                             <Image
+                                className="camp-preview-img"
                                 key={index}
                                 // src={image.image}
                                 src={

@@ -60,7 +60,13 @@ export function CampList() {
             <Grid
                 container
                 columnSpacing={3}
-                rowSpacing={3}
+                rowSpacing={{
+                    xs: 6,
+                    sm: 3,
+                    md: 3,
+                    lg: 3,
+                    xl: 3,
+                }}
                 direction="row"
                 columns={{ xs: 12, sm: 12, md: 12, lg: 12, xl: 12 }}
             >
