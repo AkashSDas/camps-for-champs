@@ -5,6 +5,7 @@ import Head from "next/head";
 import { Banner } from "@app/components/shared/banner/Banner";
 import { SearchCampsInput as SearchInput } from "@app/components/shared/search-camps-input/SearchCampsInput";
 import dynamic from "next/dynamic";
+import { CampList } from "@app/components/shared/camp-list/CampList";
 
 const SearchCampsInput = dynamic(
     async function () {
@@ -34,6 +35,7 @@ export default function Home() {
 
             <Stack
                 alignItems="center"
+                justifyContent="center"
                 gap="48px"
                 mt="118px"
                 mx="1rem"
@@ -51,6 +53,7 @@ export default function Home() {
                         console.log({ searchValues });
                     }}
                 />
+                <CampList />
             </Stack>
         </Box>
     );
