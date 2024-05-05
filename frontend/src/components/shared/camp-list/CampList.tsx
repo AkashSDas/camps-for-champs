@@ -6,13 +6,19 @@ import { CampListSkeleton } from "./GridListSkeleton";
 import Image from "next/image";
 
 export function CampList() {
-    const [page, setPage] = useState<number>(1);
-    const { camps, count, isInitialFetch, fetchingNextPage, isError, next } =
-        useSearchCamps({}, 5, page);
+    const {
+        camps,
+        count,
+        isInitialFetch,
+        fetchingNextPage,
+        isError,
+        hasMore,
+        fetchNextPage,
+    } = useSearchCamps({}, 5, 1);
 
     function handleLoadMore() {
-        if (next) {
-            setPage((prevPage) => prevPage + 1);
+        if (hasMore) {
+            fetchNextPage();
         }
     }
 
@@ -83,29 +89,44 @@ export function CampList() {
                 })}
             </Grid>
 
-            <Button
-                variant="contained"
-                disableElevation
-                onClick={handleLoadMore}
-                disabled={fetchingNextPage}
-                sx={{
-                    borderRadius: "14px",
-                    mt: "4rem",
-                    mx: "auto",
-                    minWidth: "280px",
-                    height: "60px",
-                }}
-                startIcon={
-                    <Image
-                        src="/icons/eye-emoji.png"
-                        alt="See more camps"
-                        width={28}
-                        height={22}
-                    />
-                }
-            >
-                {fetchingNextPage ? "Loading more camps..." : "See more camps"}
-            </Button>
+            {hasMore ? (
+                <Button
+                    variant="contained"
+                    disableElevation
+                    onClick={handleLoadMore}
+                    disabled={fetchingNextPage}
+                    sx={{
+                        borderRadius: "14px",
+                        mt: "4rem",
+                        mx: "auto",
+                        minWidth: "280px",
+                        height: "60px",
+                    }}
+                    startIcon={
+                        <Image
+                            src="/icons/eye-emoji.png"
+                            alt="See more camps"
+                            width={28}
+                            height={22}
+                        />
+                    }
+                >
+                    {fetchingNextPage
+                        ? "Loading more camps..."
+                        : "See more camps"}
+                </Button>
+            ) : (
+                <Typography
+                    variant="body1"
+                    mt="4rem"
+                    textAlign="center"
+                    width="100%"
+                    fontSize="24px"
+                    fontWeight="bold"
+                >
+                    {`That's all the camps we have for you!`}
+                </Typography>
+            )}
         </Stack>
     );
 }
