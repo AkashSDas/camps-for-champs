@@ -16,6 +16,11 @@ const greyColors = {
 
 export const theme = createTheme({
     components: {
+        MuiSkeleton: {
+            defaultProps: {
+                animation: "pulse",
+            },
+        },
         MuiAlert: {
             styleOverrides: {
                 root: {
