@@ -1,6 +1,5 @@
 import { useSearchCamps } from "@app/hooks/camp-search";
 import { Button, Grid, Stack, Typography } from "@mui/material";
-import { useState } from "react";
 import { CampCard } from "./CampCard";
 import { CampListSkeleton } from "./GridListSkeleton";
 import Image from "next/image";

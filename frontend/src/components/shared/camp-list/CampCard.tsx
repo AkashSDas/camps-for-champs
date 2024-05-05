@@ -6,27 +6,9 @@ import Link from "next/link";
 import { useState } from "react";
 import SwipeableViews from "react-swipeable-views";
 import { type MouseEvent } from "react";
-
-// ===================================
-// Arrow button component
-// ===================================
-
-const ArrowButton = styled(IconButton)(({ theme }) => ({
-    position: "absolute",
-    top: "50%",
-    transform: "translateY(-50%)",
-    bgcolor: "white",
-    borderRadius: "50%",
-    "&:hover": {
-        bgcolor: "grey.200",
-    },
-    "&:active": {
-        bgcolor: "grey.400",
-    },
-    "& .MuiTouchRipple-root .MuiTouchRipple-child": {
-        borderRadius: "50%",
-    },
-}));
+import { ArrowButton } from "./ArrowButton";
+import { ImageSliderDots } from "./ImageSliderDots";
+import { LikeButton } from "./LikeButton";
 
 // ===================================
 // Camp Card component
@@ -84,7 +66,13 @@ export function CampCard(props: Props) {
                 }}
             >
                 {/* Image slider */}
-                <Box sx={{ position: "relative" }}>
+                <Box
+                    sx={{
+                        position: "relative",
+                        borderRadius: "14px",
+                        overflow: "hidden",
+                    }}
+                >
                     <Stack
                         className="camp-card"
                         zIndex={1}
@@ -142,10 +130,17 @@ export function CampCard(props: Props) {
                         </ArrowButton>
                     </Stack>
 
+                    <LikeButton />
+                    <ImageSliderDots
+                        activeIdx={activeStep}
+                        totalIndexes={images.length}
+                    />
+
                     <SwipeableViews
                         enableMouseEvents
                         index={activeStep}
                         onChangeIndex={handleStepChange}
+                        style={{ height: "226px" }}
                     >
                         {images.map((image, index) => (
                             <Image
@@ -157,7 +152,7 @@ export function CampCard(props: Props) {
                                 alt={name}
                                 width={400}
                                 height={248}
-                                style={{ borderRadius: "14px" }}
+                                // style={{ borderRadius: "14px" }}
                                 layout="responsive"
                                 objectFit="cover"
                             />
@@ -186,10 +181,7 @@ export function CampCard(props: Props) {
                         </Typography>
 
                         <Typography
-                            sx={{
-                                fontSize: "1rem",
-                                color: "primary.700",
-                            }}
+                            sx={{ fontSize: "1rem", color: "primary.700" }}
                         >
                             (312)
                         </Typography>
@@ -206,18 +198,12 @@ export function CampCard(props: Props) {
                         </Typography>
 
                         <Typography
-                            sx={{
-                                fontSize: "1rem",
-                                color: "primary.700",
-                            }}
+                            sx={{ fontSize: "1rem", color: "primary.700" }}
                         >
                             /
                         </Typography>
                         <Typography
-                            sx={{
-                                fontSize: "1rem",
-                                color: "primary.700",
-                            }}
+                            sx={{ fontSize: "1rem", color: "primary.700" }}
                         >
                             night
                         </Typography>
