@@ -1,0 +1,5 @@
+/* remove all link styles */
+a {
+    text-decoration: none;
+    color: inherit;
+}

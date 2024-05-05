@@ -28,6 +28,7 @@
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.51.3",
+    "react-swipeable-views": "^0.14.0",
     "zod": "^3.22.5",
     "zustand": "^4.5.2"
   },
@@ -49,6 +50,7 @@
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/react-swipeable-views": "^0.13.5",
     "eslint": "^8",
     "eslint-config-next": "14.2.1",
     "eslint-plugin-storybook": "^0.8.0",
