@@ -3,12 +3,13 @@ import { headingFont, bodyFont } from "@app/pages/_app";
 import { Stack, Box, IconButton, Typography, styled } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import SwipeableViews from "react-swipeable-views";
 import { type MouseEvent } from "react";
 import { ArrowButton } from "./ArrowButton";
 import { ImageSliderDots } from "./ImageSliderDots";
 import { LikeButton } from "./LikeButton";
+import { Tag } from "./Tag";
 
 // ===================================
 // Camp Card component
@@ -28,6 +29,13 @@ type Props = Pick<
 export function CampCard(props: Props) {
     const [activeStep, setActiveStep] = useState(0);
     const { id, about, name, images, averageRating, perNightCost } = props;
+    const showTrending = useMemo(
+        function () {
+            if (averageRating > 3) return true;
+            return false;
+        },
+        [averageRating]
+    );
 
     /** Handle img next navigation */
     function handleNext(e: MouseEvent<HTMLButtonElement>) {
@@ -69,7 +77,6 @@ export function CampCard(props: Props) {
                 <Box
                     sx={{
                         position: "relative",
-                        borderRadius: "14px",
                         overflow: "hidden",
                     }}
                 >
@@ -130,6 +137,7 @@ export function CampCard(props: Props) {
                         </ArrowButton>
                     </Stack>
 
+                    {showTrending ? <Tag /> : null}
                     <LikeButton />
                     <ImageSliderDots
                         activeIdx={activeStep}
@@ -140,7 +148,9 @@ export function CampCard(props: Props) {
                         enableMouseEvents
                         index={activeStep}
                         onChangeIndex={handleStepChange}
-                        style={{ height: "226px" }}
+                        style={{ borderRadius: "14px" }}
+                        containerStyle={{ height: "248px" }}
+                        slideStyle={{ overflowY: "hidden" }}
                     >
                         {images.map((image, index) => (
                             <Image
@@ -152,7 +162,6 @@ export function CampCard(props: Props) {
                                 alt={name}
                                 width={400}
                                 height={248}
-                                // style={{ borderRadius: "14px" }}
                                 layout="responsive"
                                 objectFit="cover"
                             />

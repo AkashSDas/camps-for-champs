@@ -3,6 +3,7 @@ import { Button, Grid, Stack, Typography } from "@mui/material";
 import { CampCard } from "./CampCard";
 import { CampListSkeleton } from "./GridListSkeleton";
 import Image from "next/image";
+import { Loader } from "../loader/Loader";
 
 export function CampList() {
     const {
@@ -21,7 +22,9 @@ export function CampList() {
         }
     }
 
-    if (isError || camps.length === 0) {
+    if (isInitialFetch) {
+        return <CampListSkeleton />;
+    } else if (isError || camps.length === 0) {
         return (
             <Stack
                 direction="row"
@@ -46,8 +49,6 @@ export function CampList() {
                 </Typography>
             </Stack>
         );
-    } else if (isInitialFetch) {
-        return <CampListSkeleton />;
     }
 
     return (
@@ -107,12 +108,15 @@ export function CampList() {
                             alt="See more camps"
                             width={28}
                             height={22}
+                            style={{ marginRight: "0.5rem" }}
                         />
                     }
                 >
-                    {fetchingNextPage
-                        ? "Loading more camps..."
-                        : "See more camps"}
+                    {fetchingNextPage ? (
+                        <Loader variant="neutral" />
+                    ) : (
+                        "See more camps"
+                    )}
                 </Button>
             ) : (
                 <Typography
