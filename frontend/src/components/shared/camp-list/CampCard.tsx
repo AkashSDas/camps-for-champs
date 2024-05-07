@@ -21,20 +21,29 @@ type Props = Pick<
     | "about"
     | "name"
     | "images"
-    | "averageRating"
+    | "overallRating"
+    | "totalReviews"
     | "perNightCost"
     | "tags"
 >;
 
 export function CampCard(props: Props) {
     const [activeStep, setActiveStep] = useState(0);
-    const { id, about, name, images, averageRating, perNightCost } = props;
+    const {
+        id,
+        about,
+        name,
+        images,
+        overallRating,
+        totalReviews,
+        perNightCost,
+    } = props;
     const showTrending = useMemo(
         function () {
-            if (averageRating > 3) return true;
+            if (overallRating > 65) return true;
             return false;
         },
-        [averageRating]
+        [overallRating]
     );
 
     /** Handle img next navigation */
@@ -187,13 +196,13 @@ export function CampCard(props: Props) {
                                 color: "primary.900",
                             }}
                         >
-                            {averageRating}%
+                            {overallRating}%
                         </Typography>
 
                         <Typography
                             sx={{ fontSize: "1rem", color: "primary.700" }}
                         >
-                            (312)
+                            ({totalReviews})
                         </Typography>
                     </Stack>
                     <Stack direction="row" alignItems="center" gap="0.5rem">

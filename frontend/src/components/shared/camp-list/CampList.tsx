@@ -86,7 +86,8 @@ export function CampList() {
                                 about={camp.about}
                                 name={camp.name}
                                 images={camp.images}
-                                averageRating={camp.averageRating}
+                                overallRating={camp.overallRating}
+                                totalReviews={camp.totalReviews}
                                 perNightCost={camp.perNightCost}
                                 tags={camp.tags}
                             />

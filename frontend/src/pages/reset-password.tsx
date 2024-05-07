@@ -67,7 +67,7 @@ export default function ForgotPassword(): React.JSX.Element {
             <Navbar />
 
             <Grid container justifyContent="center">
-                <Grid item xs={12} sm={10} md={8} lg={6} mt="4rem" px="1rem">
+                <Grid item xs={12} sm={10} md={8} lg={6} mt="144px" px="1rem">
                     <Typography component="h1" variant="h4">
                         New Password
                     </Typography>
