@@ -81,4 +81,5 @@ export const endpoints = Object.freeze({
 
     // Camps
     searchCamps: "camps/search/",
+    getCamp: (campId: number) => `camps/${campId}/`,
 });

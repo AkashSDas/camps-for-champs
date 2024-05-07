@@ -97,7 +97,10 @@ const SearchCampsSuccessCampSchema = z
         features: z.array(SearchCampsSuccessCampFeatureSchema),
         images: z.array(SearchCampsSuccessCampImageSchema),
         reviews: z.array(SearchCampsSuccessCampReviewSchema),
+        address: z.string(),
         average_rating: z.number(),
+        total_reviews: z.number(),
+        overall_rating: z.number(),
         created_at: z.string(),
         updated_at: z.string(),
         created_by: z.number(),
@@ -115,7 +118,10 @@ const SearchCampsSuccessCampSchema = z
         features: data.features,
         images: data.images,
         reviews: data.reviews,
+        address: data.address,
         averageRating: data.average_rating,
+        totalReviews: data.total_reviews,
+        overallRating: data.overall_rating,
         createdAt: data.created_at,
         updatedAt: data.updated_at,
         createdBy: data.created_by,
@@ -129,6 +135,8 @@ const SearchCampsSuccessSchema = z.object({
         camps: z.array(SearchCampsSuccessCampSchema),
     }),
 });
+
+export type FetchedCamp = z.infer<typeof SearchCampsSuccessCampSchema>;
 
 // ========================================
 // Services
@@ -171,6 +179,32 @@ export async function searchCamps(
             count: parsedData.count,
             next: parsedData.next,
             previous: parsedData.previous,
+        };
+    } else if (status == 400 && data != null && "detail" in data) {
+        return { success: false, message: data.detail };
+    }
+
+    return {
+        success: false,
+        message: res.error?.message ?? "Unknown error",
+    };
+}
+
+export async function getCamp(campId: number) {
+    type SuccessResponse = z.infer<typeof SearchCampsSuccessCampSchema>;
+    type ErrorResponse = { detail: string };
+
+    const res = await fetchFromAPI<SuccessResponse | ErrorResponse>(
+        endpoints.getCamp(campId),
+        { method: "GET" }
+    );
+    const { data, status } = res;
+
+    if (status === 200 && data != null && "id" in data) {
+        const parsedData = SearchCampsSuccessCampSchema.parse(data);
+        return {
+            success: true,
+            camp: parsedData,
         };
     } else if (status == 400 && data != null && "detail" in data) {
         return { success: false, message: data.detail };
