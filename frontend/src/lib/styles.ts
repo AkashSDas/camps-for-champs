@@ -169,6 +169,22 @@ export const theme = createTheme({
                         height: "44px",
                     },
                 },
+                {
+                    props: { variant: "outlined" },
+                    style: {
+                        textTransform: "none",
+                        fontSize: "1rem",
+                        fontWeight: "medium",
+                        borderRadius: "10px",
+                        paddingInline: "20px",
+                        height: "44px",
+                        color: greyColors[700],
+                        border: "1.5px solid",
+                        "&:hover": {
+                            border: "1.5px solid",
+                        },
+                    },
+                },
             ],
         },
     },
