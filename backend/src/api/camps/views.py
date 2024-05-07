@@ -128,6 +128,12 @@ class CampRetriveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
             {"message": "Camp deleted successfully."}, status=HTTP_204_NO_CONTENT
         )
 
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        # serializer = self.get_serializer(instance)
+        serializer = CampSerarchResultSerialiazer(instance)
+        return Response(serializer.data)
+
 
 # ========================================
 # Camp feature views
