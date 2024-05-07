@@ -294,12 +294,16 @@ class CampSearchSerializer(serializers.Serializer):
 class CampSerarchResultSerialiazer(CampSerializer):
     reviews = serializers.SerializerMethodField()
     average_rating = serializers.SerializerMethodField()
+    overall_rating = serializers.SerializerMethodField()
+    total_reviews = serializers.SerializerMethodField()
 
     class Meta:
         model = Camp
         fields = CampSerializer.Meta.fields + (
             "reviews",
             "average_rating",
+            "overall_rating",
+            "total_reviews",
         )
 
     def get_reviews(self, instance: Camp):
@@ -310,3 +314,11 @@ class CampSerarchResultSerialiazer(CampSerializer):
         avg_rating = obj.average_rating()
         avg_rating = avg_rating if avg_rating else 0
         return round(avg_rating, 2)
+
+    def get_overall_rating(self, obj):
+        overall_rating = obj.overall_rating()
+        overall_rating = overall_rating if overall_rating else 0
+        return round(overall_rating, 2)
+
+    def get_total_reviews(self, obj):
+        return obj.total_reviews()

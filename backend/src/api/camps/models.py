@@ -45,6 +45,17 @@ class Camp(models.Model):
         """Get average rating of the camp from reviews."""
         return self.reviews.aggregate(Avg("rating"))["rating__avg"]
 
+    def overall_rating(self: Any):
+        """
+        Get overall rating percentage (eg: 83%, 26%). Since rating is out of 5, we multiply
+        average rating by 20. So, 4.5 rating will be 90%.
+        """
+        return self.average_rating() * 20
+
+    def total_reviews(self: Any):
+        """Get total reviews count for the camp."""
+        return self.reviews.count()
+
     def __str__(self) -> str:
         return self.name
 
