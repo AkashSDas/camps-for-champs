@@ -40,6 +40,7 @@ class Camp(models.Model):
     longitude = models.DecimalField(
         max_digits=9, decimal_places=6, blank=False, null=True
     )
+    address = models.CharField(max_length=255, blank=False, null=False)
 
     def average_rating(self: Any):
         """Get average rating of the camp from reviews."""

@@ -24,6 +24,7 @@ dummy_data = [
         "latitude": 45.6789,
         "longitude": -121.2345,
         "created_by": User.objects.filter(is_admin=True).order_by("?")[0],
+        "address": "Murphy, Cherokee, North Carolina",
     },
     {
         "name": "Mountain View Campground",
@@ -36,6 +37,7 @@ dummy_data = [
         "latitude": 36.7890,
         "longitude": -112.3456,
         "created_by": User.objects.filter(is_admin=True).order_by("?")[0],
+        "address": "Murphy, Cherokee, North Carolina",
     },
     {
         "name": "Lakeside Camping",
@@ -48,6 +50,7 @@ dummy_data = [
         "latitude": 34.5678,
         "longitude": -123.4567,
         "created_by": User.objects.filter(is_admin=True).order_by("?")[0],
+        "address": "Murphy, Cherokee, North Carolina",
     },
     {
         "name": "Forest Hideaway",
@@ -60,6 +63,7 @@ dummy_data = [
         "latitude": 23.4567,
         "longitude": -134.5678,
         "created_by": User.objects.filter(is_admin=True).order_by("?")[0],
+        "address": "Murphy, Cherokee, North Carolina",
     },
     {
         "name": "Sunset Valley Camp",
@@ -72,6 +76,7 @@ dummy_data = [
         "latitude": 12.3456,
         "longitude": -145.6789,
         "created_by": User.objects.filter(is_admin=True).order_by("?")[0],
+        "address": "Murphy, Cherokee, North Carolina",
     },
     {
         "name": "Beachside Camping",
@@ -84,6 +89,7 @@ dummy_data = [
         "latitude": 56.7890,
         "longitude": -156.7890,
         "created_by": User.objects.filter(is_admin=True).order_by("?")[0],
+        "address": "Murphy, Cherokee, North Carolina",
     },
     {
         "name": "Desert Oasis Camp",
@@ -96,6 +102,7 @@ dummy_data = [
         "latitude": 67.8901,
         "longitude": -167.8901,
         "created_by": User.objects.filter(is_admin=True).order_by("?")[0],
+        "address": "Murphy, Cherokee, North Carolina",
     },
     {
         "name": "Winter Wonderland Camp",
@@ -108,6 +115,7 @@ dummy_data = [
         "latitude": 78.9012,
         "longitude": -178.9012,
         "created_by": User.objects.filter(is_admin=True).order_by("?")[0],
+        "address": "Murphy, Cherokee, North Carolina",
     },
     {
         "name": "Tropical Paradise Camp",
@@ -120,6 +128,7 @@ dummy_data = [
         "latitude": 89.0123,
         "longitude": -179.0123,
         "created_by": User.objects.filter(is_admin=True).order_by("?")[0],
+        "address": "Murphy, Cherokee, North Carolina",
     },
     {
         "name": "Safari Adventure Camp",
@@ -132,6 +141,7 @@ dummy_data = [
         "latitude": 90.1234,
         "longitude": -180.1234,
         "created_by": User.objects.filter(is_admin=True).order_by("?")[0],
+        "address": "Murphy, Cherokee, North Carolina",
     },
 ]
 """Dummy data for seeding camps."""
