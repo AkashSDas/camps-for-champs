@@ -32,7 +32,13 @@ export function ImageGallery({ images }: Props) {
     }
 
     return (
-        <Grid container spacing={1} height="450px" position="relative">
+        <Grid
+            container
+            spacing={1}
+            height={{ xs: "250px", md: "450px" }}
+            display={{ xs: "none", sm: "flex" }}
+            position="relative"
+        >
             <Button
                 variant="contained"
                 sx={{
@@ -41,8 +47,8 @@ export function ImageGallery({ images }: Props) {
                     fontFamily: bodyFont.style.fontFamily,
                     fontSize: "1rem",
                     position: "absolute",
-                    bottom: "1rem",
-                    right: "1rem",
+                    bottom: { xs: "0.5rem", md: "1rem" },
+                    right: { xs: "0.5rem", md: "1rem" },
                     zIndex: 1,
                     "&:hover": { bgcolor: "grey.200" },
                 }}
@@ -71,7 +77,11 @@ export function ImageGallery({ images }: Props) {
             </Grid>
 
             <Grid item xs={6}>
-                <Grid container spacing={1} height="450px">
+                <Grid
+                    container
+                    spacing={1}
+                    height={{ xs: "250px", md: "450px" }}
+                >
                     <Grid item xs={6}>
                         <Box
                             component={ImageButton}

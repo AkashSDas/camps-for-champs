@@ -18,7 +18,7 @@ export function InfoHeader(props: Props) {
                 fontFamily={bodyFont.style.fontFamily}
                 fontSize="30px"
                 fontWeight="bold"
-                mb="1rem"
+                mb={{ xs: "0.5rem", md: "1rem" }}
             >
                 {name}
             </Typography>
@@ -57,7 +57,12 @@ export function InfoHeader(props: Props) {
 
 function ActionButtonGroup() {
     return (
-        <Stack direction="row" gap="1rem" alignItems="center" mt="2rem">
+        <Stack
+            direction="row"
+            gap="1rem"
+            alignItems="center"
+            mt={{ xs: "1rem", md: "2rem" }}
+        >
             <Button
                 variant="contained"
                 disableElevation
@@ -76,6 +81,7 @@ function ActionButtonGroup() {
             <Button
                 variant="outlined"
                 disableElevation
+                sx={{ fontWeight: 600 }}
                 startIcon={
                     <Image
                         src="/icons/share.png"
@@ -91,6 +97,7 @@ function ActionButtonGroup() {
             <Button
                 variant="outlined"
                 disableElevation
+                sx={{ fontWeight: 600 }}
                 startIcon={
                     <Image
                         src="/icons/heart.png"
