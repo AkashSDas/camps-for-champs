@@ -12,6 +12,13 @@ const SearchCampsSuccessCampTagSchema = z.object({
     label: z.string(),
 });
 
+const FeatureTypeSchema = z.union([
+    z.literal("amenity"),
+    z.literal("surrounding"),
+    z.literal("activity"),
+    z.literal("highlight"),
+]);
+
 const SearchCampsSuccessCampFeatureSchema = z
     .object({
         id: z.number(),
@@ -21,12 +28,7 @@ const SearchCampsSuccessCampFeatureSchema = z
         }),
         feature: z.object({
             id: z.number(),
-            feature_type: z.union([
-                z.literal("amenity"),
-                z.literal("surrounding"),
-                z.literal("activity"),
-                z.literal("highlight"),
-            ]),
+            feature_type: FeatureTypeSchema,
             label: z.string(),
             description: z.string(),
         }),
