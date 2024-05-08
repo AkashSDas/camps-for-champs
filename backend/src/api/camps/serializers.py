@@ -78,14 +78,20 @@ class CampFeatureSerializer(serializers.ModelSerializer):
 class CampImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = CampImage
-        fields = (
-            "id",
-            "camp",
-            "image",
-            "alt_text",
-            "created_at",
-        )
+        fields = ("id", "camp", "image", "alt_text", "created_at")
         read_only_fields = ("id", "created_at")
+
+
+class CampPreviewImageSerializer(serializers.ModelSerializer):
+    total_images = serializers.SerializerMethodField()
+
+    class Meta:
+        model = CampImage
+        fields = ("id", "camp", "image", "alt_text", "created_at", "total_images")
+        read_only_fields = ("id", "created_at")
+
+    def get_total_images(self, instance: CampImage):
+        return CampImage.objects.filter(camp=instance.camp).count()
 
 
 class CampImageUploadSerializer(serializers.ModelSerializer):
@@ -127,8 +133,10 @@ class CampSerializer(serializers.ModelSerializer):
         read_only_fields = ("id", "created_at", "updated_at", "created_by", "images")
 
     def get_images(self, instance: Camp):
-        images = cast(CampImageManager, CampImage.objects).camp_preview_images(limit=10)
-        return CampImageSerializer(images, many=True).data
+        images = cast(CampImageManager, CampImage.objects).camp_preview_images(
+            camp_id=instance.pk, limit=10
+        )
+        return CampPreviewImageSerializer(images, many=True).data
 
     def validate(self, attrs):
         if self.instance is None:

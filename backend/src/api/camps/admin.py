@@ -48,7 +48,7 @@ class CampFeatureAdmin(admin.ModelAdmin):
 class CampImageAdmin(admin.ModelAdmin):
     """Custom interface for camp image admin panel."""
 
-    list_display = ["camp_name", "image"]
+    list_display = ["id", "camp_name", "image"]
     search_fields = ["camp__name"]
     ordering = ["camp"]
 

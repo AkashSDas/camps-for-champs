@@ -103,14 +103,11 @@ class CampFeature(models.Model):
 class CampImageManager(models.Manager):
     """Custom camp image manager."""
 
-    def camp_preview_images(self, limit=10):
+    def camp_preview_images(self, camp_id: int, limit=10):
         """Get few images when initially displaying camp."""
 
-        return (
-            self.all()
-            .order_by("-created_at")[:limit]
-            .annotate(total_images=models.Count("id"))
-        )
+        result = self.filter(camp=camp_id).order_by("-created_at")[:limit]
+        return result
 
 
 class CampImage(models.Model):
