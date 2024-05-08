@@ -50,6 +50,7 @@ const SearchCampsSuccessCampImageSchema = z
         camp: z.number(),
         image: z.string(),
         alt_text: z.string().nullable(),
+        total_images: z.number(),
         created_at: z.string(),
     })
     .transform((data) => ({
@@ -57,6 +58,7 @@ const SearchCampsSuccessCampImageSchema = z
         camp: data.camp,
         image: data.image,
         altText: data.alt_text,
+        totalImages: data.total_images,
         createdAt: data.created_at,
     }));
 
@@ -201,6 +203,7 @@ export async function getCamp(campId: number) {
     const { data, status } = res;
 
     if (status === 200 && data != null && "id" in data) {
+        console.log(data.images[0]);
         const parsedData = SearchCampsSuccessCampSchema.parse(data);
         return {
             success: true,
