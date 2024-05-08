@@ -116,6 +116,9 @@ class Review(models.Model):
     helpful_count = models.IntegerField(default=0)
     report_review_count = models.IntegerField(default=0)
     is_public = models.BooleanField(default=True)
+    helpful_count_user = models.ManyToManyField(
+        User, related_name="helpful_reviews", blank=True
+    )
 
     class Meta:
         db_table = "reviews"

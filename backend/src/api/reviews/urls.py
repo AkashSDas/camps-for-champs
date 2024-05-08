@@ -3,6 +3,7 @@ from .views import (
     camp_reviews_list_create,
     camp_review_retrieve_update_delete,
     change_public_status_of_camp_review,
+    mark_review_as_helpful,
 )
 
 
@@ -21,5 +22,10 @@ urlpatterns = [
         "camps/<int:camp_id>/reviews/<int:review_id>/change-public-status/",
         change_public_status_of_camp_review,
         name="change_public_status_of_camp_review",
+    ),
+    path(
+        "camps/<int:camp_id>/reviews/<int:review_id>/mark-helpful/",
+        mark_review_as_helpful,
+        name="mark_review_as_helpful",
     ),
 ]

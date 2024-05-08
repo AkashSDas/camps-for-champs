@@ -174,3 +174,22 @@ def change_public_status_of_camp_review(
         )
 
     return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+
+
+@api_view(["PATCH"])
+def mark_review_as_helpful(req: Request, review_id: int, *args, **kwargs) -> Response:
+    """Mark a review as helpful."""
+
+    exists = Review.objects.filter(pk=review_id).exists()
+    if not exists:
+        return Response({"message": "Review not found"}, status=HTTP_404_NOT_FOUND)
+
+    review = Review.objects.get(pk=review_id)
+
+    if review.helpful_count_user.filter(pk=req.user.pk).exists():
+        return Response({"message": "Review already marked as helpful"})
+
+    review.helpful_count += 1
+    review.helpful_count_user.add(req.user)
+    review.save()
+    return Response({"message": "Review marked as helpful"})
