@@ -1,7 +1,11 @@
 import { FetchedCamp } from "@app/services/camps";
-import { Avatar, Box, Button, Stack, Typography } from "@mui/material";
+import { markReviewHelpful } from "@app/services/reviews";
+import { Box, Button, Stack, Typography } from "@mui/material";
+import { useMutation } from "@tanstack/react-query";
 import Image from "next/image";
-import { useMemo } from "react";
+import { useRouter } from "next/router";
+import { useMemo, useState } from "react";
+import { Toast } from "@app/components/shared/toast/Toast";
 
 type Props = {
     review: FetchedCamp["reviews"][number];
@@ -10,6 +14,7 @@ type Props = {
 export function ReviewCard(props: Props) {
     const { review } = props;
     const { author, comment, rating, createdAt } = review;
+    const { query } = useRouter();
     const doesLike = useMemo(
         function () {
             if (rating > 2) return true;
@@ -17,6 +22,19 @@ export function ReviewCard(props: Props) {
         },
         [rating]
     );
+    const [showSuccessSnackbar, setShowSuccessSnackbar] = useState(false);
+
+    const markHelpful = useMutation({
+        async mutationFn() {
+            try {
+                await markReviewHelpful(
+                    parseInt(query.campId as string, 10),
+                    review.id
+                );
+                setShowSuccessSnackbar(true);
+            } catch (e) {}
+        },
+    });
 
     return (
         <Stack gap="8px">
@@ -70,6 +88,8 @@ export function ReviewCard(props: Props) {
             <Typography color="grey.800">{comment}</Typography>
 
             <Button
+                onClick={() => markHelpful.mutateAsync()}
+                disabled={markHelpful.isPending}
                 variant="text"
                 sx={{
                     width: "fit-content",
@@ -100,8 +120,19 @@ export function ReviewCard(props: Props) {
                     />
                 }
             >
-                Helpful
+                {markHelpful.isPending
+                    ? "Loading..."
+                    : showSuccessSnackbar
+                      ? "Thanks for letting us know"
+                      : "Helpful"}
             </Button>
+
+            <Toast
+                open={showSuccessSnackbar}
+                onClose={() => setShowSuccessSnackbar(false)}
+                severity="success"
+                message="Review marked as helpful"
+            />
         </Stack>
     );
 }

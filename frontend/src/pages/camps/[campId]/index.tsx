@@ -3,14 +3,12 @@ import { FeatureCard } from "@app/components/camp-page/feature-card/FeatureCard"
 import { ImageGallery } from "@app/components/camp-page/image-gallery/ImageGallery";
 import { InfoHeader } from "@app/components/camp-page/info-header/InfoHeader";
 import { CampReviewsList } from "@app/components/reviews/camp-reviews-list";
-import { ReviewCard } from "@app/components/reviews/review-card";
 import { Navbar } from "@app/components/shared/navbar/Navbar";
-import { bodyFont, headingFont } from "@app/pages/_app";
-import { FetchedCamp, getCamp } from "@app/services/camps";
-import { Box, Button, Divider, Stack, Typography } from "@mui/material";
+import { bodyFont } from "@app/pages/_app";
+import { getCamp } from "@app/services/camps";
+import { Box, Divider, Stack, Typography } from "@mui/material";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
-import Image from "next/image";
-import Link from "next/link";
+import Head from "next/head";
 
 export const getServerSideProps = async function (context) {
     const { campId } = context.query;
@@ -37,6 +35,14 @@ export default function CampInfo(props: Props) {
 
     return (
         <Box>
+            <Head>
+                <title>{camp.name}</title>
+                <meta name="description" content={camp.about} />
+                <meta property="og:title" content={camp.name} />
+                <meta property="og:description" content={camp.about} />
+                <meta property="og:image" content={camp.images[0].image} />
+            </Head>
+
             <Navbar />
 
             <Box mt={{ xs: "96px", md: "144px" }} mb="2rem">
