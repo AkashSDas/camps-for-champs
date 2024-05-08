@@ -2,11 +2,15 @@ import { CampHightlightFeatures } from "@app/components/camp-page/camp-highlight
 import { FeatureCard } from "@app/components/camp-page/feature-card/FeatureCard";
 import { ImageGallery } from "@app/components/camp-page/image-gallery/ImageGallery";
 import { InfoHeader } from "@app/components/camp-page/info-header/InfoHeader";
+import { CampReviewsList } from "@app/components/reviews/camp-reviews-list";
+import { ReviewCard } from "@app/components/reviews/review-card";
 import { Navbar } from "@app/components/shared/navbar/Navbar";
-import { bodyFont } from "@app/pages/_app";
-import { getCamp } from "@app/services/camps";
-import { Box, Divider, Stack, Typography } from "@mui/material";
+import { bodyFont, headingFont } from "@app/pages/_app";
+import { FetchedCamp, getCamp } from "@app/services/camps";
+import { Box, Button, Divider, Stack, Typography } from "@mui/material";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import Image from "next/image";
+import Link from "next/link";
 
 export const getServerSideProps = async function (context) {
     const { campId } = context.query;
@@ -28,13 +32,16 @@ type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 
 export default function CampInfo(props: Props) {
     const { camp } = props;
-    const { name, address, overallRating, totalReviews, images } = camp;
+    const { name, address, overallRating, totalReviews, images, reviews, id } =
+        camp;
 
     return (
         <Box>
             <Navbar />
 
             <Box mt={{ xs: "96px", md: "144px" }} mb="2rem">
+                {/* Basic camp info */}
+
                 <Box px={{ xs: "1rem", md: "4rem" }} mb="2rem">
                     <InfoHeader
                         name={name}
@@ -44,9 +51,13 @@ export default function CampInfo(props: Props) {
                     />
                 </Box>
 
+                {/* Camp images */}
+
                 <Box px={{ xs: "1rem", md: "4rem" }} mb="48px">
                     <ImageGallery images={images} />
                 </Box>
+
+                {/* Camp features */}
 
                 <Box px={{ xs: "1rem", md: "4rem" }} mb="48px">
                     <CampHightlightFeatures
@@ -60,6 +71,8 @@ export default function CampInfo(props: Props) {
                     <Divider sx={{ borderColor: "grey.100" }} />
                 </Box>
 
+                {/* Camp description */}
+
                 <Box px={{ xs: "1rem", md: "4rem" }} mb="48px">
                     <Typography component="div" whiteSpace="pre-line">
                         {camp.about}
@@ -69,6 +82,8 @@ export default function CampInfo(props: Props) {
                 <Box px={{ xs: "1rem", md: "4rem" }} mb="48px">
                     <Divider sx={{ borderColor: "grey.100" }} />
                 </Box>
+
+                {/* Camp activities */}
 
                 <Box px={{ xs: "1rem", md: "4rem" }} mb="48px">
                     <Typography
@@ -97,6 +112,8 @@ export default function CampInfo(props: Props) {
                     <Divider sx={{ borderColor: "grey.100" }} />
                 </Box>
 
+                {/* Camp surroundings */}
+
                 <Box px={{ xs: "1rem", md: "4rem" }} mb="48px">
                     <Typography
                         variant="h2"
@@ -121,6 +138,19 @@ export default function CampInfo(props: Props) {
                             ))}
                     </Stack>
                 </Box>
+
+                <Box px={{ xs: "1rem", md: "4rem" }} mb="48px">
+                    <Divider sx={{ borderColor: "grey.100" }} />
+                </Box>
+
+                {/* Camp reviews */}
+
+                <CampReviewsList
+                    id={id}
+                    overallRating={overallRating}
+                    totalReviews={totalReviews}
+                    reviews={reviews}
+                />
             </Box>
         </Box>
     );
