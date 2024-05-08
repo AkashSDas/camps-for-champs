@@ -33,9 +33,27 @@ class Command(BaseCommand):
             case "refresh":
                 CampFeature.objects.all().delete()
                 camps = Camp.objects.all()
-                features = Feature.objects.all().order_by("?")[:5]
+                # features = Feature.objects.all().order_by("?")[:5]
+                highlights = Feature.objects.filter(feature_type="highlight").order_by(
+                    "?"
+                )[:3]
+                surroundings = Feature.objects.filter(
+                    feature_type="surrounding"
+                ).order_by("?")[:5]
+                activities = Feature.objects.filter(feature_type="activity").order_by(
+                    "?"
+                )[:5]
+                amenities = Feature.objects.filter(feature_type="amenity").order_by(
+                    "?"
+                )[:5]
+
                 for camp in camps:
-                    for feature in features:
+                    for feature in [
+                        *highlights,
+                        *surroundings,
+                        *activities,
+                        *amenities,
+                    ]:
                         CampFeature.objects.create(
                             camp=camp, feature=feature, is_available=True
                         )

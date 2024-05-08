@@ -23,7 +23,8 @@ class TagSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Label is too long")
         if len(value) < 3:
             raise serializers.ValidationError("Label is too short")
-        return value.lower()
+        # return value.lower()
+        return value
 
     def create(self, validated_data: dict) -> Tag:
         # tag = Tag.objects.create(**validated_data)
