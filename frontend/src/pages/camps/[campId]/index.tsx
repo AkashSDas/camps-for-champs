@@ -3,14 +3,25 @@ import { FeatureCard } from "@app/components/camp-page/feature-card/FeatureCard"
 import { ImageGallery } from "@app/components/camp-page/image-gallery/ImageGallery";
 import { InfoHeader } from "@app/components/camp-page/info-header/InfoHeader";
 import { CampReviewsList } from "@app/components/reviews/camp-reviews-list";
+import { type CampSiteMap as CampSiteMapComponent } from "@app/components/shared/maps/CampSiteMap";
 import { Navbar } from "@app/components/shared/navbar/Navbar";
 import { bodyFont } from "@app/pages/_app";
 import { getCamp } from "@app/services/camps";
 import { formatDateTime } from "@app/utils/datetime";
 import { Box, Divider, Stack, Typography } from "@mui/material";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import dynamic from "next/dynamic";
 import Head from "next/head";
 import { useMemo } from "react";
+
+const CampSiteMap = dynamic(
+    async function () {
+        return import("@app/components/shared/maps/CampSiteMap").then(
+            (mod: any) => mod.CampSiteMap
+        );
+    },
+    { ssr: false }
+) as typeof CampSiteMapComponent;
 
 export const getServerSideProps = async function (context) {
     const { campId } = context.query;
@@ -213,6 +224,29 @@ export default function CampInfo(props: Props) {
                             <Typography>{checkOutTime}</Typography>
                         </Stack>
                     </Stack>
+                </Box>
+
+                <Box px={{ xs: "1rem", md: "4rem" }} mb="48px">
+                    <Divider sx={{ borderColor: "grey.100" }} />
+                </Box>
+
+                {/* Camp site map */}
+
+                <Box px={{ xs: "1rem", md: "4rem" }} mb="48px">
+                    <Typography
+                        variant="h2"
+                        fontFamily={bodyFont.style.fontFamily}
+                        fontSize="24px"
+                        fontWeight="bold"
+                        mb="1.5rem"
+                    >
+                        Site Map
+                    </Typography>
+
+                    <CampSiteMap
+                        latitude={camp.latitude}
+                        longitude={camp.longitude}
+                    />
                 </Box>
 
                 <Box px={{ xs: "1rem", md: "4rem" }} mb="48px">
