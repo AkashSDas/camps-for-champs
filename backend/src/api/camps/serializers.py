@@ -129,6 +129,8 @@ class CampSerializer(serializers.ModelSerializer):
             "features",
             "images",
             "address",
+            "latitude",
+            "longitude",
         )
         read_only_fields = ("id", "created_at", "updated_at", "created_by", "images")
 
