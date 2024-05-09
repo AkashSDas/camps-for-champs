@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { useMemo, useState } from "react";
 import { Toast } from "@app/components/shared/toast/Toast";
+import { formatDateTime } from "@app/utils/datetime";
 
 type Props = {
     review: FetchedCamp["reviews"][number];
@@ -80,7 +81,7 @@ export function ReviewCard(props: Props) {
                         {author.fullname}
                     </Typography>
                     <Typography fontSize="14px">
-                        {formatReviewDate(createdAt)}
+                        {formatDateTime(createdAt, "mm dd, yyyy")}
                     </Typography>
                 </Stack>
             </Stack>

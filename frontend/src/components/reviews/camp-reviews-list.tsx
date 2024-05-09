@@ -47,6 +47,8 @@ export function CampReviewsList(props: Props) {
                 </Typography>
             </Stack>
 
+            <Divider sx={{ borderColor: "grey.100" }} />
+
             <Stack
                 gap="24px"
                 divider={<Divider sx={{ borderColor: "grey.100" }} />}

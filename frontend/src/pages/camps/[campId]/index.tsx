@@ -6,9 +6,11 @@ import { CampReviewsList } from "@app/components/reviews/camp-reviews-list";
 import { Navbar } from "@app/components/shared/navbar/Navbar";
 import { bodyFont } from "@app/pages/_app";
 import { getCamp } from "@app/services/camps";
+import { formatDateTime } from "@app/utils/datetime";
 import { Box, Divider, Stack, Typography } from "@mui/material";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import Head from "next/head";
+import { useMemo } from "react";
 
 export const getServerSideProps = async function (context) {
     const { campId } = context.query;
@@ -30,8 +32,40 @@ type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 
 export default function CampInfo(props: Props) {
     const { camp } = props;
-    const { name, address, overallRating, totalReviews, images, reviews, id } =
-        camp;
+    const {
+        name,
+        address,
+        overallRating,
+        totalReviews,
+        images,
+        reviews,
+        id,
+        checkInAt,
+        checkOutAt,
+    } = camp;
+
+    const [checkInTime, checkOutTime] = useMemo(
+        function formatTime() {
+            const checkInDate = new Date();
+            checkInDate.setHours(parseInt(checkInAt.split(":")[0], 10));
+            checkInDate.setMinutes(parseInt(checkInAt.split(":")[1], 10));
+            const checkInTime = formatDateTime(
+                checkInDate.toISOString(),
+                "hh:mm am/pm"
+            );
+
+            const checkOutDate = new Date();
+            checkOutDate.setHours(parseInt(checkOutAt.split(":")[0], 10));
+            checkOutDate.setMinutes(parseInt(checkOutAt.split(":")[1], 10));
+            const checkOutTime = formatDateTime(
+                checkOutDate.toISOString(),
+                "hh:mm am/pm"
+            );
+
+            return [checkInTime, checkOutTime];
+        },
+        [checkInAt, checkOutAt]
+    );
 
     return (
         <Box>
@@ -142,6 +176,42 @@ export default function CampInfo(props: Props) {
                                     feature={feature}
                                 />
                             ))}
+                    </Stack>
+                </Box>
+
+                <Box px={{ xs: "1rem", md: "4rem" }} mb="48px">
+                    <Divider sx={{ borderColor: "grey.100" }} />
+                </Box>
+
+                {/* Getting there */}
+
+                <Box px={{ xs: "1rem", md: "4rem" }} mb="48px">
+                    <Typography
+                        variant="h2"
+                        fontFamily={bodyFont.style.fontFamily}
+                        fontSize="24px"
+                        fontWeight="bold"
+                        mb="1.5rem"
+                    >
+                        Getting There
+                    </Typography>
+
+                    <Stack gap="8px">
+                        <Stack direction="row" gap="12px">
+                            <Typography fontWeight="semibold" color="gray.900">
+                                Check in:
+                            </Typography>
+
+                            <Typography>{checkInTime}</Typography>
+                        </Stack>
+
+                        <Stack direction="row" gap="12px">
+                            <Typography fontWeight="semibold" color="gray.900">
+                                Check out:
+                            </Typography>
+
+                            <Typography>{checkOutTime}</Typography>
+                        </Stack>
                     </Stack>
                 </Box>
 
