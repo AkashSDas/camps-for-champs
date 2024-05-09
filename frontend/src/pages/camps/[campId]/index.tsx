@@ -53,6 +53,7 @@ export default function CampInfo(props: Props) {
         id,
         checkInAt,
         checkOutAt,
+        perNightCost,
     } = camp;
 
     const [checkInTime, checkOutTime] = useMemo(
@@ -246,7 +247,12 @@ export default function CampInfo(props: Props) {
                     <CampSiteMap
                         latitude={camp.latitude}
                         longitude={camp.longitude}
+                        perNightCost={perNightCost}
                     />
+
+                    <Typography variant="body1" fontWeight="medium" mt="1.5rem">
+                        {address}
+                    </Typography>
                 </Box>
 
                 <Box px={{ xs: "1rem", md: "4rem" }} mb="48px">
