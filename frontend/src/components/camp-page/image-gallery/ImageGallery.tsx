@@ -35,7 +35,7 @@ export function ImageGallery({ images }: Props) {
         <Grid
             container
             spacing={1}
-            height={{ xs: "250px", md: "450px" }}
+            height={{ xs: "250px", lg: "360px", xl: "450px" }}
             display={{ xs: "none", sm: "flex" }}
             position="relative"
         >
@@ -80,7 +80,7 @@ export function ImageGallery({ images }: Props) {
                 <Grid
                     container
                     spacing={1}
-                    height={{ xs: "250px", md: "450px" }}
+                    height={{ xs: "250px", lg: "360px", xl: "450px" }}
                 >
                     <Grid item xs={6}>
                         <Box

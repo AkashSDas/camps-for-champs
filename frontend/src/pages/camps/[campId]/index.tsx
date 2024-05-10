@@ -3,6 +3,7 @@ import { MobileBottomNavigation } from "@app/components/camp-page/camp-booking-c
 import { CampHightlightFeatures } from "@app/components/camp-page/camp-highlight-features/CampHightlightFeatures";
 import { FeatureCard } from "@app/components/camp-page/feature-card/FeatureCard";
 import { ImageGallery } from "@app/components/camp-page/image-gallery/ImageGallery";
+import { MobileImageGallery } from "@app/components/camp-page/image-gallery/MobileImageGallery";
 import { InfoHeader } from "@app/components/camp-page/info-header/InfoHeader";
 import { CampReviewsList } from "@app/components/reviews/camp-reviews-list";
 import { type CampSiteMap as CampSiteMapComponent } from "@app/components/shared/maps/CampSiteMap";
@@ -95,7 +96,7 @@ export default function CampInfo(props: Props) {
             <Navbar />
 
             <Stack
-                mt={{ xs: "0px", md: "144px" }}
+                mt={{ xs: "0px", sm: "96px", md: "144px" }}
                 pb="2rem"
                 position="relative"
             >
@@ -113,6 +114,8 @@ export default function CampInfo(props: Props) {
                 <Box px={{ xs: "1rem", md: "4rem" }} mb="48px">
                     <ImageGallery images={images} />
                 </Box>
+
+                <MobileImageGallery images={images} name={name} />
 
                 <Stack direction="row" gap="1rem" position="relative">
                     <Stack
@@ -263,7 +266,6 @@ export default function CampInfo(props: Props) {
                             reviews={reviews}
                         />
                     </Stack>
-
                     <Box
                         pr={{ xs: "1rem", md: "4rem" }}
                         pl={0}
