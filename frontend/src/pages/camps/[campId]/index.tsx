@@ -1,3 +1,4 @@
+import { CampBookingCard } from "@app/components/camp-page/camp-booking-card/CampBookingCard";
 import { CampHightlightFeatures } from "@app/components/camp-page/camp-highlight-features/CampHightlightFeatures";
 import { FeatureCard } from "@app/components/camp-page/feature-card/FeatureCard";
 import { ImageGallery } from "@app/components/camp-page/image-gallery/ImageGallery";
@@ -91,7 +92,11 @@ export default function CampInfo(props: Props) {
 
             <Navbar />
 
-            <Box mt={{ xs: "96px", md: "144px" }} mb="2rem">
+            <Stack
+                mt={{ xs: "96px", md: "144px" }}
+                mb="2rem"
+                position="relative"
+            >
                 {/* Basic camp info */}
 
                 <Box px={{ xs: "1rem", md: "4rem" }} mb="2rem">
@@ -109,165 +114,158 @@ export default function CampInfo(props: Props) {
                     <ImageGallery images={images} />
                 </Box>
 
-                {/* Camp features */}
-
-                <Box px={{ xs: "1rem", md: "4rem" }} mb="48px">
-                    <CampHightlightFeatures
-                        features={camp.features.filter(
-                            (f) => f.feature.featureType === "highlight"
-                        )}
-                    />
-                </Box>
-
-                <Box px={{ xs: "1rem", md: "4rem" }} mb="48px">
-                    <Divider sx={{ borderColor: "grey.100" }} />
-                </Box>
-
-                {/* Camp description */}
-
-                <Box px={{ xs: "1rem", md: "4rem" }} mb="48px">
-                    <Typography component="div" whiteSpace="pre-line">
-                        {camp.about}
-                    </Typography>
-                </Box>
-
-                <Box px={{ xs: "1rem", md: "4rem" }} mb="48px">
-                    <Divider sx={{ borderColor: "grey.100" }} />
-                </Box>
-
-                {/* Camp activities */}
-
-                <Box px={{ xs: "1rem", md: "4rem" }} mb="48px">
-                    <Typography
-                        variant="h2"
-                        fontFamily={bodyFont.style.fontFamily}
-                        fontSize="24px"
-                        fontWeight="bold"
-                        mb="1.5rem"
+                <Stack direction="row" gap="1rem" position="relative">
+                    <Stack
+                        flexGrow={1}
+                        gap="48px"
+                        divider={<Divider sx={{ borderColor: "grey.100" }} />}
+                        px={{ xs: "1rem", md: "4rem" }}
                     >
-                        Activities
-                    </Typography>
+                        <CampHightlightFeatures
+                            features={camp.features.filter(
+                                (f) => f.feature.featureType === "highlight"
+                            )}
+                        />
 
-                    <Stack direction="row" flexWrap="wrap" gap="18px">
-                        {camp.features
-                            .filter((f) => f.feature.featureType === "activity")
-                            .map((feature) => (
-                                <FeatureCard
-                                    key={feature.id.toString()}
-                                    feature={feature}
-                                />
-                            ))}
-                    </Stack>
-                </Box>
+                        <Typography component="div" whiteSpace="pre-line">
+                            {camp.about}
+                        </Typography>
 
-                <Box px={{ xs: "1rem", md: "4rem" }} mb="48px">
-                    <Divider sx={{ borderColor: "grey.100" }} />
-                </Box>
-
-                {/* Camp surroundings */}
-
-                <Box px={{ xs: "1rem", md: "4rem" }} mb="48px">
-                    <Typography
-                        variant="h2"
-                        fontFamily={bodyFont.style.fontFamily}
-                        fontSize="24px"
-                        fontWeight="bold"
-                        mb="1.5rem"
-                    >
-                        Natural Features
-                    </Typography>
-
-                    <Stack direction="row" flexWrap="wrap" gap="18px">
-                        {camp.features
-                            .filter(
-                                (f) => f.feature.featureType === "surrounding"
-                            )
-                            .map((feature) => (
-                                <FeatureCard
-                                    key={feature.id.toString()}
-                                    feature={feature}
-                                />
-                            ))}
-                    </Stack>
-                </Box>
-
-                <Box px={{ xs: "1rem", md: "4rem" }} mb="48px">
-                    <Divider sx={{ borderColor: "grey.100" }} />
-                </Box>
-
-                {/* Getting there */}
-
-                <Box px={{ xs: "1rem", md: "4rem" }} mb="48px">
-                    <Typography
-                        variant="h2"
-                        fontFamily={bodyFont.style.fontFamily}
-                        fontSize="24px"
-                        fontWeight="bold"
-                        mb="1.5rem"
-                    >
-                        Getting There
-                    </Typography>
-
-                    <Stack gap="8px">
-                        <Stack direction="row" gap="12px">
-                            <Typography fontWeight="semibold" color="gray.900">
-                                Check in:
+                        <Box>
+                            <Typography
+                                variant="h2"
+                                fontFamily={bodyFont.style.fontFamily}
+                                fontSize="24px"
+                                fontWeight="bold"
+                                mb="1.5rem"
+                            >
+                                Activities
                             </Typography>
 
-                            <Typography>{checkInTime}</Typography>
-                        </Stack>
+                            <Stack direction="row" flexWrap="wrap" gap="18px">
+                                {camp.features
+                                    .filter(
+                                        (f) =>
+                                            f.feature.featureType === "activity"
+                                    )
+                                    .map((feature) => (
+                                        <FeatureCard
+                                            key={feature.id.toString()}
+                                            feature={feature}
+                                        />
+                                    ))}
+                            </Stack>
+                        </Box>
 
-                        <Stack direction="row" gap="12px">
-                            <Typography fontWeight="semibold" color="gray.900">
-                                Check out:
+                        <Box>
+                            <Typography
+                                variant="h2"
+                                fontFamily={bodyFont.style.fontFamily}
+                                fontSize="24px"
+                                fontWeight="bold"
+                                mb="1.5rem"
+                            >
+                                Natural Features
                             </Typography>
 
-                            <Typography>{checkOutTime}</Typography>
-                        </Stack>
+                            <Stack direction="row" flexWrap="wrap" gap="18px">
+                                {camp.features
+                                    .filter(
+                                        (f) =>
+                                            f.feature.featureType ===
+                                            "surrounding"
+                                    )
+                                    .map((feature) => (
+                                        <FeatureCard
+                                            key={feature.id.toString()}
+                                            feature={feature}
+                                        />
+                                    ))}
+                            </Stack>
+                        </Box>
+
+                        <Box>
+                            <Typography
+                                variant="h2"
+                                fontFamily={bodyFont.style.fontFamily}
+                                fontSize="24px"
+                                fontWeight="bold"
+                                mb="1.5rem"
+                            >
+                                Getting There
+                            </Typography>
+
+                            <Stack gap="8px">
+                                <Stack direction="row" gap="12px">
+                                    <Typography
+                                        fontWeight="semibold"
+                                        color="gray.900"
+                                    >
+                                        Check in:
+                                    </Typography>
+
+                                    <Typography>{checkInTime}</Typography>
+                                </Stack>
+
+                                <Stack direction="row" gap="12px">
+                                    <Typography
+                                        fontWeight="semibold"
+                                        color="gray.900"
+                                    >
+                                        Check out:
+                                    </Typography>
+
+                                    <Typography>{checkOutTime}</Typography>
+                                </Stack>
+                            </Stack>
+                        </Box>
+
+                        {/* Camp site map */}
+
+                        <Box>
+                            <Typography
+                                variant="h2"
+                                fontFamily={bodyFont.style.fontFamily}
+                                fontSize="24px"
+                                fontWeight="bold"
+                                mb="1.5rem"
+                            >
+                                Site Map
+                            </Typography>
+
+                            <CampSiteMap
+                                latitude={camp.latitude}
+                                longitude={camp.longitude}
+                                perNightCost={perNightCost}
+                            />
+
+                            <Typography
+                                variant="body1"
+                                fontWeight="medium"
+                                mt="1.5rem"
+                            >
+                                {address}
+                            </Typography>
+                        </Box>
+
+                        <CampReviewsList
+                            id={id}
+                            overallRating={overallRating}
+                            totalReviews={totalReviews}
+                            reviews={reviews}
+                        />
                     </Stack>
-                </Box>
 
-                <Box px={{ xs: "1rem", md: "4rem" }} mb="48px">
-                    <Divider sx={{ borderColor: "grey.100" }} />
-                </Box>
-
-                {/* Camp site map */}
-
-                <Box px={{ xs: "1rem", md: "4rem" }} mb="48px">
-                    <Typography
-                        variant="h2"
-                        fontFamily={bodyFont.style.fontFamily}
-                        fontSize="24px"
-                        fontWeight="bold"
-                        mb="1.5rem"
+                    <Box
+                        pr={{ xs: "1rem", md: "4rem" }}
+                        pl={0}
+                        position="sticky"
+                        top="6rem"
                     >
-                        Site Map
-                    </Typography>
-
-                    <CampSiteMap
-                        latitude={camp.latitude}
-                        longitude={camp.longitude}
-                        perNightCost={perNightCost}
-                    />
-
-                    <Typography variant="body1" fontWeight="medium" mt="1.5rem">
-                        {address}
-                    </Typography>
-                </Box>
-
-                <Box px={{ xs: "1rem", md: "4rem" }} mb="48px">
-                    <Divider sx={{ borderColor: "grey.100" }} />
-                </Box>
-
-                {/* Camp reviews */}
-
-                <CampReviewsList
-                    id={id}
-                    overallRating={overallRating}
-                    totalReviews={totalReviews}
-                    reviews={reviews}
-                />
-            </Box>
+                        <CampBookingCard perNightCost={perNightCost} />
+                    </Box>
+                </Stack>
+            </Stack>
         </Box>
     );
 }

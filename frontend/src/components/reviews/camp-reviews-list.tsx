@@ -14,7 +14,7 @@ export function CampReviewsList(props: Props) {
     const { overallRating, totalReviews, reviews, id } = props;
 
     return (
-        <Stack gap="24px" px={{ xs: "1rem", md: "4rem" }} mb="48px">
+        <Stack gap="24px">
             <Typography
                 variant="h2"
                 fontFamily={bodyFont.style.fontFamily}
