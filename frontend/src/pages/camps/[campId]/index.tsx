@@ -8,12 +8,13 @@ import { CampReviewsList } from "@app/components/reviews/camp-reviews-list";
 import { type CampSiteMap as CampSiteMapComponent } from "@app/components/shared/maps/CampSiteMap";
 import { Navbar } from "@app/components/shared/navbar/Navbar";
 import { bodyFont } from "@app/pages/_app";
-import { getCamp } from "@app/services/camps";
+import { FetchedCamp, getCamp } from "@app/services/camps";
 import { formatDateTime } from "@app/utils/datetime";
 import { Box, Divider, Stack, Typography } from "@mui/material";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import dynamic from "next/dynamic";
 import Head from "next/head";
+import Image from "next/image";
 import { useMemo } from "react";
 
 const CampSiteMap = dynamic(
@@ -94,12 +95,11 @@ export default function CampInfo(props: Props) {
             <Navbar />
 
             <Stack
-                mt={{ xs: "96px", md: "144px" }}
+                mt={{ xs: "0px", md: "144px" }}
                 pb="2rem"
                 position="relative"
             >
                 {/* Basic camp info */}
-
                 <Box px={{ xs: "1rem", md: "4rem" }} mb="2rem">
                     <InfoHeader
                         name={name}
@@ -110,7 +110,6 @@ export default function CampInfo(props: Props) {
                 </Box>
 
                 {/* Camp images */}
-
                 <Box px={{ xs: "1rem", md: "4rem" }} mb="48px">
                     <ImageGallery images={images} />
                 </Box>
@@ -122,6 +121,14 @@ export default function CampInfo(props: Props) {
                         divider={<Divider sx={{ borderColor: "grey.100" }} />}
                         px={{ xs: "1rem", md: "4rem" }}
                     >
+                        {/* Basic camp info */}
+                        <MobileInfoHeader
+                            name={name}
+                            address={address}
+                            overallRating={overallRating}
+                            totalReviews={totalReviews}
+                        />
+
                         <CampHightlightFeatures
                             features={camp.features.filter(
                                 (f) => f.feature.featureType === "highlight"
@@ -272,5 +279,54 @@ export default function CampInfo(props: Props) {
             {/* Mobile bottom navigation */}
             <MobileBottomNavigation perNightCost={perNightCost} />
         </Box>
+    );
+}
+
+type MobileInfoHeaderProps = Pick<
+    FetchedCamp,
+    "name" | "overallRating" | "totalReviews" | "address"
+>;
+
+function MobileInfoHeader(props: MobileInfoHeaderProps) {
+    const { name, overallRating, totalReviews, address } = props;
+
+    return (
+        <Stack gap="8px" display={{ xs: "flex", sm: "none" }}>
+            <Typography
+                variant="h1"
+                fontFamily={bodyFont.style.fontFamily}
+                fontSize="24px"
+                fontWeight="bold"
+            >
+                {name}
+            </Typography>
+
+            <Typography variant="body1" fontWeight="medium">
+                {address}
+            </Typography>
+
+            <Stack direction="row" gap="1rem">
+                <Stack direction="row" gap="0.5rem" alignItems="center">
+                    <Image
+                        src="/icons/like.png"
+                        alt="Overall camp rating percentage"
+                        width={20}
+                        height={20}
+                    />
+                    <Typography
+                        variant="body1"
+                        color="grey.800"
+                        fontFamily={bodyFont.style.fontFamily}
+                    >
+                        {overallRating}%
+                    </Typography>
+                </Stack>
+
+                <Divider orientation="vertical" flexItem />
+                <Typography variant="body1" fontWeight="medium">
+                    {totalReviews} reviews
+                </Typography>
+            </Stack>
+        </Stack>
     );
 }
