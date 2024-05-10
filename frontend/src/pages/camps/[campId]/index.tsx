@@ -6,14 +6,23 @@ import { InfoHeader } from "@app/components/camp-page/info-header/InfoHeader";
 import { CampReviewsList } from "@app/components/reviews/camp-reviews-list";
 import { type CampSiteMap as CampSiteMapComponent } from "@app/components/shared/maps/CampSiteMap";
 import { Navbar } from "@app/components/shared/navbar/Navbar";
-import { bodyFont } from "@app/pages/_app";
-import { getCamp } from "@app/services/camps";
+import { bodyFont, headingFont } from "@app/pages/_app";
+import { FetchedCamp, getCamp } from "@app/services/camps";
 import { formatDateTime } from "@app/utils/datetime";
-import { Box, Divider, Stack, Typography } from "@mui/material";
+import {
+    Box,
+    Button,
+    Divider,
+    Drawer,
+    Stack,
+    SwipeableDrawer,
+    Typography,
+} from "@mui/material";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import dynamic from "next/dynamic";
 import Head from "next/head";
-import { useMemo } from "react";
+import Image from "next/image";
+import { useMemo, useState } from "react";
 
 const CampSiteMap = dynamic(
     async function () {
@@ -81,7 +90,7 @@ export default function CampInfo(props: Props) {
     );
 
     return (
-        <Box>
+        <Box position="relative">
             <Head>
                 <title>{camp.name}</title>
                 <meta name="description" content={camp.about} />
@@ -94,7 +103,7 @@ export default function CampInfo(props: Props) {
 
             <Stack
                 mt={{ xs: "96px", md: "144px" }}
-                mb="2rem"
+                pb="2rem"
                 position="relative"
             >
                 {/* Basic camp info */}
@@ -267,6 +276,77 @@ export default function CampInfo(props: Props) {
                     </Box>
                 </Stack>
             </Stack>
+
+            {/* Mobile bottom navigation */}
+            <MobileBottomNavigation perNightCost={perNightCost} />
         </Box>
+    );
+}
+
+type MobileBottomNavigationProps = Pick<FetchedCamp, "perNightCost">;
+
+function MobileBottomNavigation(props: MobileBottomNavigationProps) {
+    const { perNightCost } = props;
+    const [open, setOpen] = useState(false);
+
+    return (
+        <>
+            <Stack
+                position="sticky"
+                bottom={0}
+                direction="row"
+                justifyContent="space-between"
+                alignItems="center"
+                borderTop="1px solid"
+                borderColor="grey.300"
+                height="60px"
+                px="1rem"
+                width="100%"
+                bgcolor="white"
+                zIndex={100}
+                display={{ xs: "flex", md: "none" }}
+                boxShadow={{ xs: "0px -4px 8px rgba(142, 152, 168, 0.05)" }}
+            >
+                <Typography sx={{ color: "grey.900" }}>
+                    From{" "}
+                    <Typography
+                        component="span"
+                        fontWeight="bold"
+                        fontFamily={headingFont.style.fontFamily}
+                    >
+                        ₹{perNightCost}
+                    </Typography>{" "}
+                    / night
+                </Typography>
+
+                <Button
+                    variant="contained"
+                    sx={{ fontFamily: headingFont.style.fontFamily }}
+                    disableElevation
+                    onClick={() => setOpen(true)}
+                    startIcon={
+                        <Image
+                            src="/figmoji/tent-with-tree.png"
+                            alt="Tent with Tree"
+                            width={23.81}
+                            height={23.42}
+                            style={{ display: "inline-block" }}
+                        />
+                    }
+                >
+                    Book
+                </Button>
+            </Stack>
+
+            <SwipeableDrawer
+                anchor="bottom"
+                open={open}
+                onClose={() => setOpen(false)}
+                onOpen={() => setOpen(true)}
+                sx={{ display: { xs: "block", md: "none" } }}
+            >
+                <CampBookingCard fullscreen perNightCost={perNightCost} />
+            </SwipeableDrawer>
+        </>
     );
 }

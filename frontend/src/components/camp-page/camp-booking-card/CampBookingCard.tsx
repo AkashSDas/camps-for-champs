@@ -3,15 +3,17 @@ import { FetchedCamp } from "@app/services/camps";
 import { Stack, Typography } from "@mui/material";
 import { CampBookingCardForm } from "./CampBookingCardForm";
 
-type Props = Pick<FetchedCamp, "perNightCost">;
+type Props = Pick<FetchedCamp, "perNightCost"> & {
+    fullscreen?: boolean;
+};
 
 export function CampBookingCard(props: Props) {
-    const { perNightCost } = props;
+    const { perNightCost, fullscreen } = props;
 
     return (
         <Stack
-            width={{ xs: "360px", lg: "460px" }}
-            maxWidth="460px"
+            width={fullscreen ? "100%" : { xs: "360px", lg: "460px" }}
+            maxWidth={fullscreen ? "100%" : "460px"}
             bgcolor="white"
             boxShadow="0px 4px 8px rgba(142, 152, 168, 0.25)"
             borderRadius="16px"
