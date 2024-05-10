@@ -2,7 +2,7 @@ import { headingFont } from "@app/pages/_app";
 import { FetchedCamp } from "@app/services/camps";
 import { Stack, Typography, Button, SwipeableDrawer } from "@mui/material";
 import { useState } from "react";
-import { CampBookingCard } from "./CampBookingCard";
+import { CampBookingCard } from "../camp-booking-card/CampBookingCard";
 import Image from "next/image";
 
 type MobileBottomNavigationProps = Pick<FetchedCamp, "perNightCost">;

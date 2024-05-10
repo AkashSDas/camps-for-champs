@@ -1,21 +1,21 @@
 import { CampBookingCard } from "@app/components/camp-page/camp-booking-card/CampBookingCard";
-import { MobileBottomNavigation } from "@app/components/camp-page/camp-booking-card/MobileBottomNavigation";
+import { MobileBottomNavigation } from "@app/components/camp-page/mobile-bottom-navigation/MobileBottomNavigation";
 import { CampHightlightFeatures } from "@app/components/camp-page/camp-highlight-features/CampHightlightFeatures";
 import { FeatureCard } from "@app/components/camp-page/feature-card/FeatureCard";
 import { ImageGallery } from "@app/components/camp-page/image-gallery/ImageGallery";
 import { MobileImageGallery } from "@app/components/camp-page/image-gallery/MobileImageGallery";
 import { InfoHeader } from "@app/components/camp-page/info-header/InfoHeader";
+import { MobileInfoHeader } from "@app/components/camp-page/info-header/MobileInfoHeader";
 import { CampReviewsList } from "@app/components/reviews/camp-reviews-list";
 import { type CampSiteMap as CampSiteMapComponent } from "@app/components/shared/maps/CampSiteMap";
 import { Navbar } from "@app/components/shared/navbar/Navbar";
 import { bodyFont } from "@app/pages/_app";
-import { FetchedCamp, getCamp } from "@app/services/camps";
+import { getCamp } from "@app/services/camps";
 import { formatDateTime } from "@app/utils/datetime";
 import { Box, Divider, Stack, Typography } from "@mui/material";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import dynamic from "next/dynamic";
 import Head from "next/head";
-import Image from "next/image";
 import { useMemo } from "react";
 
 const CampSiteMap = dynamic(
@@ -117,7 +117,11 @@ export default function CampInfo(props: Props) {
 
                 <MobileImageGallery images={images} name={name} />
 
-                <Stack direction="row" gap="1rem" position="relative">
+                <Stack
+                    direction="row"
+                    gap={{ xs: "0px", md: "1rem" }}
+                    position="relative"
+                >
                     <Stack
                         flexGrow={1}
                         gap="48px"
@@ -271,6 +275,7 @@ export default function CampInfo(props: Props) {
                         pl={0}
                         position="sticky"
                         top="6rem"
+                        height="fit-content"
                         display={{ xs: "none", md: "block" }}
                     >
                         <CampBookingCard perNightCost={perNightCost} />
@@ -281,54 +286,5 @@ export default function CampInfo(props: Props) {
             {/* Mobile bottom navigation */}
             <MobileBottomNavigation perNightCost={perNightCost} />
         </Box>
-    );
-}
-
-type MobileInfoHeaderProps = Pick<
-    FetchedCamp,
-    "name" | "overallRating" | "totalReviews" | "address"
->;
-
-function MobileInfoHeader(props: MobileInfoHeaderProps) {
-    const { name, overallRating, totalReviews, address } = props;
-
-    return (
-        <Stack gap="8px" display={{ xs: "flex", sm: "none" }}>
-            <Typography
-                variant="h1"
-                fontFamily={bodyFont.style.fontFamily}
-                fontSize="24px"
-                fontWeight="bold"
-            >
-                {name}
-            </Typography>
-
-            <Typography variant="body1" fontWeight="medium">
-                {address}
-            </Typography>
-
-            <Stack direction="row" gap="1rem">
-                <Stack direction="row" gap="0.5rem" alignItems="center">
-                    <Image
-                        src="/icons/like.png"
-                        alt="Overall camp rating percentage"
-                        width={20}
-                        height={20}
-                    />
-                    <Typography
-                        variant="body1"
-                        color="grey.800"
-                        fontFamily={bodyFont.style.fontFamily}
-                    >
-                        {overallRating}%
-                    </Typography>
-                </Stack>
-
-                <Divider orientation="vertical" flexItem />
-                <Typography variant="body1" fontWeight="medium">
-                    {totalReviews} reviews
-                </Typography>
-            </Stack>
-        </Stack>
     );
 }
