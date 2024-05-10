@@ -22,7 +22,7 @@ export function Tag() {
             direction="row"
         >
             <Image
-                src="/icons/fire-emoji.png"
+                src="/figmoji/fire-emoji.png"
                 alt="Trending camp"
                 width={14}
                 height={14}

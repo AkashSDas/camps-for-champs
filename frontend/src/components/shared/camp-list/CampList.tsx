@@ -36,7 +36,7 @@ export function CampList() {
                 gap="1rem"
             >
                 <Image
-                    src="/icons/cry-emoji.png"
+                    src="/figmoji/cry-emoji.png"
                     alt="No results found"
                     width={60}
                     height={60}
@@ -111,7 +111,7 @@ export function CampList() {
                     }}
                     startIcon={
                         <Image
-                            src="/icons/eye-emoji.png"
+                            src="/figmoji/eye-emoji.png"
                             alt="See more camps"
                             width={28}
                             height={22}
