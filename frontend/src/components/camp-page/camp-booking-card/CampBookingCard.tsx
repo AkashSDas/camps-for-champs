@@ -10,12 +10,12 @@ export function CampBookingCard(props: Props) {
 
     return (
         <Stack
-            width="460px"
+            width={{ xs: "360px", lg: "460px" }}
             maxWidth="460px"
             bgcolor="white"
             boxShadow="0px 4px 8px rgba(142, 152, 168, 0.25)"
             borderRadius="16px"
-            p="2rem"
+            p={{ xs: "1.5rem", lg: "2rem" }}
             gap="1rem"
         >
             <Typography sx={{ color: "grey.900" }}>

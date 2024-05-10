@@ -261,6 +261,7 @@ export default function CampInfo(props: Props) {
                         pl={0}
                         position="sticky"
                         top="6rem"
+                        display={{ xs: "none", md: "block" }}
                     >
                         <CampBookingCard perNightCost={perNightCost} />
                     </Box>
