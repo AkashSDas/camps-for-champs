@@ -90,6 +90,7 @@ export default function SearchPage() {
                     router.query as Record<string, string>
                 );
                 let location = searchParams.location;
+                console.log({ location });
                 if (
                     location &&
                     (location.length !== 4 || location.every(isNaN))

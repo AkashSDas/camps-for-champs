@@ -19,7 +19,6 @@ export function LocationInput(): React.JSX.Element {
     const theme = useTheme();
 
     async function handleSearch(v: string): Promise<void> {
-        console.log({ location });
         if (v.length >= 3) {
             await searchLocations(v);
         }
@@ -41,7 +40,6 @@ export function LocationInput(): React.JSX.Element {
                     const found = locations?.find(
                         (loc) => loc.name === value.name
                     );
-                    console.log({ value, found });
                     setLocation((found ?? null) as any);
                 }}
                 options={locations ?? []}
@@ -60,6 +58,9 @@ export function LocationInput(): React.JSX.Element {
                 onInputChange={(e, value) => {
                     e.preventDefault();
                     handleSearch(value);
+                    if (value.length < 3) {
+                        setLocation(null);
+                    }
                 }}
                 componentsProps={{
                     paper: {
