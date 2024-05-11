@@ -84,10 +84,10 @@ export default function CampReviews(props: Props) {
             <Navbar />
 
             <Stack
-                direction="row"
+                direction={{ xs: "column", md: "row" }}
                 gap="1rem"
                 px={{ xs: "1rem", md: "4rem" }}
-                mt={{ xs: "0px", sm: "96px", md: "144px" }}
+                mt={{ xs: "96px", md: "144px" }}
                 position="relative"
             >
                 {/* Left section */}
@@ -96,7 +96,7 @@ export default function CampReviews(props: Props) {
                     width="100%"
                     maxWidth="400px"
                     height="fit-content"
-                    position="sticky"
+                    position={{ xs: "static", md: "sticky" }}
                     top="96px"
                 >
                     <Typography
@@ -131,6 +131,15 @@ export default function CampReviews(props: Props) {
                         </Typography>
                     </Stack>
                 </Stack>
+
+                <Divider
+                    flexItem
+                    sx={{
+                        display: { xs: "block", md: "none" },
+                        my: "1rem",
+                        borderColor: "grey.200",
+                    }}
+                />
 
                 {/* Right section */}
                 <Stack gap="24px" flexGrow={1} overflow="clip">
