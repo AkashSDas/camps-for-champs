@@ -224,7 +224,7 @@ class CampImageViewSet(viewsets.ViewSet):
 # ========================================
 
 
-@api_view(["GET"])
+@api_view(["POST"])
 def search_camps_view(req: Request) -> Response:
     serializer = CampSearchSerializer(data=req.data)
     if serializer.is_valid(raise_exception=True):

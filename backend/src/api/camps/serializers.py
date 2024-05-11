@@ -1,4 +1,4 @@
-from typing import Any, cast
+from typing import Any, Required, cast
 from rest_framework import serializers
 from api.camps.models import Camp, CampFeature, CampImage, CampImageManager
 from api.features.models import Feature
@@ -275,9 +275,9 @@ class CampSerializer(serializers.ModelSerializer):
 
 # create serailizer with above search input. these are optional fields
 class CampSearchSerializer(serializers.Serializer):
-    adult_guests_count = serializers.IntegerField(required=False, min_value=1)
-    child_guests_count = serializers.IntegerField(required=False, min_value=1)
-    pets_count = serializers.IntegerField(required=False, min_value=1)
+    adult_guests_count = serializers.IntegerField(required=False, min_value=0)
+    child_guests_count = serializers.IntegerField(required=False, min_value=0)
+    pets_count = serializers.IntegerField(required=False, min_value=0)
     # location -> [72.775662, 18.979543, 72.978723, 19.273803,]
     location = serializers.ListField(
         child=serializers.FloatField(), required=False, min_length=4, max_length=4
