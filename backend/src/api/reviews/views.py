@@ -74,12 +74,17 @@ def camp_reviews_list_create(req: Request, camp_id: int, *args, **kwargs) -> Res
 
         overall_rating = Camp.objects.get(pk=camp_id).overall_rating()
         total_reviews = Camp.objects.get(pk=camp_id).total_reviews()
+        camp_info = Camp.objects.get(pk=camp_id)
 
         return paginator.get_paginated_response(
             {
                 "reviews": serializer.data,
                 "overall_rating": overall_rating,
                 "total_reviews": total_reviews,
+                "camp": {
+                    "id": camp_info.pk,
+                    "name": camp_info.name,
+                },
             }
         )
     elif req.method == "POST":
