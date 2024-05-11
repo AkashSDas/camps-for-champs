@@ -35,6 +35,7 @@ class ParamException(Exception):
 
 def parse_query_params(params: QueryDict) -> dict:
     limit = params.get("limit", "2")
+    search_text = params.get("search-text", "")
 
     try:
         with suppress(ValueError):
@@ -45,7 +46,7 @@ def parse_query_params(params: QueryDict) -> dict:
         if limit < 1 or limit > 100:
             raise ParamException("Limit must be between 1 and 100", "limit")
 
-        return {"limit": limit}
+        return {"limit": limit, "search_text": search_text}
     except ParamException as e:
         raise ValidationError({e.param: e.message}) from e
     except Exception as e:
@@ -63,11 +64,24 @@ def camp_reviews_list_create(req: Request, camp_id: int, *args, **kwargs) -> Res
     if req.method == "GET":
         params = parse_query_params(req.query_params)
         reviews = Review.objects.filter(camp=camp_id).order_by("-created_at")
+        if params["search_text"]:
+            reviews = reviews.filter(comment__icontains=params["search_text"])
+
         paginator = PageNumberPagination()
         paginator.page_size = params["limit"]
         result_page = paginator.paginate_queryset(reviews, req)
         serializer = GetReviewSerializer(result_page, many=True)
-        return paginator.get_paginated_response({"reviews": serializer.data})
+
+        overall_rating = Camp.objects.get(pk=camp_id).overall_rating()
+        total_reviews = Camp.objects.get(pk=camp_id).total_reviews()
+
+        return paginator.get_paginated_response(
+            {
+                "reviews": serializer.data,
+                "overall_rating": overall_rating,
+                "total_reviews": total_reviews,
+            }
+        )
     elif req.method == "POST":
         if not IsAuthenticated().has_permission(req, None):
             raise PermissionDenied()
