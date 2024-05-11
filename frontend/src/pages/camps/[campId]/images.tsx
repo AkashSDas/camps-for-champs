@@ -1,94 +1,56 @@
 import { Navbar } from "@app/components/shared/navbar/Navbar";
 import { getAllCamps, getCampImages } from "@app/services/camps";
-import { Box, ImageList, ImageListItem, Typography } from "@mui/material";
+import { Box, ImageList, ImageListItem } from "@mui/material";
 import { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
 import Image from "next/image";
-import { useRouter } from "next/router";
 
-type StaticPaths = {
-    params: { campId: string }; // campId is in the route path
-}[];
-
-// This function gets called at build time on server-side.
-// It may be called again, on a serverless function, if
-// the path has not been generated.
-
-export const getStaticPaths: GetStaticPaths = async function () {
-    const res = await getAllCamps();
-
-    // Get the paths we want to pre-render based on camps/images
-    const paths: StaticPaths =
-        res.camps?.map((camp) => ({
-            params: { campId: camp.id.toString() },
-        })) ?? [];
-
-    // We'll pre-render only these paths at build time.
-    // { fallback: 'blocking' } will server-render pages
-    // on-demand if the path doesn't exist.
-    return {
-        paths,
-        fallback: "blocking",
-    };
-};
-
-// This function gets called at build time on server-side.
-// It may be called again, on a serverless function, if
-// revalidation is enabled and a new request comes in
-export const getStaticProps: GetStaticProps = async function () {
-    const campRes = await getAllCamps();
-    const campIds = campRes.camps?.map((camp) => camp.id) ?? [];
-    const imgsRes = await Promise.all(campIds.map((id) => getCampImages(id)));
+export const getStaticProps: GetStaticProps = async function ({ params }) {
+    if (!params?.campId) return { notFound: true };
+    const res = await getCampImages(parseInt(params.campId as string, 10));
+    if (!res.success) return { notFound: true };
 
     return {
         props: {
-            campImagesResponse: imgsRes,
+            images: res.images!,
+            camp: res.camp!,
         },
-
-        // Next.js will attempt to re-generate the page:
-        // - When a request comes in
-        // - At most once every 10 seconds
         revalidate: 10,
     };
 };
 
+// type Awaited<T> = T extends PromiseLike<infer U> ? Awaited<U> : T;
+type StaticPaths = {
+    params: { campId: string }; // campId is due to route path
+}[];
+
+export const getStaticPaths: GetStaticPaths = async function () {
+    const res = await getAllCamps();
+    if (!res.success) {
+        return { notFound: true, fallback: "blocking", paths: [] };
+    }
+
+    return {
+        paths: res.camps!.map((camp) => ({
+            params: { campId: camp.id.toString() },
+        })) as StaticPaths,
+        fallback: "blocking",
+    };
+};
+
+// type Props = InferGetStaticPropsType<typeof getStaticProps>;
 type Props = {
-    campImagesResponse: Awaited<ReturnType<typeof getCampImages>>[];
+    images: NonNullable<Awaited<ReturnType<typeof getCampImages>>["images"]>;
+    camp: NonNullable<Awaited<ReturnType<typeof getCampImages>>["camp"]>;
 };
 
 export default function CampImages(props: Props) {
-    const { campImagesResponse } = props;
-    const router = useRouter();
-    const campImg = campImagesResponse?.find(
-        (img) =>
-            img.success &&
-            img.camp?.id === parseInt(router.query.campId as string, 10)
-    );
-
-    if (!campImg) {
-        return (
-            <Box>
-                <Head>
-                    <title>Images - Not Found</title>
-                </Head>
-                <Navbar />
-
-                <Box
-                    px={{ xs: "1rem", md: "4rem" }}
-                    mt={{ xs: "96px", md: "144px" }}
-                >
-                    <Typography variant="body1">
-                        No images found for this camp
-                    </Typography>
-                </Box>
-            </Box>
-        );
-    }
+    const { images, camp } = props;
 
     return (
         <Box>
             <Head>
-                <title>Images - {campImg.camp?.name}</title>
+                <title>Images - {camp.name}</title>
             </Head>
             <Navbar />
 
@@ -97,7 +59,7 @@ export default function CampImages(props: Props) {
                 mt={{ xs: "96px", md: "144px" }}
             >
                 <ImageList variant="quilted" cols={2} rowHeight={600}>
-                    {(campImg.images ?? []).map((img) => {
+                    {images.map((img) => {
                         const row = img.id % 2 === 0 ? 1 : 2;
 
                         return (
@@ -114,7 +76,7 @@ export default function CampImages(props: Props) {
                                         }
                                         alt={
                                             img.altText ??
-                                            campImg.camp?.name ??
+                                            camp?.name ??
                                             "Camp image"
                                         }
                                         loading="lazy"
