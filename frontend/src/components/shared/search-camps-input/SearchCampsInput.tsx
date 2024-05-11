@@ -18,6 +18,7 @@ type Props = {
     rootSx?: SxProps<Theme> | undefined;
     elevation?: boolean;
     onSearchClick: (values: SearchCampsQueryValues) => Promise<void>;
+    fullWidth?: boolean;
 };
 
 export function SearchCampsInput(props: Props): React.JSX.Element {
@@ -71,8 +72,8 @@ export function SearchCampsInput(props: Props): React.JSX.Element {
                     alignItems: "center",
                     justifyContent: "space-around",
                     p: "2rem",
-                    borderRadius: "20px",
-                    maxWidth: "1312px",
+                    borderRadius: props.fullWidth ? "0px" : "20px",
+                    maxWidth: props.fullWidth ? "100%" : "1312px",
                     width: "100%",
                     bgcolor: "#F4F7F3",
                     gap: "1rem",

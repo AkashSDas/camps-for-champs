@@ -1,11 +1,7 @@
 import { searchCamps } from "@app/services/camps";
 import { type SearchCampInputStore } from "@app/store/search-camp-input";
 import { type MapboxBBox } from "./mapbox";
-import {
-    keepPreviousData,
-    useInfiniteQuery,
-    useQuery,
-} from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 
 export type SearchCampsQueryValues = Pick<
     SearchCampInputStore,
@@ -23,24 +19,6 @@ export function useSearchCamps(
     limit = 5,
     page = 1
 ) {
-    // Pagination example
-    // const { data, isLoading, isError, error, isFetching, isPlaceholderData } =
-    //     useQuery({
-    //         queryKey: [
-    //             "searchCamps",
-    //             searchValues.adultGuestsCount,
-    //             searchValues.childGuestsCount,
-    //             searchValues.petsCount,
-    //             searchValues.location,
-    //             searchValues.checkInDate,
-    //             searchValues.checkOutDate,
-    //             page,
-    //         ],
-    //         queryFn: () => searchCamps(searchValues, limit, page),
-    //         placeholderData: keepPreviousData,
-    //         staleTime: 1000 * 60 * 5,
-    //     });
-
     const {
         data,
         error,

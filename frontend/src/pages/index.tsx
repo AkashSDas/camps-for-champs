@@ -6,6 +6,7 @@ import { Banner } from "@app/components/shared/banner/Banner";
 import { SearchCampsInput as SearchInput } from "@app/components/shared/search-camps-input/SearchCampsInput";
 import dynamic from "next/dynamic";
 import { CampList } from "@app/components/shared/camp-list/CampList";
+import { useRouter } from "next/router";
 
 const SearchCampsInput = dynamic(
     async function () {
@@ -17,6 +18,8 @@ const SearchCampsInput = dynamic(
 ) as typeof SearchInput;
 
 export default function Home() {
+    const router = useRouter();
+
     return (
         <Box mb="6rem">
             <style global jsx>{`
@@ -50,7 +53,10 @@ export default function Home() {
                     })}
                     elevation
                     onSearchClick={async (searchValues) => {
-                        console.log({ searchValues });
+                        const searchParams = new URLSearchParams(
+                            searchValues as any
+                        );
+                        router.push(`/search?${searchParams.toString()}`);
                     }}
                 />
                 <CampList />

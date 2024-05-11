@@ -17,6 +17,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Loader } from "../loader/Loader";
 import { MobileNavMenu } from "../mobile-nav-menu/MobileNavMenu";
+import { SearchCampInputButton } from "@app/components/search-camp/search-camp-input-button/SearchCampInputButton";
 
 const LogoImage = styled(Image)({
     cursor: "pointer",
@@ -69,15 +70,19 @@ export function Navbar(props: Props): React.JSX.Element {
             >
                 <MobileNavMenu />
 
-                <Link href="/">
-                    <LogoImage
-                        src="/text-logo.png"
-                        alt="Camps for Champs"
-                        width={107.55}
-                        height={48.74}
-                        priority
-                    />
-                </Link>
+                <Stack direction="row" gap="2rem" alignItems="center">
+                    <Link href="/">
+                        <LogoImage
+                            src="/text-logo.png"
+                            alt="Camps for Champs"
+                            width={107.55}
+                            height={48.74}
+                            priority
+                        />
+                    </Link>
+
+                    <SearchCampInputButton />
+                </Stack>
 
                 <Stack
                     flexDirection="row"
