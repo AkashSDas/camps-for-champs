@@ -90,4 +90,6 @@ export const endpoints = Object.freeze({
     getCampReviews: (campId: number, searchText: string) => {
         return `camps/${campId}/reviews/?search-text=${searchText}`;
     },
+    getCampImages: (campId: number) => `camps/${campId}/images/`,
+    getAllCamps: "camps/",
 });

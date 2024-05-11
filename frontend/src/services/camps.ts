@@ -143,6 +143,43 @@ const SearchCampsSuccessSchema = z.object({
     }),
 });
 
+const GetCampsSuccessSchema = z.object({
+    count: z.number(),
+    next: z.string().nullable(),
+    previous: z.string().nullable(),
+    results: z.array(SearchCampsSuccessCampSchema),
+});
+
+const CampImagesApiResponseSchema = z
+    .object({
+        images: z.array(
+            z.object({
+                id: z.number(),
+                camp: z.number(),
+                image: z.string(),
+                alt_text: z.string().nullable(),
+                created_at: z.string(),
+            })
+        ),
+        camp: z.object({
+            id: z.number(),
+            name: z.string(),
+        }),
+    })
+    .transform((data) => ({
+        images: data.images.map((image) => ({
+            id: image.id,
+            camp: image.camp,
+            image: image.image,
+            altText: image.alt_text,
+            createdAt: image.created_at,
+        })),
+        camp: {
+            id: data.camp.id,
+            name: data.camp.name,
+        },
+    }));
+
 export type FetchedCamp = z.infer<typeof SearchCampsSuccessCampSchema>;
 
 // ========================================
@@ -208,7 +245,6 @@ export async function getCamp(campId: number) {
     const { data, status } = res;
 
     if (status === 200 && data != null && "id" in data) {
-        console.log(data.images[0]);
         const parsedData = SearchCampsSuccessCampSchema.parse(data);
         return {
             success: true,
@@ -216,6 +252,58 @@ export async function getCamp(campId: number) {
         };
     } else if (status == 400 && data != null && "detail" in data) {
         return { success: false, message: data.detail };
+    }
+
+    return {
+        success: false,
+        message: res.error?.message ?? "Unknown error",
+    };
+}
+
+export async function getCampImages(campId: number) {
+    type SuccessResponse = z.infer<typeof CampImagesApiResponseSchema>;
+    type ErrorResponse = { detail: string };
+
+    const res = await fetchFromAPI<SuccessResponse | ErrorResponse>(
+        endpoints.getCampImages(campId),
+        { method: "GET" }
+    );
+    const { data, status } = res;
+
+    if (status === 200 && data != null && "images" in data) {
+        const parsedData = CampImagesApiResponseSchema.parse(data);
+        return {
+            success: true,
+            images: parsedData.images,
+            camp: parsedData.camp,
+        };
+    }
+
+    return {
+        success: false,
+        message: res.error?.message ?? "Unknown error",
+    };
+}
+
+/**
+ * Its only used for ISR in the camp images page
+ */
+export async function getAllCamps() {
+    type SuccessResponse = z.infer<typeof GetCampsSuccessSchema>;
+    type ErrorResponse = { detail: string };
+
+    const res = await fetchFromAPI<SuccessResponse | ErrorResponse>(
+        endpoints.getAllCamps,
+        { method: "GET", params: { limit: 2 } }
+    );
+    const { data, status } = res;
+
+    if (status === 200 && data != null && "results" in data) {
+        const parsedData = GetCampsSuccessSchema.parse(data);
+        return {
+            success: true,
+            camps: parsedData.results,
+        };
     }
 
     return {
