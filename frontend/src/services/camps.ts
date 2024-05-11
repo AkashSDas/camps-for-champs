@@ -1,6 +1,5 @@
 import { type SearchCampsQueryValues } from "@app/hooks/camp-search";
 import { endpoints, fetchFromAPI } from "@app/lib/api";
-import { Optional } from "@tanstack/react-query";
 import { z } from "zod";
 
 // ========================================

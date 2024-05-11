@@ -7,8 +7,6 @@ export function formatDateTime(
     date: string,
     format: ResultDateTimeStrFormat
 ): string {
-    console.log({ date });
-
     switch (format) {
         case "mm dd, yyyy":
             return new Date(date).toLocaleDateString("en-US", {
