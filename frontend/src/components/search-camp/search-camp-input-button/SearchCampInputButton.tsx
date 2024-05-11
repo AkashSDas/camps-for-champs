@@ -1,31 +1,10 @@
 import { useSearchCampInputStore } from "@app/store/search-camp";
-import {
-    Button,
-    Divider,
-    Stack,
-    SwipeableDrawer,
-    Typography,
-} from "@mui/material";
+import { Button, Divider, Stack, Typography } from "@mui/material";
 import Image from "next/image";
-import { SearchCampsInput as SearchInput } from "@app/components/shared/search-camps-input/SearchCampsInput";
-import dynamic from "next/dynamic";
-import { useRouter } from "next/router";
-
-const SearchCampsInput = dynamic(
-    async function () {
-        return import(
-            "@app/components/shared/search-camps-input/SearchCampsInput"
-        ).then((mod: any) => mod.SearchCampsInput);
-    },
-    { ssr: false }
-) as typeof SearchInput;
+import { SearchCampDrawer } from "./SearchCampDrawer";
 
 export function SearchCampInputButton() {
     const { openSearchDrawer, setOpenSearchDrawer } = useSearchCampInputStore();
-    const iOS =
-        typeof navigator !== "undefined" &&
-        /iPad|iPhone|iPod/.test(navigator.userAgent);
-    const router = useRouter();
 
     return (
         <>
@@ -85,41 +64,10 @@ export function SearchCampInputButton() {
                 </Button>
             </Stack>
 
-            <SwipeableDrawer
-                anchor="top"
-                open={openSearchDrawer}
-                onOpen={() => setOpenSearchDrawer(true)}
-                onClose={() => setOpenSearchDrawer(false)}
-                disableBackdropTransition={!iOS}
-                disableDiscovery={iOS}
-            >
-                <Stack px="2rem" py="2rem" gap="1rem">
-                    <Typography
-                        fontSize="18px"
-                        fontWeight="bold"
-                        color="grey.900"
-                    >
-                        Start search
-                    </Typography>
-
-                    <SearchCampsInput
-                        fullWidth
-                        rootSx={(theme) => ({
-                            [theme.breakpoints.down("sm")]: { mt: "4rem" },
-                        })}
-                        elevation
-                        onSearchClick={async (searchValues) => {
-                            const searchParams = new URLSearchParams(
-                                searchValues as any
-                            );
-                            setOpenSearchDrawer(false);
-                            router.replace(
-                                `/search?${searchParams.toString()}`
-                            );
-                        }}
-                    />
-                </Stack>
-            </SwipeableDrawer>
+            <SearchCampDrawer
+                openSearchDrawer={openSearchDrawer}
+                setOpenSearchDrawer={setOpenSearchDrawer}
+            />
         </>
     );
 }
