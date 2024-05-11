@@ -19,6 +19,7 @@ export function useSearchCamps(
     limit = 5,
     page = 1
 ) {
+    console.log(searchValues);
     const {
         data,
         error,

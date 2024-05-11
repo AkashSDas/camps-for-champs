@@ -202,13 +202,14 @@ export async function searchCamps(
             location: query.location,
             check_in_date: query.checkInDate,
             check_out_date: query.checkOutDate,
-        }).filter(([_, value]) => value !== undefined)
+        }).filter(([_, value]) => value !== undefined && value !== null)
     );
+    console.log({ queryData });
 
     const res = await fetchFromAPI<SuccessResponse | ErrorResponse>(
         endpoints.searchCamps,
         {
-            method: "GET",
+            method: "POST",
             data: queryData,
             params: { limit: limit, page: page },
         }
