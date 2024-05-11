@@ -1,12 +1,23 @@
-import { CampList } from "@app/components/search-camp/camp-list/CampList";
+import { CampList } from "@app/components/camp-page/camp-list/CampList";
+import { CampSiteMap as CampMap } from "@app/components/camp-page/camp-site-map/CampSiteMap";
 import { MobileSearchCampInputButton } from "@app/components/search-camp/search-camp-input-button/MobileSearchCampInputButton";
 import { Navbar } from "@app/components/shared/navbar/Navbar";
 import { useSearchCamps } from "@app/hooks/camp-search";
 import { transformQueryParamsToSearchValues } from "@app/utils/camp";
 import { Box, Stack } from "@mui/material";
+import dynamic from "next/dynamic";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
+
+const CampSiteMap = dynamic(
+    async function () {
+        return import(
+            "@app/components/camp-page/camp-site-map/CampSiteMap"
+        ).then((mod: any) => mod.CampSiteMap);
+    },
+    { ssr: false }
+) as typeof CampMap;
 
 export default function SearchPage() {
     const router = useRouter();
@@ -31,6 +42,7 @@ export default function SearchPage() {
         [router.isReady, router.query]
     );
     const campsResult = useSearchCamps(filters);
+    const [fullMap, setFullMap] = useState(false);
 
     return (
         <Box position="relative">
@@ -41,13 +53,28 @@ export default function SearchPage() {
 
             <Stack
                 gap="1rem"
-                px={{ xs: "1rem", md: "4rem" }}
-                mt={{ xs: "96px", md: "144px" }}
+                pl={{ xs: "1rem", md: fullMap ? "0px" : "4rem" }}
+                pr={{ xs: "1rem", md: "0px" }}
                 position="relative"
-                mb="4rem"
+                direction="row"
             >
-                <MobileSearchCampInputButton />
-                <CampList {...campsResult} />
+                {!fullMap ? (
+                    <Stack
+                        gap="1rem"
+                        mt={{ xs: "96px", md: "144px" }}
+                        mb="4rem"
+                        width="100%"
+                    >
+                        <MobileSearchCampInputButton />
+                        <CampList {...campsResult} />
+                    </Stack>
+                ) : null}
+
+                <CampSiteMap
+                    camps={campsResult.camps}
+                    setFullMap={setFullMap}
+                    fullMap={fullMap}
+                />
             </Stack>
         </Box>
     );

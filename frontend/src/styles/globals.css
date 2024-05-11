@@ -5,6 +5,8 @@ a {
 }
 
 .camp-preview-img {
+    height: 100% !important;
+    object-fit: cover;
     transition: transform 0.2s ease-in-out;
 }
 

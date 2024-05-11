@@ -204,7 +204,6 @@ export async function searchCamps(
             check_out_date: query.checkOutDate,
         }).filter(([_, value]) => value !== undefined && value !== null)
     );
-    console.log({ queryData });
 
     const res = await fetchFromAPI<SuccessResponse | ErrorResponse>(
         endpoints.searchCamps,

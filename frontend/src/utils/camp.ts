@@ -3,7 +3,6 @@ import { z } from "zod";
 
 export function getImagePathForFeature(label: string): string {
     let path: string = "bulb-emoji";
-    console.log({ label });
 
     switch (label) {
         case "River View":
