@@ -165,7 +165,6 @@ class CampImageViewSet(viewsets.ViewSet):
 
     def list(self, req: Request, pk: int, *args, **kwargs) -> Response:
         camp = Camp.objects.filter(id=pk).first()
-        print(camp)
         if not camp:
             return Response(
                 {"message": "Camp not found with the given id."},
@@ -174,7 +173,17 @@ class CampImageViewSet(viewsets.ViewSet):
 
         images = cast(Any, camp).images.all().order_by("-created_at")
         serializer = CampImageSerializer(images, many=True)
-        return Response({"images": serializer.data}, status=HTTP_200_OK)
+
+        return Response(
+            {
+                "images": serializer.data,
+                "camp": {
+                    "id": camp.pk,
+                    "name": camp.name,
+                },
+            },
+            status=HTTP_200_OK,
+        )
 
     def create(self, req: Request, pk: int, *args, **kwargs) -> Response:
         camp = Camp.objects.filter(id=pk).first()
