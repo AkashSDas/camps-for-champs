@@ -28,18 +28,21 @@ const CampSiteMap = dynamic(
 ) as typeof CampSiteMapComponent;
 
 export const getServerSideProps = async function (context) {
+    const { res } = context;
+    res.setHeader("Cache-Control", "s-maxage=1, stale-while-revalidate"); // 1 second
+
     const { campId } = context.query;
     if (typeof campId !== "string" || isNaN(parseInt(campId, 10))) {
         return { notFound: true };
     }
 
-    const res = await getCamp(parseInt(campId, 10));
-    if (!res.success || res.camp == null) {
+    const result = await getCamp(parseInt(campId, 10));
+    if (!result.success || result.camp == null) {
         return { notFound: true };
     }
 
     return {
-        props: { camp: res.camp },
+        props: { camp: result.camp },
     };
 } satisfies GetServerSideProps;
 
