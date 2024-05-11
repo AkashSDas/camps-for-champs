@@ -67,8 +67,9 @@ class CampCreateListAPIView(CreateAPIView, ListAPIView):
         return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
     def list(self, req: Request, *args, **kwargs) -> Response:
+        limit = cast(int, req.query_params.get("limit", 10))
         paginator = PageNumberPagination()
-        paginator.page_size = 10
+        paginator.page_size = limit
         queryset = self.get_queryset()
         queryset = queryset.order_by("-per_night_cost")
         result_page = paginator.paginate_queryset(queryset, req)
