@@ -27,6 +27,10 @@ const CampSiteMap = dynamic(
     { ssr: false }
 ) as typeof CampSiteMapComponent;
 
+export const config = {
+    runtime: "nodejs", // or "edge"
+};
+
 export const getServerSideProps = async function (context) {
     const { res } = context;
     res.setHeader("Cache-Control", "s-maxage=1, stale-while-revalidate"); // 1 second
