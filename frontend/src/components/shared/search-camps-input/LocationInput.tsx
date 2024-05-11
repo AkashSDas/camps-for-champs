@@ -9,20 +9,39 @@ import {
 import Image from "next/image";
 import { Loader } from "../loader/Loader";
 import { useSearchCampInputStore } from "@app/store/search-camp-input";
+import { Dispatch, SetStateAction, useEffect } from "react";
+import { useSyncCampSearchValuesWithUrl } from "@app/hooks/camp-search";
 
-export function LocationInput(): React.JSX.Element {
+type Props = {
+    setLocationTextInput: Dispatch<SetStateAction<string>>;
+};
+
+export function LocationInput(props: Props): React.JSX.Element {
     const { isPending, locations, searchLocations } = useSearchLocations();
     const { location, setLocation } = useSearchCampInputStore((state) => ({
         location: state.location,
         setLocation: state.setLocation,
     }));
     const theme = useTheme();
+    const { initialFormValues } = useSyncCampSearchValuesWithUrl();
 
     async function handleSearch(v: string): Promise<void> {
         if (v.length >= 3) {
             await searchLocations(v);
         }
     }
+
+    useEffect(
+        function updateLocation() {
+            if (
+                initialFormValues.searchLocationText &&
+                initialFormValues.searchLocationText.length >= 3
+            ) {
+                handleSearch(initialFormValues.searchLocationText);
+            }
+        },
+        [initialFormValues.searchLocationText]
+    );
 
     return (
         <>
@@ -56,11 +75,11 @@ export function LocationInput(): React.JSX.Element {
                     },
                 }}
                 onInputChange={(e, value) => {
-                    e.preventDefault();
                     handleSearch(value);
                     if (value.length < 3) {
                         setLocation(null);
                     }
+                    props.setLocationTextInput(value);
                 }}
                 componentsProps={{
                     paper: {

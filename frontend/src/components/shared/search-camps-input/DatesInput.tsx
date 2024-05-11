@@ -12,19 +12,29 @@ import {
     Stack,
 } from "@mui/material";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Close } from "@mui/icons-material";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { Dayjs } from "dayjs";
 import { useSearchCampInputStore } from "@app/store/search-camp-input";
+import { useSyncCampSearchValuesWithUrl } from "@app/hooks/camp-search";
 
 function useDateRangeSelection() {
+    const { initialFormValues } = useSyncCampSearchValuesWithUrl();
     const [checkIn, setCheckIn] = useState<Dayjs | null>(null);
     const [checkOut, setCheckOut] = useState<Dayjs | null>(null);
     const [checkInError, setCheckInError] = useState<string | null>(null);
     const [checkOutError, setCheckOutError] = useState<string | null>(null);
+
+    useEffect(
+        function updateDates() {
+            setCheckIn(initialFormValues.checkIn);
+            setCheckOut(initialFormValues.checkOut);
+        },
+        [initialFormValues.checkIn, initialFormValues.checkOut]
+    );
 
     function handleCheckInChange(date: Dayjs | null): void {
         if (date === null) {

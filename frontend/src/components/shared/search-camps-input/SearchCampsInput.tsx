@@ -3,21 +3,25 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import { DatesInput } from "./DatesInput";
 import { GuestsInput } from "./GuestsInput";
+import { LocationInput as LocInput } from "./LocationInput";
 import { useSearchCampInputStore } from "@app/store/search-camp-input";
 import { type MapboxBBox, useSearchLocations } from "@app/hooks/mapbox";
 import { type SearchCampsQueryValues } from "@app/hooks/camp-search";
+import { useState } from "react";
 
 const LocationInput = dynamic(
     async function () {
         return import("./LocationInput").then((mod: any) => mod.LocationInput);
     },
     { ssr: false }
-);
+) as typeof LocInput;
 
 type Props = {
     rootSx?: SxProps<Theme> | undefined;
     elevation?: boolean;
-    onSearchClick: (values: SearchCampsQueryValues) => Promise<void>;
+    onSearchClick: (
+        values: SearchCampsQueryValues & { locationTextInput?: string }
+    ) => Promise<void>;
     fullWidth?: boolean;
 };
 
@@ -31,6 +35,7 @@ export function SearchCampsInput(props: Props): React.JSX.Element {
         checkInDate: state.checkInDate,
         checkOutDate: state.checkOutDate,
     }));
+    const [locationTextInput, setLocationTextInput] = useState("");
 
     async function handleSearchClick(): Promise<void> {
         let location: undefined | MapboxBBox = undefined;
@@ -57,6 +62,7 @@ export function SearchCampsInput(props: Props): React.JSX.Element {
             location: location,
             checkInDate: searchInfo.checkInDate,
             checkOutDate: searchInfo.checkOutDate,
+            locationTextInput: locationTextInput,
         });
     }
 
@@ -87,7 +93,7 @@ export function SearchCampsInput(props: Props): React.JSX.Element {
                 props.rootSx as any,
             ]}
         >
-            <LocationInput />
+            <LocationInput setLocationTextInput={setLocationTextInput} />
             <DatesInput />
             <GuestsInput />
 

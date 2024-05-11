@@ -13,9 +13,10 @@ import {
     useTheme,
 } from "@mui/material";
 import Image from "next/image";
-import { useReducer, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import { GuestsCounter } from "./GuestsCounter";
 import { useSearchCampInputStore } from "@app/store/search-camp-input";
+import { useSyncCampSearchValuesWithUrl } from "@app/hooks/camp-search";
 
 type GuestsCount = {
     adults: number;
@@ -23,7 +24,7 @@ type GuestsCount = {
     pets: number;
 };
 
-type ActionType = "increment" | "decrement" | "reset";
+type ActionType = "increment" | "decrement" | "reset" | "overwrite";
 type Payload = keyof GuestsCount;
 
 const initialState: GuestsCount = {
@@ -41,6 +42,8 @@ function reducer(
             return { ...state, [action.payload]: state[action.payload] + 1 };
         case "decrement":
             return { ...state, [action.payload]: state[action.payload] - 1 };
+        case "overwrite":
+            return { ...(action.payload as any) }; // this will be overwritten by the actual value
         case "reset":
             return initialState;
         default:
@@ -52,6 +55,7 @@ export function GuestsInput(): React.JSX.Element {
     const [open, setOpen] = useState(false);
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
+    const { initialFormValues } = useSyncCampSearchValuesWithUrl();
     const [guests, dispatch] = useReducer(reducer, initialState);
     const { setAdultsGuestsCount, setChildGuestsCount, setPetsCount } =
         useSearchCampInputStore((state) => ({
@@ -59,6 +63,16 @@ export function GuestsInput(): React.JSX.Element {
             setChildGuestsCount: state.setChildGuestsCount,
             setPetsCount: state.setPetsCount,
         }));
+
+    useEffect(
+        function updateGuests() {
+            dispatch({
+                type: "overwrite",
+                payload: initialFormValues.guests as any,
+            });
+        },
+        [initialFormValues.guests]
+    );
 
     function closeModal(): void {
         setOpen(false);
