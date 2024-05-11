@@ -44,6 +44,7 @@ export const getServerSideProps = async function (context) {
             totalReviews: result.totalReviews!,
             nextPage: result.next,
             previousPage: result.previous,
+            camp: result.camp!,
         },
     };
 } satisfies GetServerSideProps;
@@ -51,8 +52,14 @@ export const getServerSideProps = async function (context) {
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 
 export default function CampReviews(props: Props) {
-    const { reviews, overallRating, totalReviews, nextPage, previousPage } =
-        props;
+    const {
+        reviews,
+        overallRating,
+        totalReviews,
+        nextPage,
+        previousPage,
+        camp,
+    } = props;
     const [page, setPage] = useState<number>(1);
     const router = useRouter();
 
@@ -79,7 +86,7 @@ export default function CampReviews(props: Props) {
     return (
         <Box position="relative">
             <Head>
-                <title>Camp Reviews</title>
+                <title>Reviews - {camp?.name}</title>
             </Head>
             <Navbar />
 

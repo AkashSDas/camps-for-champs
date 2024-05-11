@@ -37,6 +37,10 @@ const ReviewResponseSchema = z
             reviews: z.array(ReviewSchema),
             overall_rating: z.number(),
             total_reviews: z.number(),
+            camp: z.object({
+                id: z.number(),
+                name: z.string(),
+            }),
         }),
     })
     .transform((data) => ({
@@ -46,6 +50,10 @@ const ReviewResponseSchema = z
         reviews: data.results.reviews,
         overallRating: data.results.overall_rating,
         totalReviews: data.results.total_reviews,
+        camp: {
+            id: data.results.camp.id,
+            name: data.results.camp.name,
+        },
     }));
 
 export type CampReview = z.infer<
@@ -81,6 +89,7 @@ export async function getCampReviews(
             totalReviews: response.totalReviews,
             next: response.next,
             previous: response.previous,
+            camp: response.camp,
         };
     }
 
