@@ -1,30 +1,26 @@
-import {
-    Box,
-    Button,
-    IconButton,
-    Stack,
-    Typography,
-    debounce,
-} from "@mui/material";
-import { useEffect, useRef, useState } from "react";
+import { Box, Button, IconButton, Stack, Typography } from "@mui/material";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Map, { MapRef, Marker, ViewState } from "react-map-gl";
 import { LocalHotelRounded } from "@mui/icons-material";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { useRouter } from "next/router";
 import Image from "next/image";
+import _debounce from "lodash/debounce";
 
 type Props = {
     camps: {
+        id: number;
         latitude: string;
         longitude: string;
         perNightCost: string;
     }[];
+    isPending: boolean;
     fullMap: boolean;
     setFullMap: (value: boolean) => void;
 };
 
 export function CampSiteMap(props: Props) {
-    const { camps } = props;
+    const { camps, isPending } = props;
     const [viewport, setViewport] = useState<Partial<ViewState>>({
         latitude: parseFloat(camps[0]?.latitude ?? "0"),
         longitude: parseFloat(camps[0]?.longitude ?? "0"),
@@ -32,6 +28,25 @@ export function CampSiteMap(props: Props) {
     });
     const map = useRef<MapRef>(null);
     const router = useRouter();
+    const handleUpdatingParams = useCallback(
+        async function (bbox: number[]) {
+            await router.replace(router.asPath, {
+                query: {
+                    ...router.query,
+                    locationTextInput: undefined,
+                    location: bbox.join(","),
+                },
+            });
+        },
+        [router]
+    );
+    const handleUpdatingParamsDebounce = useCallback(
+        _debounce(handleUpdatingParams, 300, {
+            leading: true,
+            trailing: false,
+        }),
+        []
+    );
 
     useEffect(() => {
         const bounds = map.current?.getBounds();
@@ -43,23 +58,12 @@ export function CampSiteMap(props: Props) {
                 bounds.getNorth(), // Top (north)
             ];
 
-            debounce(handleUpdatingParams, 1000)(bbox);
+            handleUpdatingParamsDebounce(bbox);
         }
     }, [viewport]);
 
-    function handleUpdatingParams(bbox: number[]) {
-        router.replace(router.asPath, {
-            query: {
-                ...router.query,
-                locationTextInput: undefined,
-                location: bbox.join(","),
-            },
-        });
-    }
-
     return (
         <Box
-            key={props.fullMap ? "full-map" : "half-map"}
             height="calc(100vh - 70px)"
             display={{ xs: "none", md: "block" }}
             position="sticky"
@@ -68,7 +72,6 @@ export function CampSiteMap(props: Props) {
         >
             {props.fullMap ? (
                 <Button
-                    key={props.fullMap ? "full-map" : "half-map"}
                     sx={{
                         position: "absolute",
                         top: "2rem",
@@ -76,13 +79,16 @@ export function CampSiteMap(props: Props) {
                         zIndex: 1000,
                         bgcolor: "white",
                         boxShadow: "0px 0px 5px 0px rgba(0,0,0,0.2)",
+                        "&:hover": {
+                            bgcolor: "white",
+                        },
                     }}
+                    onClick={() => props.setFullMap(false)}
                 >
                     Show List
                 </Button>
             ) : (
                 <IconButton
-                    key={props.fullMap ? "full-map" : "half-map"}
                     sx={{
                         position: "absolute",
                         top: "2rem",
@@ -90,6 +96,9 @@ export function CampSiteMap(props: Props) {
                         zIndex: 1000,
                         bgcolor: "white",
                         boxShadow: "0px 0px 5px 0px rgba(0,0,0,0.2)",
+                        "&:hover": {
+                            bgcolor: "white",
+                        },
                     }}
                     onClick={() => props.setFullMap(true)}
                 >
@@ -103,15 +112,25 @@ export function CampSiteMap(props: Props) {
             )}
 
             <Map
+                onLoad={() => {
+                    map.current?.flyTo({
+                        center: [
+                            parseFloat(camps[0]?.longitude ?? "0"),
+                            parseFloat(camps[0]?.latitude ?? "0"),
+                        ],
+                        zoom: viewport.zoom,
+                    });
+                }}
                 mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN!}
                 initialViewState={viewport}
-                onMove={(evt) => setViewport(evt.viewState)}
+                onMoveEnd={(evt) => setViewport(evt.viewState)}
                 ref={map}
                 mapStyle="mapbox://styles/mapbox/streets-v9"
+                key={props.fullMap ? "full-map" : "half-map"}
             >
                 {camps.map((camp, index) => (
                     <Marker
-                        key={index}
+                        key={camp.id}
                         longitude={parseFloat(camp.longitude)}
                         latitude={parseFloat(camp.latitude)}
                         anchor="center"
