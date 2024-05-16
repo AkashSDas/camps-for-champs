@@ -35,6 +35,8 @@ export function CampList(props: Props) {
                 mt="5rem"
                 width="100%"
                 maxWidth="1312px"
+                my="auto"
+                overflow="hidden"
                 gap="1rem"
             >
                 <Image

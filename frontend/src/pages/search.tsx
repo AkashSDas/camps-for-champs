@@ -24,13 +24,38 @@ export default function SearchPage() {
     const filters = useMemo(
         function () {
             if (router.isReady) {
-                const searchParams = transformQueryParamsToSearchValues(
-                    router.query as Record<string, string>
-                );
-                let location = searchParams.location;
+                // This has to be done instead of using router query since the router.replace in CampSiteMap.tsx
+                // is happinging where the change method is inside of callback and debounced. This is causing
+                // me to get initial query params from the url instead of the router.query
+
+                const params = window.location.search;
+                const urlParams = new URLSearchParams(params);
+
+                const location = urlParams.get("location");
+                const locationTextInput = urlParams.get("locationTextInput");
+                const adultGuestsCount = urlParams.get("adultGuestsCount");
+                const childGuestsCount = urlParams.get("childGuestsCount");
+                const petsCount = urlParams.get("petsCount");
+                const checkInDate = urlParams.get("checkInDate");
+                const checkOutDate = urlParams.get("checkOutDate");
+
+                // const searchParams = transformQueryParamsToSearchValues(
+                //     router.query
+                // );
+                const searchParams = transformQueryParamsToSearchValues({
+                    location: location ?? "",
+                    locationTextInput: locationTextInput ?? "",
+                    adultGuestsCount: adultGuestsCount ?? "0",
+                    childGuestsCount: childGuestsCount ?? "0",
+                    petsCount: petsCount ?? "0",
+                    checkInDate: checkInDate ?? "null",
+                    checkOutDate: checkOutDate ?? "null",
+                });
+
+                const locationParam = searchParams.location;
                 if (
-                    location &&
-                    (location.length !== 4 || location.every(isNaN))
+                    locationParam &&
+                    (locationParam.length !== 4 || locationParam.every(isNaN))
                 ) {
                     searchParams.location = undefined;
                 }
@@ -56,12 +81,13 @@ export default function SearchPage() {
                 pl={{ xs: "1rem", md: fullMap ? "0px" : "4rem" }}
                 pr={{ xs: "1rem", md: "0px" }}
                 position="relative"
+                mt="80px"
                 direction="row"
             >
                 {!fullMap ? (
                     <Stack
                         gap="1rem"
-                        mt={{ xs: "96px", md: "144px" }}
+                        mt={{ xs: "16px", md: "64px" }}
                         mb="4rem"
                         width="100%"
                     >
@@ -71,6 +97,7 @@ export default function SearchPage() {
                 ) : null}
 
                 <CampSiteMap
+                    isPending={campsResult.isInitialFetch}
                     camps={campsResult.camps}
                     setFullMap={setFullMap}
                     fullMap={fullMap}
