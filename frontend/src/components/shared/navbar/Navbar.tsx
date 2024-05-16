@@ -18,6 +18,8 @@ import Link from "next/link";
 import { Loader } from "../loader/Loader";
 import { MobileNavMenu } from "../mobile-nav-menu/MobileNavMenu";
 import { SearchCampInputButton } from "@app/components/search-camp/search-camp-input-button/SearchCampInputButton";
+import { useMemo } from "react";
+import { useRouter } from "next/router";
 
 const LogoImage = styled(Image)({
     cursor: "pointer",
@@ -42,8 +44,20 @@ export function Navbar(props: Props): React.JSX.Element {
         },
     });
 
+    const router = useRouter();
+    const isSearchPage = useMemo(
+        function () {
+            return router.pathname === "/search";
+        },
+        [router.pathname]
+    );
+
     return (
-        <Slide appear={false} direction="down" in={!trigger}>
+        <Slide
+            appear={false}
+            direction="down"
+            in={isSearchPage ? true : !trigger}
+        >
             <AppBar
                 color="default"
                 elevation={0}
