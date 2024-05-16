@@ -6,6 +6,7 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import _debounce from "lodash/debounce";
+import { Loader } from "@app/components/shared/loader/Loader";
 
 type Props = {
     camps: {
@@ -110,6 +111,27 @@ export function CampSiteMap(props: Props) {
                     />
                 </IconButton>
             )}
+
+            {isPending ? (
+                <Stack
+                    sx={{
+                        height: "44px",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        borderRadius: "12px",
+                        paddingInline: "24px",
+                        position: "absolute",
+                        top: "2rem",
+                        left: "50%",
+                        transform: "translateX(-50%)",
+                        zIndex: 1000,
+                        bgcolor: "white",
+                        boxShadow: "0px 0px 5px 0px rgba(0,0,0,0.2)",
+                    }}
+                >
+                    <Loader variant="neutral" />
+                </Stack>
+            ) : null}
 
             <Map
                 onLoad={() => {

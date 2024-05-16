@@ -97,7 +97,10 @@ export default function SearchPage() {
                 ) : null}
 
                 <CampSiteMap
-                    isPending={campsResult.isInitialFetch}
+                    isPending={
+                        campsResult.fetchingNextPage ||
+                        campsResult.isInitialFetch
+                    }
                     camps={campsResult.camps}
                     setFullMap={setFullMap}
                     fullMap={fullMap}
