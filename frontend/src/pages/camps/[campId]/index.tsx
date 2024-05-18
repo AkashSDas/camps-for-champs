@@ -36,7 +36,7 @@ export const getServerSideProps = async function (context) {
     res.setHeader("Cache-Control", "s-maxage=1, stale-while-revalidate"); // 1 second
 
     const { campId } = context.query;
-    if (typeof campId !== "string" || isNaN(parseInt(campId, 10))) {
+    if (typeof campId !== "string" || Number.isNaN(parseInt(campId, 10))) {
         return { notFound: true };
     }
 

@@ -13,3 +13,9 @@ a {
 .camp-preview-img:hover {
     transform: scale(1.05);
 }
+
+.mapboxgl-popup-content {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}

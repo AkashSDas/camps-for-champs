@@ -1,5 +1,5 @@
 import { headingFont } from "@app/pages/_app";
-import { Box, IconButton, Stack, Typography } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import Image from "next/image";
 
 export function Tag() {

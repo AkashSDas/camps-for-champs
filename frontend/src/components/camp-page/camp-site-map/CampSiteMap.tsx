@@ -1,20 +1,42 @@
-import { Box, Button, IconButton, Stack, Typography } from "@mui/material";
-import { useCallback, useEffect, useRef, useState } from "react";
-import Map, { MapRef, Marker, ViewState } from "react-map-gl";
+import {
+    Box,
+    Button,
+    ClickAwayListener,
+    IconButton,
+    Stack,
+    Typography,
+} from "@mui/material";
+import {
+    ComponentProps,
+    useCallback,
+    useEffect,
+    useRef,
+    useState,
+} from "react";
+import Map, { MapRef, Marker, Popup, ViewState } from "react-map-gl";
 import { LocalHotelRounded } from "@mui/icons-material";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import _debounce from "lodash/debounce";
 import { Loader } from "@app/components/shared/loader/Loader";
+import { FetchedCamp } from "@app/services/camps";
+import { CampCardMapMarker } from "./CampCardMapMarker";
 
 type Props = {
-    camps: {
-        id: number;
-        latitude: string;
-        longitude: string;
-        perNightCost: string;
-    }[];
+    camps: Pick<
+        FetchedCamp,
+        | "id"
+        | "latitude"
+        | "longitude"
+        | "about"
+        | "name"
+        | "images"
+        | "overallRating"
+        | "totalReviews"
+        | "perNightCost"
+        | "tags"
+    >[];
     isPending: boolean;
     fullMap: boolean;
     setFullMap: (value: boolean) => void;
@@ -27,6 +49,11 @@ export function CampSiteMap(props: Props) {
         longitude: parseFloat(camps[0]?.longitude ?? "0"),
         zoom: 10,
     });
+    const [showCampCard, setShowCampCard] = useState<
+        | null
+        | (ComponentProps<typeof CampCardMapMarker>["camp"] &
+              Pick<Props["camps"][number], "latitude" | "longitude">)
+    >(null);
     const map = useRef<MapRef>(null);
     const router = useRouter();
     const handleUpdatingParams = useCallback(
@@ -63,6 +90,7 @@ export function CampSiteMap(props: Props) {
         }
     }, [viewport]);
 
+    console.log({ showCampCard });
     return (
         <Box
             height="calc(100vh - 70px)"
@@ -84,7 +112,10 @@ export function CampSiteMap(props: Props) {
                             bgcolor: "white",
                         },
                     }}
-                    onClick={() => props.setFullMap(false)}
+                    onClick={(e) => {
+                        e.preventDefault();
+                        props.setFullMap(false);
+                    }}
                 >
                     Show List
                 </Button>
@@ -101,7 +132,10 @@ export function CampSiteMap(props: Props) {
                             bgcolor: "white",
                         },
                     }}
-                    onClick={() => props.setFullMap(true)}
+                    onClick={(e) => {
+                        e.preventDefault();
+                        props.setFullMap(true);
+                    }}
                 >
                     <Image
                         src="/icons/back-arrow.png"
@@ -150,6 +184,28 @@ export function CampSiteMap(props: Props) {
                 mapStyle="mapbox://styles/mapbox/streets-v9"
                 key={props.fullMap ? "full-map" : "half-map"}
             >
+                {showCampCard !== null ? (
+                    <ClickAwayListener
+                        onClickAway={() => setShowCampCard(null)}
+                    >
+                        <Popup
+                            onClose={(e) => {
+                                console.log({ e });
+                                setShowCampCard(null);
+                            }}
+                            closeOnClick={false}
+                            longitude={parseFloat(showCampCard.longitude)}
+                            latitude={parseFloat(showCampCard.latitude)}
+                            anchor="bottom"
+                            closeButton={false}
+                        >
+                            <Box width="280px">
+                                <CampCardMapMarker camp={showCampCard} />
+                            </Box>
+                        </Popup>
+                    </ClickAwayListener>
+                ) : null}
+
                 {camps.map((camp, index) => (
                     <Marker
                         key={camp.id}
@@ -157,8 +213,16 @@ export function CampSiteMap(props: Props) {
                         latitude={parseFloat(camp.latitude)}
                         anchor="center"
                         offset={undefined}
+                        style={{ zIndex: 1 }}
                     >
                         <Stack
+                            onClick={() => {
+                                setShowCampCard({
+                                    ...camp,
+                                    latitude: camp.latitude,
+                                    longitude: camp.longitude,
+                                });
+                            }}
                             sx={{
                                 height: "38px",
                                 borderRadius: "20px",
@@ -167,6 +231,14 @@ export function CampSiteMap(props: Props) {
                                 border: "1px solid",
                                 borderColor: "gray.200",
                                 boxShadow: "0px 0px 5px 0px rgba(0,0,0,0.2)",
+                                cursor: "pointer",
+                                transition: "transform 0.3s ease-in-out",
+                                "&:hover": {
+                                    transform: "scale(1.1)",
+                                },
+                                "&:active": {
+                                    transform: "scale(1.05)",
+                                },
                             }}
                             justifyContent="center"
                             alignItems="center"
