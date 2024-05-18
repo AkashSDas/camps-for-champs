@@ -192,3 +192,23 @@ class CampOccupancy(models.Model):
     class Meta:
         verbose_name = "Camp Occupancy"
         verbose_name_plural = "Camp Occupancies"
+
+
+# ========================================
+# Camp like model
+# ========================================
+
+
+class CampLike(models.Model):
+    """
+    A model to store likes for a camp. A user can like a camp only once.
+    """
+
+    camp = models.ForeignKey(Camp, on_delete=models.CASCADE, related_name="likes")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="liked_camps")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ("camp", "user")
+        verbose_name = "Camp Like"
+        verbose_name_plural = "Camp Likes"

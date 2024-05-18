@@ -1,5 +1,5 @@
 from django.contrib import admin
-from api.camps.models import Camp, CampFeature, CampImage, CampOccupancy
+from api.camps.models import Camp, CampFeature, CampImage, CampOccupancy, CampLike
 
 
 class CampAdmin(admin.ModelAdmin):
@@ -80,3 +80,4 @@ admin.site.register(Camp, CampAdmin)
 admin.site.register(CampFeature, CampFeatureAdmin)
 admin.site.register(CampImage, CampImageAdmin)
 admin.site.register(CampOccupancy, CampOccupancyAdmin)
+admin.site.register(CampLike)

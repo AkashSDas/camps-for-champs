@@ -6,12 +6,16 @@ from api.camps.views import (
     CampFeatureRetrieveUpdateDestroyAPIView,
     CampImageViewSet,
     search_camps_view,
+    like_camp_view,
+    get_user_liked_camps,
 )
 
 urlpatterns = [
     path("search/", search_camps_view, name="search-camps"),
     path("", CampCreateListAPIView.as_view(), name="camps"),
     path("<int:pk>/", CampRetriveUpdateDestroyAPIView.as_view(), name="camp"),
+    path("<int:pk>/likes/", like_camp_view, name="like-camp"),
+    path("likes/user/", get_user_liked_camps, name="user-liked-camps"),
     path("features/", CampFeatureListCreateAPIView.as_view(), name="camp-features"),
     path(
         "features/<int:pk>/",

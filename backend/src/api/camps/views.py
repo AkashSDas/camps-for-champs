@@ -6,7 +6,7 @@ from rest_framework.generics import (
     RetrieveUpdateDestroyAPIView,
     ListCreateAPIView,
 )
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework import viewsets
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -17,7 +17,7 @@ from rest_framework.status import (
     HTTP_200_OK,
     HTTP_201_CREATED,
 )
-from api.camps.models import Camp, CampFeature
+from api.camps.models import Camp, CampFeature, CampLike
 from api.camps.serializers import (
     CampImageSerializer,
     CampSerarchResultSerialiazer,
@@ -27,7 +27,7 @@ from api.camps.serializers import (
     CampSearchSerializer,
 )
 from api.users.permissions import IsAdminOrReadOnly
-from django.db.models import F, Q, Sum, Avg, Count
+from django.db.models import F, Q, Sum
 from django.db.models.functions import Coalesce
 from rest_framework.pagination import PageNumberPagination
 
@@ -335,3 +335,36 @@ def search_camps_view(req: Request) -> Response:
         )
 
     return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+
+
+# ========================================
+# Camp like views
+# ========================================
+
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def get_user_liked_camps(req: Request) -> Response:
+    liked_camps = req.user.liked_camps.all()
+    camps = Camp.objects.filter(likes__in=liked_camps)
+    serializer = CampSerarchResultSerialiazer(camps, many=True)
+    return Response({"camps": serializer.data}, status=HTTP_200_OK)
+
+
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+def like_camp_view(req: Request, pk: int) -> Response:
+    camp = Camp.objects.filter(id=pk).first()
+    if not camp:
+        return Response(
+            {"detail": "Camp not found with the given id."},
+            status=HTTP_400_BAD_REQUEST,
+        )
+
+    camp_like = camp.likes.filter(user=req.user).first()  # type: ignore
+    if camp_like:
+        CampLike.objects.filter(id=camp_like.id).delete()
+        return Response({"message": "Camp unliked successfully."}, status=HTTP_200_OK)
+
+    camp.likes.create(user=req.user)  # type: ignore
+    return Response({"message": "Camp liked successfully."}, status=HTTP_200_OK)
