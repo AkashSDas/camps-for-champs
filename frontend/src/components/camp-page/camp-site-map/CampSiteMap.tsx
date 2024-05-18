@@ -40,10 +40,11 @@ type Props = {
     isPending: boolean;
     fullMap: boolean;
     setFullMap: (value: boolean) => void;
+    variant?: "desktop" | "mobile";
 };
 
 export function CampSiteMap(props: Props) {
-    const { camps, isPending } = props;
+    const { camps, isPending, variant } = props;
     const [viewport, setViewport] = useState<Partial<ViewState>>({
         latitude: parseFloat(camps[0]?.latitude ?? "0"),
         longitude: parseFloat(camps[0]?.longitude ?? "0"),
@@ -90,16 +91,21 @@ export function CampSiteMap(props: Props) {
         }
     }, [viewport]);
 
-    console.log({ showCampCard });
+    const isMobile = variant === "mobile";
+
     return (
         <Box
-            height="calc(100vh - 70px)"
-            display={{ xs: "none", md: "block" }}
-            position="sticky"
-            width={props.fullMap ? "100%" : "60%"}
-            top="70px"
+            height="calc(100vh - 100px)"
+            display={
+                isMobile
+                    ? { xs: "block", md: "hidden" }
+                    : { xs: "none", md: "block" }
+            }
+            position={isMobile ? "relative" : "sticky"}
+            width={isMobile ? "100%" : props.fullMap ? "100%" : "60%"}
+            top={isMobile ? "none" : "70px"}
         >
-            {props.fullMap ? (
+            {props.fullMap && !isMobile ? (
                 <Button
                     sx={{
                         position: "absolute",
@@ -119,7 +125,7 @@ export function CampSiteMap(props: Props) {
                 >
                     Show List
                 </Button>
-            ) : (
+            ) : !isMobile ? (
                 <IconButton
                     sx={{
                         position: "absolute",
@@ -144,7 +150,7 @@ export function CampSiteMap(props: Props) {
                         height={24}
                     />
                 </IconButton>
-            )}
+            ) : null}
 
             {isPending ? (
                 <Stack
@@ -187,16 +193,19 @@ export function CampSiteMap(props: Props) {
                 {showCampCard !== null ? (
                     <ClickAwayListener
                         onClickAway={() => setShowCampCard(null)}
+                        // On mobile -- this `onClickAway` was triggering on click on the popup itself
+                        // this fixed it
+                        touchEvent={false}
                     >
                         <Popup
                             onClose={(e) => {
-                                console.log({ e });
                                 setShowCampCard(null);
                             }}
                             closeOnClick={false}
                             longitude={parseFloat(showCampCard.longitude)}
                             latitude={parseFloat(showCampCard.latitude)}
                             anchor="bottom"
+                            style={{ zIndex: 1 }}
                             closeButton={false}
                         >
                             <Box width="280px">
@@ -208,7 +217,7 @@ export function CampSiteMap(props: Props) {
 
                 {camps.map((camp, index) => (
                     <Marker
-                        key={camp.id}
+                        key={camp.id.toString()}
                         longitude={parseFloat(camp.longitude)}
                         latitude={parseFloat(camp.latitude)}
                         anchor="center"

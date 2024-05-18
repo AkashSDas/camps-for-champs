@@ -19,3 +19,7 @@ a {
     border: none !important;
     box-shadow: none !important;
 }
+
+.mapboxgl-popup-tip {
+    display: none !important;
+}

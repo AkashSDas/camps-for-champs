@@ -4,9 +4,18 @@ import { MobileSearchCampInputButton } from "@app/components/search-camp/search-
 import { Navbar } from "@app/components/shared/navbar/Navbar";
 import { useSearchCamps } from "@app/hooks/camp-search";
 import { transformQueryParamsToSearchValues } from "@app/utils/camp";
-import { Box, Stack } from "@mui/material";
+import {
+    Box,
+    Button,
+    Drawer,
+    IconButton,
+    Stack,
+    SwipeableDrawer,
+    styled,
+} from "@mui/material";
 import dynamic from "next/dynamic";
 import Head from "next/head";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import { useMemo, useState } from "react";
 
@@ -18,6 +27,13 @@ const CampSiteMap = dynamic(
     },
     { ssr: false }
 ) as typeof CampMap;
+
+const Puller = styled("div")(({ theme }) => ({
+    width: "100px",
+    height: "6px",
+    backgroundColor: theme.palette.grey[300],
+    borderRadius: 3,
+}));
 
 export default function SearchPage() {
     const router = useRouter();
@@ -68,6 +84,7 @@ export default function SearchPage() {
     );
     const campsResult = useSearchCamps(filters);
     const [fullMap, setFullMap] = useState(false);
+    const [showMobileMap, setShowMobileMap] = useState(false);
 
     return (
         <Box position="relative">
@@ -90,9 +107,64 @@ export default function SearchPage() {
                         mt={{ xs: "16px", md: "64px" }}
                         mb="4rem"
                         width="100%"
+                        position="relative"
                     >
                         <MobileSearchCampInputButton />
                         <CampList {...campsResult} />
+
+                        <Button
+                            startIcon={
+                                <Image
+                                    src="/icons/map-light.png"
+                                    alt="Show map"
+                                    width={20}
+                                    height={20}
+                                    style={{ display: "inline-block" }}
+                                />
+                            }
+                            variant="contained"
+                            disableElevation
+                            sx={{
+                                width: "fit-content",
+                                px: "1.5rem",
+                                position: "fixed",
+                                bottom: "2rem",
+                                left: "50%",
+                                transform: "translateX(-50%)",
+                                display: { xs: "flex", md: "none" },
+                            }}
+                            onClick={() => setShowMobileMap(true)}
+                        >
+                            Map
+                        </Button>
+
+                        <SwipeableDrawer
+                            onOpen={() => setShowMobileMap(true)}
+                            open={showMobileMap}
+                            onClose={() => setShowMobileMap(false)}
+                            anchor="bottom"
+                        >
+                            <Stack
+                                sx={{
+                                    bgcolor: "white",
+                                    height: "30px",
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                }}
+                            >
+                                <Puller />
+                            </Stack>
+                            <CampSiteMap
+                                isPending={
+                                    campsResult.fetchingNextPage ||
+                                    campsResult.isInitialFetch
+                                }
+                                camps={campsResult.camps}
+                                setFullMap={setFullMap}
+                                fullMap={fullMap}
+                                variant="mobile"
+                            />
+                        </SwipeableDrawer>
                     </Stack>
                 ) : null}
 
@@ -104,6 +176,7 @@ export default function SearchPage() {
                     camps={campsResult.camps}
                     setFullMap={setFullMap}
                     fullMap={fullMap}
+                    variant="desktop"
                 />
             </Stack>
         </Box>
