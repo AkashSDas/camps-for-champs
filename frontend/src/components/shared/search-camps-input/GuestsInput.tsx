@@ -45,7 +45,7 @@ function reducer(
         case "overwrite":
             return { ...(action.payload as any) }; // this will be overwritten by the actual value
         case "reset":
-            return initialState;
+            return { ...initialState };
         default:
             return state;
     }
@@ -82,6 +82,14 @@ export function GuestsInput(): React.JSX.Element {
         setAdultsGuestsCount(guests.adults);
         setChildGuestsCount(guests.children);
         setPetsCount(guests.pets);
+        closeModal();
+    }
+
+    function handleClear() {
+        dispatch({ type: "reset", payload: "adults" });
+        setAdultsGuestsCount(0);
+        setChildGuestsCount(0);
+        setPetsCount(0);
         closeModal();
     }
 
@@ -220,10 +228,7 @@ export function GuestsInput(): React.JSX.Element {
 
                     <Button
                         variant="text"
-                        onClick={() => {
-                            dispatch({ type: "reset", payload: "adults" });
-                            closeModal();
-                        }}
+                        onClick={handleClear}
                         sx={{
                             textDecoration: "underline",
                             mt: "1rem",

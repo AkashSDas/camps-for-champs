@@ -102,6 +102,7 @@ export function LocationInput(props: Props): React.JSX.Element {
                         <TextField
                             {...params}
                             label="Location"
+                            focused
                             placeholder="Search"
                             // value={searchInput}
                             // onChange={(e) => setSearchInput(e.target.value)}

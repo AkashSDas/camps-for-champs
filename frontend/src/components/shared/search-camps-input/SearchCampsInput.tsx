@@ -55,6 +55,8 @@ export function SearchCampsInput(props: Props): React.JSX.Element {
             }
         }
 
+        console.log({ searchInfo, location, locationTextInput });
+
         props.onSearchClick({
             adultGuestsCount: searchInfo.adultGuestsCount,
             childGuestsCount: searchInfo.childGuestsCount,

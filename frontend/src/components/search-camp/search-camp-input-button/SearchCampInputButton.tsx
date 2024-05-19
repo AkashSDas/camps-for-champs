@@ -2,9 +2,15 @@ import { useSearchCampInputStore } from "@app/store/search-camp";
 import { Button, Divider, Stack, Typography } from "@mui/material";
 import Image from "next/image";
 import { SearchCampDrawer } from "./SearchCampDrawer";
+import { useRouter } from "next/router";
 
 export function SearchCampInputButton() {
     const { openSearchDrawer, setOpenSearchDrawer } = useSearchCampInputStore();
+    const router = useRouter();
+
+    if (router.pathname !== "/search") {
+        return null;
+    }
 
     return (
         <>
