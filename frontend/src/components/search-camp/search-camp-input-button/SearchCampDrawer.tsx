@@ -33,6 +33,7 @@ export function SearchCampDrawer(props: Props) {
             disableBackdropTransition={!iOS}
             disableDiscovery={iOS}
             sx={{ overflow: "visible" }}
+            PaperProps={{ sx: { overflow: "visible" } }}
         >
             <Stack px="2rem" py="2rem" gap="1rem">
                 <Typography fontSize="18px" fontWeight="bold" color="grey.900">
