@@ -9,7 +9,9 @@
         "lint": "next lint",
         "storybook": "storybook dev -p 6006",
         "build-storybook": "storybook build",
-        "test": "jest"
+        "test": "jest",
+        "cy:open": "pnpx cypress open",
+        "cy:run": "pnpx cypress run"
     },
     "dependencies": {
         "@emotion/react": "^11.11.4",
@@ -56,6 +58,7 @@
         "@types/react": "^18",
         "@types/react-dom": "^18",
         "@types/react-swipeable-views": "^0.13.5",
+        "cypress": "^13.9.0",
         "eslint": "^8",
         "eslint-config-next": "14.2.1",
         "eslint-plugin-storybook": "^0.8.0",
