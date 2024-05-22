@@ -125,7 +125,11 @@ export function Navbar(props: Props): React.JSX.Element {
                         </>
                     ) : (
                         <>
-                            <Button variant="text" onClick={openLoginModal}>
+                            <Button
+                                data-test="login-button"
+                                variant="text"
+                                onClick={openLoginModal}
+                            >
                                 Login
                             </Button>
 

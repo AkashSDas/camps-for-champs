@@ -76,6 +76,7 @@ export function LoginModal(): React.JSX.Element {
     return (
         <>
             <Dialog
+                data-test="login-modal"
                 open={isOpen}
                 onClose={onClose}
                 fullScreen={fullScreen}
@@ -109,6 +110,7 @@ export function LoginModal(): React.JSX.Element {
                     </DialogContentText>
 
                     <Stack
+                        data-test="login-form"
                         component="form"
                         gap="1.5rem"
                         onSubmit={handleSubmit((data) =>
@@ -117,24 +119,33 @@ export function LoginModal(): React.JSX.Element {
                     >
                         <Stack gap="1.5rem">
                             <TextField
+                                data-test="login-email-input"
                                 label="Email address"
                                 placeholder="Email address"
                                 variant="outlined"
                                 {...register("email")}
                                 error={!!errors.email}
                                 helperText={errors.email?.message}
+                                FormHelperTextProps={{
+                                    className: "helper-text",
+                                }}
                             />
 
                             <TextField
+                                data-test="login-password-input"
                                 label="Password"
                                 placeholder="Password"
                                 variant="outlined"
                                 {...register("password")}
                                 error={!!errors.password}
                                 helperText={errors.password?.message}
+                                FormHelperTextProps={{
+                                    className: "helper-text",
+                                }}
                             />
 
                             <Button
+                                data-test="login-submit-button"
                                 type="submit"
                                 variant="contained"
                                 disableElevation
