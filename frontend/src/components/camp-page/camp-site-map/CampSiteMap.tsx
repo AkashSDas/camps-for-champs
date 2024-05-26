@@ -95,7 +95,7 @@ export function CampSiteMap(props: Props) {
 
     return (
         <Box
-            height="calc(100vh - 100px)"
+            height="calc(100vh - 80px)"
             display={
                 isMobile
                     ? { xs: "block", md: "hidden" }

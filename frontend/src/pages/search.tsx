@@ -4,15 +4,7 @@ import { MobileSearchCampInputButton } from "@app/components/search-camp/search-
 import { Navbar } from "@app/components/shared/navbar/Navbar";
 import { useSearchCamps } from "@app/hooks/camp-search";
 import { transformQueryParamsToSearchValues } from "@app/utils/camp";
-import {
-    Box,
-    Button,
-    Drawer,
-    IconButton,
-    Stack,
-    SwipeableDrawer,
-    styled,
-} from "@mui/material";
+import { Box, Button, Stack, SwipeableDrawer, styled } from "@mui/material";
 import dynamic from "next/dynamic";
 import Head from "next/head";
 import Image from "next/image";
