@@ -7,6 +7,7 @@ import Link from "next/link";
 import { type MouseEvent, useState } from "react";
 import { Loader } from "../loader/Loader";
 import Image from "next/image";
+import { useUser } from "@app/hooks/auth";
 
 const MenuItem = styled(Stack)({
     gap: "8px",
@@ -40,6 +41,7 @@ const actions = {
 export function ProfilePicture(): React.JSX.Element {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
+    const { user } = useUser();
 
     const logoutMutation = useMutation({
         mutationFn: logout,
@@ -59,12 +61,15 @@ export function ProfilePicture(): React.JSX.Element {
     return (
         <>
             <Image
-                // src={user?.profilePic ?? "/images/user.png"}
-                src={"/images/user.png"}
+                src={user?.profilePic ?? "/images/user.png"}
                 alt="User"
                 width={40}
                 height={40}
-                style={{ objectFit: "cover", cursor: "pointer" }}
+                style={{
+                    objectFit: "cover",
+                    cursor: "pointer",
+                    borderRadius: "6px",
+                }}
                 onClick={handleClick as any}
             />
 
