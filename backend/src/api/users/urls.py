@@ -1,5 +1,12 @@
 from django.urls import path, include
-from api.users.views import signup_view, logout_view, LoginView, refresh_view, me_view
+from api.users.views import (
+    signup_view,
+    logout_view,
+    LoginView,
+    refresh_view,
+    me_view,
+    update_profile,
+)
 
 
 # Password reset urls (django_rest_passwordreset)
@@ -17,4 +24,5 @@ urlpatterns = [
         "forgot-password/",
         include("django_rest_passwordreset.urls", namespace="forgot-password"),
     ),
+    path("profile/", update_profile, name="update-profile"),
 ]

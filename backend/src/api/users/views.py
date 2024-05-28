@@ -7,6 +7,7 @@ from api.users.serializers import (
     UserSerializer,
     CustomTokenObtainPairSerializer,
     CustomTokenRefreshSerializer,
+    ProfileSerializer,
 )
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import TokenError
@@ -20,6 +21,11 @@ from rest_framework.status import (
 )
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from deprecated import deprecated
+
+
+# ===========================================
+# Auth
+# ===========================================
 
 
 def get_tokens_for_user(user: User) -> dict:
@@ -140,3 +146,23 @@ def logout_view(req: Request, *args, **kwargs) -> Response:
         return Response({"message": "Logout successful"}, status=HTTP_205_RESET_CONTENT)
     except Exception as e:
         return Response({"error": str(e)}, status=HTTP_400_BAD_REQUEST)
+
+
+# ===========================================
+# Profile
+# ===========================================
+
+
+@api_view(["PATCH"])
+@permission_classes([IsAuthenticated])
+def update_profile(req: Request, *args, **kwargs) -> Response:
+    try:
+        user = cast(User, req.user)
+        serializer = ProfileSerializer(user, data=req.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(
+            {"message": "Profile updated successfully", "data": serializer.data}
+        )
+    except Exception as e:
+        return Response({"detail": str(e)}, status=HTTP_400_BAD_REQUEST)

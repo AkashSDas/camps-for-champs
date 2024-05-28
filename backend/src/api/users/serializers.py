@@ -8,11 +8,15 @@ from rest_framework_simplejwt.serializers import (
 from rest_framework_simplejwt.tokens import Token
 from api.users.models import User
 
+# ======================================
+# Auth serializers
+# ======================================
+
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ("id", "email", "first_name", "last_name", "password")
+        fields = ("id", "email", "first_name", "last_name", "password", "profile_pic")
         read_only_fields = ("id", "is_admin", "is_active", "is_staff")
         extra_kwargs = {"password": {"write_only": True}}
 
@@ -79,3 +83,16 @@ class CustomTokenRefreshSerializer(TokenRefreshSerializer):
             return super().validate(attrs)
         else:
             raise InvalidToken("No valid token found in cookie 'refresh'")
+
+
+# ======================================
+# Profile serializers
+# ======================================
+
+
+class ProfileSerializer(serializers.ModelSerializer):
+    profile_pic = serializers.ImageField(required=False)
+
+    class Meta:
+        model = User
+        fields = ("first_name", "last_name", "email", "profile_pic")
