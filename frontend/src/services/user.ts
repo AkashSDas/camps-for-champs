@@ -9,7 +9,7 @@ export async function updateProfile(data: FormData) {
 
     const response = await fetchFromAPI<SuccessResponse | ErrorResponse>(
         endpoints.profile,
-        { method: "PATCH", data },
+        { method: "PATCH", data, timeout: 0.5 * 60 * 1000 }, // 30 seconds
         true
     );
 
