@@ -311,3 +311,47 @@ export async function getAllCamps() {
         message: res.error?.message ?? "Unknown error",
     };
 }
+
+export async function getLikedCamps() {
+    type SuccessResponse = { camps: z.infer<typeof GetCampsSuccessSchema> };
+    type ErrorResponse = { detail: string };
+
+    const res = await fetchFromAPI<SuccessResponse | ErrorResponse>(
+        endpoints.likedCamps,
+        { method: "GET" }
+    );
+    const { data, status } = res;
+
+    if (status === 200 && data != null && "camps" in data) {
+        const parsedData = GetCampsSuccessSchema.parse(data.camps);
+        return {
+            success: true,
+            camps: parsedData,
+        };
+    }
+
+    return {
+        success: false,
+        message: res.error?.message ?? "Unknown error",
+    };
+}
+
+export async function likeCamp(campId: number) {
+    type SuccessResponse = { message: string };
+    type ErrorResponse = { detail: string };
+
+    const res = await fetchFromAPI<SuccessResponse | ErrorResponse>(
+        endpoints.likeCamp(campId),
+        { method: "POST" }
+    );
+    const { data, status } = res;
+
+    if (status === 200 && data != null) {
+        return { success: true };
+    }
+
+    return {
+        success: false,
+        message: res.error?.message ?? "Unknown error",
+    };
+}

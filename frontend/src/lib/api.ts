@@ -82,6 +82,8 @@ export const endpoints = Object.freeze({
     // Camps
     searchCamps: "camps/search/",
     getCamp: (campId: number) => `camps/${campId}/`,
+    likedCamps: "camps/likes/user/",
+    likeCamp: (campId: number) => `camps/${campId}/likes/`,
 
     // Reviews
     markReviewHelpful: (campId: number, reviewId: number) => {
