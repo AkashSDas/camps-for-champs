@@ -92,4 +92,7 @@ export const endpoints = Object.freeze({
     },
     getCampImages: (campId: number) => `camps/${campId}/images/`,
     getAllCamps: "camps/",
+
+    // Users
+    profile: "users/profile/",
 });

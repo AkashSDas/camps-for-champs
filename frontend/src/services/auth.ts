@@ -113,7 +113,7 @@ export async function logout() {
     type SuccessResponse = { message: string };
     type ErrorResponse = { message: string };
 
-    var response = await fetchFromAPI<SuccessResponse | ErrorResponse>(
+    const response = await fetchFromAPI<SuccessResponse | ErrorResponse>(
         endpoints.logout,
         { method: "POST" },
         true
