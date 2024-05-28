@@ -3,6 +3,7 @@ export type User = {
     email: string;
     firstName: string;
     lastName: string;
+    profilePic?: string;
 };
 
 export type UserFromApiResponse = {
@@ -10,6 +11,7 @@ export type UserFromApiResponse = {
     email: string;
     first_name: string;
     last_name: string;
+    profile_pic?: string;
 };
 
 export function transformUser(user: UserFromApiResponse): User {
@@ -18,5 +20,6 @@ export function transformUser(user: UserFromApiResponse): User {
         email: user.email,
         firstName: user.first_name,
         lastName: user.last_name,
+        profilePic: user.profile_pic,
     };
 }
