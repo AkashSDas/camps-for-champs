@@ -180,6 +180,10 @@ const CampImagesApiResponseSchema = z
         },
     }));
 
+const GetLikedCamps = z.object({
+    camps: z.array(SearchCampsSuccessCampSchema),
+});
+
 export type FetchedCamp = z.infer<typeof SearchCampsSuccessCampSchema>;
 
 // ========================================
@@ -313,26 +317,28 @@ export async function getAllCamps() {
 }
 
 export async function getLikedCamps() {
-    type SuccessResponse = { camps: z.infer<typeof GetCampsSuccessSchema> };
+    type SuccessResponse = { camps: z.infer<typeof GetLikedCamps> };
     type ErrorResponse = { detail: string };
 
     const res = await fetchFromAPI<SuccessResponse | ErrorResponse>(
         endpoints.likedCamps,
-        { method: "GET" }
+        { method: "GET" },
+        true
     );
     const { data, status } = res;
 
     if (status === 200 && data != null && "camps" in data) {
-        const parsedData = GetCampsSuccessSchema.parse(data.camps);
+        const parsedData = GetLikedCamps.parse(data);
         return {
             success: true,
-            camps: parsedData,
+            camps: parsedData.camps,
         };
     }
 
     return {
         success: false,
         message: res.error?.message ?? "Unknown error",
+        camps: [],
     };
 }
 
@@ -342,7 +348,8 @@ export async function likeCamp(campId: number) {
 
     const res = await fetchFromAPI<SuccessResponse | ErrorResponse>(
         endpoints.likeCamp(campId),
-        { method: "POST" }
+        { method: "POST" },
+        true
     );
     const { data, status } = res;
 
