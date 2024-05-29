@@ -8,7 +8,7 @@ export function SearchCampInputButton() {
     const { openSearchDrawer, setOpenSearchDrawer } = useSearchCampInputStore();
     const router = useRouter();
 
-    if (router.pathname !== "/search") {
+    if (router.pathname === "/") {
         return null;
     }
 
