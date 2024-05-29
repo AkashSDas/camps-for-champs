@@ -1,15 +1,17 @@
+import { useLikeCamp } from "@app/hooks/like-camps";
 import { bodyFont, headingFont } from "@app/pages/_app";
 import { FetchedCamp } from "@app/services/camps";
 import { Button, Divider, Stack, Typography } from "@mui/material";
 import Image from "next/image";
+import { MouseEvent, useEffect, useState } from "react";
 
 type Props = Pick<
     FetchedCamp,
-    "name" | "overallRating" | "totalReviews" | "address"
+    "name" | "overallRating" | "totalReviews" | "address" | "id"
 >;
 
 export function InfoHeader(props: Props) {
-    const { name, overallRating, totalReviews, address } = props;
+    const { name, overallRating, totalReviews, address, id } = props;
 
     return (
         <Stack gap={0} display={{ xs: "none", sm: "flex" }}>
@@ -50,12 +52,27 @@ export function InfoHeader(props: Props) {
                 </Typography>
             </Stack>
 
-            <ActionButtonGroup />
+            <ActionButtonGroup campId={id} />
         </Stack>
     );
 }
 
-function ActionButtonGroup() {
+function ActionButtonGroup({ campId }: { campId: number }) {
+    const { likeCamp, getCamps } = useLikeCamp();
+    const [isLiked, setIsLiked] = useState(false);
+
+    function like(e: MouseEvent) {
+        e.stopPropagation();
+        likeCamp.like(campId);
+    }
+
+    useEffect(
+        function () {
+            setIsLiked(getCamps.camps.some((camp) => camp.id === campId));
+        },
+        [getCamps.camps]
+    );
+
     return (
         <Stack
             direction="row"
@@ -97,7 +114,11 @@ function ActionButtonGroup() {
             <Button
                 variant="outlined"
                 disableElevation
-                sx={{ fontWeight: 600 }}
+                sx={{
+                    fontWeight: 600,
+                    bgcolor: isLiked ? "primary.100" : "white",
+                }}
+                onClick={like}
                 startIcon={
                     <Image
                         src="/icons/heart.png"

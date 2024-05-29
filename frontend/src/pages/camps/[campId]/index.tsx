@@ -110,6 +110,7 @@ export default function CampInfo(props: Props) {
                 {/* Basic camp info */}
                 <Box px={{ xs: "1rem", md: "4rem" }} mb="2rem">
                     <InfoHeader
+                        id={id}
                         name={name}
                         address={address}
                         overallRating={overallRating}
