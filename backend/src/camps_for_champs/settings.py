@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     "api.features.apps.FeaturesConfig",
     "api.camps.apps.CampsConfig",
     "api.reviews.apps.ReviewsConfig",
+    "api.orders.apps.OrdersConfig",
+    "api.payments.apps.PaymentsConfig",
     # 3rd part apps
     "corsheaders",
     "rest_framework",
