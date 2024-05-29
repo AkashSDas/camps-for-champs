@@ -145,7 +145,7 @@ export function CampCardMapMarker(props: Props) {
                         </ArrowButton>
                     </Stack>
 
-                    <LikeButton />
+                    <LikeButton campId={id} />
                     <ImageSliderDots
                         activeIdx={activeStep}
                         totalIndexes={images.length}

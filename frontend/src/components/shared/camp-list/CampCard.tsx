@@ -147,7 +147,7 @@ export function CampCard(props: Props) {
                     </Stack>
 
                     {showTrending ? <Tag /> : null}
-                    <LikeButton />
+                    <LikeButton campId={id} />
                     <ImageSliderDots
                         activeIdx={activeStep}
                         totalIndexes={images.length}
