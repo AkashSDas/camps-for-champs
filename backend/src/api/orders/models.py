@@ -46,6 +46,7 @@ class Order(models.Model):
     payment_status = models.CharField(
         max_length=20, choices=PaymentStatus.choices, default=PaymentStatus.PENDING
     )
+    payment_id = models.CharField(max_length=255)
 
     def __str__(self):
         return f"{self.user.get_username()} - {self.camp}"

@@ -1,5 +1,38 @@
 from rest_framework import serializers
 from datetime import datetime
+from api.orders.models import Order
+from api.camps.models import CampOccupancy
+from api.camps.serializers import CampSerializer
+
+
+class CampOccupancySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CampOccupancy
+        fields = (
+            "id",
+            "check_in",
+            "check_out",
+            "adult_guests_count",
+            "child_guests_count",
+            "pets_count",
+        )
+
+
+class GetOrderSerializer(serializers.ModelSerializer):
+    camp = CampSerializer()
+    camp_occupancy = CampOccupancySerializer()
+
+    class Meta:
+        model = Order
+        fields = (
+            "camp",
+            "camp_occupancy",
+            "created_at",
+            "amount",
+            "payment_status",
+            "payment_id",
+            "user",
+        )
 
 
 class CreateOrderSerializer(serializers.Serializer):

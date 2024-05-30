@@ -9,7 +9,7 @@ from rest_framework.response import Response
 from api.orders.models import Order
 from api.users.models import User
 from api.camps.models import Camp, CampOccupancy, CampOccupancyManager
-from api.orders.serializers import CreateOrderSerializer
+from api.orders.serializers import CreateOrderSerializer, GetOrderSerializer
 import stripe
 
 
@@ -140,19 +140,12 @@ def book_camp(req: Request, camp_id: int, *args, **kwargs) -> Response:
     charge = charge_user(user_id=user.pk, amount=total_cost)
     status = charge.status
     order.payment_status = status
+    order.payment_id = charge.id
     order.save()
 
     return Response(
         {
             "message": "Camp booked successfully",
-            "order": {
-                "id": order.pk,
-                "camp": camp.name,
-                "check_in": check_in,
-                "check_out": check_out,
-                "total_cost": total_cost,
-                "payment_status": status,
-                "total_guests": total_guests,
-            },
+            "order": GetOrderSerializer(order).data,
         }
     )
