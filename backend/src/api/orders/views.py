@@ -149,3 +149,14 @@ def book_camp(req: Request, camp_id: int, *args, **kwargs) -> Response:
             "order": GetOrderSerializer(order).data,
         }
     )
+
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def get_orders(req: Request, *args, **kwargs) -> Response:
+    """Get all orders for the authenticated user."""
+
+    user = req.user
+    orders = Order.objects.filter(user=user)
+    orders_data = GetOrderSerializer(orders, many=True).data
+    return Response({"orders": orders_data})
