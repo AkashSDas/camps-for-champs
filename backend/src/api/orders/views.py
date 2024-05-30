@@ -6,10 +6,10 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
-from src.api.orders.models import Order
-from src.api.users.models import User
-from src.api.camps.models import Camp, CampOccupancy, CampOccupancyManager
-from src.api.orders.serializers import CreateOrderSerializer
+from api.orders.models import Order
+from api.users.models import User
+from api.camps.models import Camp, CampOccupancy, CampOccupancyManager
+from api.orders.serializers import CreateOrderSerializer
 import stripe
 
 

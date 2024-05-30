@@ -1,6 +1,6 @@
 from django.db import models
-from src.api.users.admin import User
-from src.api.camps.models import Camp, CampOccupancy
+from api.users.admin import User
+from api.camps.models import Camp, CampOccupancy
 
 
 class BookingStatus(models.TextChoices):

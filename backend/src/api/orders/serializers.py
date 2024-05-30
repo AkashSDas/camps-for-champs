@@ -1,5 +1,4 @@
 from rest_framework import serializers
-from src.api.orders.models import Order
 from datetime import datetime
 
 
