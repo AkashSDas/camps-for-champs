@@ -2,6 +2,7 @@ from datetime import datetime
 from math import floor
 from os import getenv
 from typing import Any, cast
+from deprecated import deprecated
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
@@ -16,11 +17,7 @@ import stripe
 stripe.api_key = getenv("STRIPE_SECRET_KEY")
 
 
-def get_or_create_customer(user_id: int) -> stripe.Customer:
-    user = User.objects.get(pk=user_id)
-    if not user:
-        raise ValueError("User not found")
-
+def get_or_create_customer(user: User) -> stripe.Customer:
     if not user.stripe_customer_id:
         customer = stripe.Customer.create(email=user.email)
         user.stripe_customer_id = customer.id
@@ -37,9 +34,10 @@ def get_or_create_customer(user_id: int) -> stripe.Customer:
     return customer
 
 
-def charge_user(user_id: int, amount: float) -> stripe.Charge:
+@deprecated(version="1.0", reason="Use payment intents instead.")
+def charge_user(user: User, amount: float) -> stripe.Charge:
     try:
-        customer = get_or_create_customer(user_id)
+        customer = get_or_create_customer(user)
         charge = stripe.Charge.create(
             customer=customer.id,
             amount=int(amount * 100),
@@ -48,6 +46,37 @@ def charge_user(user_id: int, amount: float) -> stripe.Charge:
         )
 
         return charge
+    except stripe.StripeError as e:
+        print(e)
+        raise ValueError("Failed to charge customer")
+
+
+def create_payment_intent_and_charge(
+    user_id: int, amount: float, payment_method: str = "card"
+) -> stripe.PaymentIntent:
+    try:
+        user = User.objects.get(pk=user_id)
+        if not user:
+            raise ValueError("User not found")
+
+        customer = get_or_create_customer(user)
+        stripe.PaymentMethod.attach(payment_method, customer=customer.id)
+        stripe.Customer.modify(
+            customer.id,
+            invoice_settings={"default_payment_method": payment_method},
+        )
+
+        payment_intent = stripe.PaymentIntent.create(
+            customer=customer.id,
+            amount=int(amount * 100),
+            currency="usd",
+            off_session=True,
+            confirm=True,
+            receipt_email=user.email,
+            payment_method=payment_method,
+        )
+
+        return payment_intent
     except stripe.StripeError as e:
         print(e)
         raise ValueError("Failed to charge customer")
@@ -67,7 +96,7 @@ def book_camp(req: Request, camp_id: int, *args, **kwargs) -> Response:
     6. return the order details
     """
 
-    serializer = CreateOrderSerializer(req.data)
+    serializer = CreateOrderSerializer(data=req.data)
     serializer.is_valid(raise_exception=True)
     payload = cast(dict[str, Any], serializer.validated_data)
     adult_guests: int = payload["adult_guests_count"]
@@ -76,6 +105,7 @@ def book_camp(req: Request, camp_id: int, *args, **kwargs) -> Response:
     total_guests: int = adult_guests + round(child_guests / 2) + round(pets / 2)
     check_in: datetime = payload["check_in"]
     check_out: datetime = payload["check_out"]
+    payment_method: str = payload["payment_method"]
 
     user = req.user
     camp = Camp.objects.get(pk=camp_id)
@@ -137,18 +167,25 @@ def book_camp(req: Request, camp_id: int, *args, **kwargs) -> Response:
 
     # charge the user
 
-    charge = charge_user(user_id=user.pk, amount=total_cost)
-    status = charge.status
-    order.payment_status = status
-    order.payment_id = charge.id
-    order.save()
+    try:
+        payment_intent = create_payment_intent_and_charge(
+            user_id=user.pk,
+            amount=total_cost,
+            payment_method=payment_method,
+        )
+        order.payment_status = payment_intent.status
+        order.payment_id = payment_intent.id
+        order.save()
 
-    return Response(
-        {
-            "message": "Camp booked successfully",
-            "order": GetOrderSerializer(order).data,
-        }
-    )
+        return Response(
+            {
+                "message": "Camp booked successfully",
+                "order": GetOrderSerializer(order).data,
+                "success": True,
+            }
+        )
+    except ValueError as e:
+        return Response({"message": str(e), "success": False}, status=400)
 
 
 @api_view(["GET"])

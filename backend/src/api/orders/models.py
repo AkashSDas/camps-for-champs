@@ -21,9 +21,14 @@ class PaymentStatus(models.TextChoices):
     # PAID = "PAID", "Paid"
     # FAILED = "FAILED", "Failed"
 
-    PENDING = "Pending"
+    # 'canceled', 'processing', 'requires_action', 'requires_capture', 'requires_confirmation', 'requires_payment_method', 'succeeded'
+    CANCELED = "Canceled"
+    PROCESSING = "Processing"
+    REQUIRES_ACTION = "Requires Action"
+    REQUIRES_CAPTURE = "Requires Capture"
+    REQUIRES_CONFIRMATION = "Requires Confirmation"
+    REQUIRES_PAYMENT_METHOD = "Requires Payment Method"
     SUCCEEDED = "Succeeded"
-    FAILED = "Failed"
 
 
 class Order(models.Model):
@@ -44,7 +49,7 @@ class Order(models.Model):
         max_digits=10, decimal_places=2, blank=False, null=False
     )
     payment_status = models.CharField(
-        max_length=20, choices=PaymentStatus.choices, default=PaymentStatus.PENDING
+        max_length=64, choices=PaymentStatus.choices, default=PaymentStatus.PROCESSING
     )
     payment_id = models.CharField(max_length=255)
 
