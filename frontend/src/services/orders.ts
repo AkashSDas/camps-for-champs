@@ -46,7 +46,6 @@ const OrderSchema = z
         amount: z.string(),
         payment_status: PaymentStatusSchema,
         booking_status: BookingStatusSchema,
-        review: ReviewSchema.optional().nullable(),
     })
     .transform((data) => ({
         id: data.id,
@@ -57,11 +56,11 @@ const OrderSchema = z
         amount: Number(data.amount),
         paymentStatus: data.payment_status,
         bookingStatus: data.booking_status,
-        review: data.review ?? null,
     }));
 
 const GetOrdersSchema = z.object({
     orders: z.array(OrderSchema),
+    reviews: z.array(ReviewSchema),
 });
 
 export type Order = z.infer<typeof OrderSchema>;
@@ -166,6 +165,7 @@ export async function getOrders() {
     type SuccessResponse = {
         message: string;
         orders: z.infer<typeof GetOrdersSchema>["orders"];
+        reviews: z.infer<typeof GetOrdersSchema>["reviews"];
     };
     type ErrorResponse = { detail: string };
 
@@ -179,7 +179,11 @@ export async function getOrders() {
     console.log({ mm: data });
     if (status === 200 && data != null && "orders" in data) {
         const parsedData = GetOrdersSchema.parse(data);
-        return { success: true, orders: parsedData.orders };
+        return {
+            success: true,
+            orders: parsedData.orders,
+            reviews: parsedData.reviews,
+        };
     } else if (status == 400 && data != null && "detail" in data) {
         return { success: false, message: data?.detail };
     }

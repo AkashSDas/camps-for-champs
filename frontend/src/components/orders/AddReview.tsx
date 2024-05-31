@@ -1,5 +1,4 @@
 import { bodyFont, headingFont } from "@app/pages/_app";
-import { Order } from "@app/services/orders";
 import {
     Typography,
     Stack,
@@ -11,9 +10,11 @@ import StarRoundedIcon from "@mui/icons-material/StarRounded";
 import ReviewsRoundedIcon from "@mui/icons-material/ReviewsRounded";
 import { ReviewModal } from "./ReviewModal";
 import { useState } from "react";
+import { z } from "zod";
+import { ReviewSchema } from "@app/services/reviews";
 
 type Props = {
-    review: Order["review"];
+    review: z.infer<typeof ReviewSchema> | undefined;
     campId: number;
 };
 
@@ -50,24 +51,28 @@ export function AddReview({ review, campId }: Props) {
 
     return (
         <Typography>
-            <Stack gap="8px" direction="row">
+            <Stack component="span" gap="8px" direction="row">
                 {Array.from({ length: review.rating }).map((_, index) => (
-                    <StarRoundedIcon key={index} />
+                    <StarRoundedIcon key={index} fontSize="large" />
                 ))}
             </Stack>
 
             <Typography
                 fontFamily={headingFont.style.fontFamily}
-                fontSize="24px"
+                fontSize="16px"
+                component="span"
             >
-                {`"`}S
+                {`"`}
             </Typography>
 
-            <Typography>{review.comment ?? "I liked it."}</Typography>
+            <Typography component="span">
+                {review.comment ?? "I liked it."}
+            </Typography>
 
             <Typography
+                component="span"
                 fontFamily={headingFont.style.fontFamily}
-                fontSize="24px"
+                fontSize="16px"
             >{`"`}</Typography>
         </Typography>
     );

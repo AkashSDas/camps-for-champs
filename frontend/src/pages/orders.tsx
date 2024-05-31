@@ -17,11 +17,15 @@ function useGetAllOrders() {
         throwOnError: true,
     });
 
-    return { orders: data?.orders ?? [], isPending };
+    return {
+        orders: data?.orders ?? [],
+        reviews: data?.reviews ?? [],
+        isPending,
+    };
 }
 
 export default function OrdersPage(): React.JSX.Element {
-    const { orders, isPending } = useGetAllOrders();
+    const { orders, isPending, reviews } = useGetAllOrders();
 
     return (
         <Box position="relative">
@@ -41,11 +45,9 @@ export default function OrdersPage(): React.JSX.Element {
                 })}
             >
                 <Stack alignItems="start" width="100%" maxWidth="1312px">
-                    <Typography variant="h4" mb="2rem">
-                        Orders
-                    </Typography>
+                    <Typography variant="h4">Orders</Typography>
 
-                    <Divider sx={{ borderColor: "grey.200", my: "32px" }} />
+                    <Divider sx={{ borderColor: "grey.200", my: "16px" }} />
 
                     {isPending ? (
                         <Stack
@@ -57,9 +59,19 @@ export default function OrdersPage(): React.JSX.Element {
                         </Stack>
                     ) : (
                         <Stack gap="24px" width="100%">
-                            {orders.map((order) => (
-                                <OrderCard key={order.id} order={order} />
-                            ))}
+                            {orders.map((order) => {
+                                const review = reviews.find(
+                                    (r) => r.camp === order.camp.id
+                                );
+
+                                return (
+                                    <OrderCard
+                                        key={order.id}
+                                        order={order}
+                                        review={review}
+                                    />
+                                );
+                            })}
                         </Stack>
                     )}
                 </Stack>

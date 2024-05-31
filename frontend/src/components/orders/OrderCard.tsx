@@ -1,4 +1,4 @@
-import { bodyFont, headingFont } from "@app/pages/_app";
+import { bodyFont } from "@app/pages/_app";
 import { CurrencyRupeeRounded } from "@mui/icons-material";
 import { Stack, Box, Typography, Chip } from "@mui/material";
 import Image from "next/image";
@@ -8,14 +8,21 @@ import FaceRoundedIcon from "@mui/icons-material/FaceRounded";
 import TodayRoundedIcon from "@mui/icons-material/TodayRounded";
 import { Order } from "@app/services/orders";
 import { AddReview } from "./AddReview";
+import { z } from "zod";
+import { ReviewSchema } from "@app/services/reviews";
 
-export function OrderCard({ order }: { order: Order }) {
-    const { camp, campOccupancy, paymentStatus, bookingStatus, review } = order;
+type Props = {
+    order: Order;
+    review: undefined | z.infer<typeof ReviewSchema>;
+};
+
+export function OrderCard({ order, review }: Props) {
+    const { camp, campOccupancy, paymentStatus, bookingStatus } = order;
 
     return (
         <Stack
-            direction={{ xs: "column", sm: "row" }}
-            gap="24px"
+            direction={{ sm: "column", md: "row" }}
+            gap="16px"
             width="100%"
             border="1px solid"
             borderColor="grey.200"
@@ -25,8 +32,8 @@ export function OrderCard({ order }: { order: Order }) {
             <Box
                 sx={{
                     position: "relative",
-                    width: { xs: "100%", sm: "400px" },
-                    minWidth: { xs: "100%", sm: "400px" },
+                    width: { sm: "100%", md: "400px" },
+                    minWidth: { sm: "100%", md: "400px" },
                     height: "360px",
                 }}
             >
