@@ -12,13 +12,12 @@ import {
     Stack,
 } from "@mui/material";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Close } from "@mui/icons-material";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { Dayjs } from "dayjs";
-import { useCampBookingInputStore } from "@app/store/camp-booking-input";
+import dayjs, { Dayjs } from "dayjs";
 import { useCampCheckoutStore } from "@app/store/camp-checkout";
 
 function useDateRangeSelection() {
@@ -44,7 +43,13 @@ function useDateRangeSelection() {
         setCheckIn(date);
     }
 
-    function handleCheckOutChange(date: Dayjs | null): void {
+    function handleCheckOutChange(date: Dayjs | null, force = false): void {
+        if (force) {
+            // This is since in useEffect both of the dates are being set
+            setCheckOut(date);
+            return;
+        }
+
         if (date === null) {
             setCheckOutError(null);
             setCheckOut(date);
@@ -55,11 +60,13 @@ function useDateRangeSelection() {
             setCheckInError("Please select a check-in date first");
             return;
         }
-        console.log(date && date?.isBefore(checkIn));
+
         if (date && date.isBefore(checkIn)) {
             setCheckOutError("Check-out date must be after check-in date");
             return;
         }
+
+        setCheckInError(null);
         setCheckOutError(null);
         setCheckOut(date);
     }
@@ -79,10 +86,13 @@ export function DatesInput(): React.JSX.Element {
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
     const dates = useDateRangeSelection();
-    const { setCheckIn, setCheckOut } = useCampCheckoutStore((state) => ({
-        setCheckIn: state.setCheckInDate,
-        setCheckOut: state.setCheckOutDate,
-    }));
+    const { setCheckIn, setCheckOut, checkInDate, checkOutDate } =
+        useCampCheckoutStore((state) => ({
+            setCheckIn: state.setCheckInDate,
+            setCheckOut: state.setCheckOutDate,
+            checkInDate: state.checkInDate,
+            checkOutDate: state.checkOutDate,
+        }));
 
     function closeModal(): void {
         setOpen(false);
@@ -90,10 +100,19 @@ export function DatesInput(): React.JSX.Element {
 
     function handleNextClick(): void {
         if (dates.checkInError || dates.checkOutError) return;
+        console.log(dates.checkIn, dates.checkOut);
         setCheckIn(dates.checkIn?.toDate() ?? null);
         setCheckOut(dates.checkOut?.toDate() ?? null);
         closeModal();
     }
+
+    useEffect(function fillDates() {
+        console.log({ checkOutDate });
+        if (checkInDate && checkOutDate) {
+            dates.handleCheckInChange(dayjs(checkInDate));
+            dates.handleCheckOutChange(dayjs(checkOutDate), true);
+        }
+    }, []);
 
     return (
         <>
@@ -182,7 +201,7 @@ export function DatesInput(): React.JSX.Element {
                             <DatePicker
                                 label="Check out"
                                 value={dates.checkOut}
-                                onChange={dates.handleCheckOutChange}
+                                onChange={(d) => dates.handleCheckOutChange(d)}
                                 slotProps={{
                                     textField: {
                                         helperText: dates.checkOutError,

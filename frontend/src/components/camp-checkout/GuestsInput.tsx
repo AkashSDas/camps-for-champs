@@ -13,7 +13,7 @@ import {
     useTheme,
 } from "@mui/material";
 import Image from "next/image";
-import { useReducer, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import { GuestsCounter } from "./GuestsCounter";
 import { useCampCheckoutStore } from "@app/store/camp-checkout";
 
@@ -23,7 +23,7 @@ type GuestsCount = {
     pets: number;
 };
 
-type ActionType = "increment" | "decrement" | "reset";
+type ActionType = "increment" | "decrement" | "reset" | "populate";
 type Payload = keyof GuestsCount;
 
 const initialState: GuestsCount = {
@@ -43,6 +43,8 @@ function reducer(
             return { ...state, [action.payload]: state[action.payload] - 1 };
         case "reset":
             return initialState;
+        case "populate":
+            return { ...(action.payload as any) };
         default:
             return state;
     }
@@ -53,12 +55,21 @@ export function GuestsInput(): React.JSX.Element {
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
     const [guests, dispatch] = useReducer(reducer, initialState);
-    const { setAdultsGuestsCount, setChildGuestsCount, setPetsCount } =
-        useCampCheckoutStore((state) => ({
-            setAdultsGuestsCount: state.setAdultGuestsCount,
-            setChildGuestsCount: state.setChildGuestsCount,
-            setPetsCount: state.setPetsCount,
-        }));
+    const {
+        setAdultsGuestsCount,
+        setChildGuestsCount,
+        setPetsCount,
+        adultsGuestsCount,
+        childGuestsCount,
+        petsCount,
+    } = useCampCheckoutStore((state) => ({
+        setAdultsGuestsCount: state.setAdultGuestsCount,
+        setChildGuestsCount: state.setChildGuestsCount,
+        setPetsCount: state.setPetsCount,
+        adultsGuestsCount: state.adultGuestsCount,
+        childGuestsCount: state.childGuestsCount,
+        petsCount: state.petsCount,
+    }));
 
     function closeModal(): void {
         setOpen(false);
@@ -70,6 +81,17 @@ export function GuestsInput(): React.JSX.Element {
         setPetsCount(guests.pets);
         closeModal();
     }
+
+    useEffect(function fillCounters() {
+        dispatch({
+            type: "populate",
+            payload: {
+                adults: adultsGuestsCount ?? 0,
+                children: childGuestsCount ?? 0,
+                pets: petsCount ?? 0,
+            } as any,
+        });
+    }, []);
 
     return (
         <>

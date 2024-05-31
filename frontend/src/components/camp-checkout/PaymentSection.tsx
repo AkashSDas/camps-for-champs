@@ -20,6 +20,7 @@ const stripePromise = loadStripe(
 
 type Props = {
     amount: number;
+    changeTab: (tab: "inputs" | "payment") => void;
 };
 
 export function PaymentSection(props: Props): React.JSX.Element {
@@ -61,6 +62,7 @@ export function PaymentSection(props: Props): React.JSX.Element {
                 <Elements stripe={stripePromise} options={options}>
                     <Stack component="form" onSubmit={handleSubmit.mutate}>
                         <PaymentForm
+                            changeTab={props.changeTab}
                             disabled={
                                 props.amount === 0 ||
                                 !inputs.checkInDate ||

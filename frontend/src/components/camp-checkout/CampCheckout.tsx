@@ -50,7 +50,7 @@ export function CampCheckout(props: Props) {
                     />
                 </>
             ) : (
-                <PaymentSection amount={totalCost} />
+                <PaymentSection amount={totalCost} changeTab={dispatch} />
             )}
         </Stack>
     );
