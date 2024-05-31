@@ -25,6 +25,7 @@ class GetOrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = (
+            "id",
             "camp",
             "camp_occupancy",
             "user",

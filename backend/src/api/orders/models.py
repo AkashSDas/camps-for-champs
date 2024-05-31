@@ -8,6 +8,7 @@ class BookingStatus(models.TextChoices):
     This class is used for storing booking status choices.
     """
 
+    EXPIRED = "Expired"
     PENDING = "Pending"
     FULLFILLED = "Fullfilled"
 

@@ -137,7 +137,7 @@ class CampOccupancyManager(models.Manager):
 
     def check_camp_availability(
         self, camp_id: int, check_in: datetime, check_out: datetime
-    ) -> "CampOccupancyManager":
+    ):
         """
         Filter the queryset to get "bookings" (occupancy) which overlap with check in and check out
         dates. This method is useful to check whether occupancy is full or not during a specific
@@ -165,7 +165,7 @@ class CampOccupancyManager(models.Manager):
             )
         )
 
-        overlapping_occupancies = overlapping_occupancies.annotate(
+        overlapping_occupancies = overlapping_occupancies.aggregate(
             total_guests=Sum("adult_guests_count")
             + Sum("child_guests_count")
             + Sum("pets_count") / 2

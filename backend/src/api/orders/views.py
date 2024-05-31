@@ -1,14 +1,11 @@
 from datetime import datetime
-from math import floor
 from os import getenv
 from typing import Any, cast
-from deprecated import deprecated
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
-from api.orders.models import BookingStatus, Order
-from api.users.models import User
+from api.orders.models import BookingStatus, Order, PaymentStatus
 from api.camps.models import Camp, CampOccupancy, CampOccupancyManager
 from api.orders.serializers import CreateOrderSerializer, GetOrderSerializer
 import stripe
@@ -81,19 +78,26 @@ def init_camp_booking(req: Request, camp_id: int, *args, **kwargs) -> Response:
     if not camp:
         return Response({"message": "Camp not found"}, status=404)
 
+    # delete the pending order if any
+
+    Order.objects.filter(
+        user=user, camp=camp, payment_status=PaymentStatus.INITIALIZED.value
+    ).delete()
+    CampOccupancy.objects.filter(
+        camp=camp, check_in=check_in, check_out=check_out
+    ).delete()
+
     # check if the camp is available for the given dates
 
-    occupany = (
-        cast(CampOccupancyManager, CampOccupancy.objects)
-        .check_camp_availability(
-            camp_id=camp_id, check_in=check_in, check_out=check_out
-        )
-        .first()
-    )
+    occupany = cast(
+        CampOccupancyManager, CampOccupancy.objects
+    ).check_camp_availability(camp_id=camp_id, check_in=check_in, check_out=check_out)
+    occupany_count = occupany["total_guests"]
+    occupany_count = occupany_count if occupany_count else 0
 
     if occupany and (
-        occupany.total_guests >= camp.occupancy_count
-        or occupany.total_guests + total_guests > camp.occupancy_count
+        occupany_count >= camp.occupancy_count
+        or occupany_count + total_guests > camp.occupancy_count
     ):
         return Response(
             {"message": "Camp is full for the given dates"},
@@ -107,7 +111,7 @@ def init_camp_booking(req: Request, camp_id: int, *args, **kwargs) -> Response:
 
     num_of_days = (check_out - check_in).days
     num_of_days = num_of_days if num_of_days > 0 else 1
-    occupancy_to_be_considered = floor(total_guests / 4)
+    occupancy_to_be_considered = round(total_guests / 4)
     occupancy_to_be_considered = (
         occupancy_to_be_considered if occupancy_to_be_considered > 0 else 1
     )
