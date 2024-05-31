@@ -12,7 +12,9 @@ import { StripeElementsOptions, loadStripe } from "@stripe/stripe-js";
 export const headingFont = Bungee({ weight: ["400"], subsets: ["latin"] });
 export const bodyFont = Sora({ subsets: ["latin"] });
 
-const stripePromise = loadStripe(process.env.NEXT_STRIPE_PUBLISHABLE_KEY!);
+const stripePromise = loadStripe(
+    process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
+);
 
 export default function App({ Component, pageProps }: AppProps) {
     const options: StripeElementsOptions = {};
