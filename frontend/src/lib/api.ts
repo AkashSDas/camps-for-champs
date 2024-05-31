@@ -97,4 +97,7 @@ export const endpoints = Object.freeze({
 
     // Users
     profile: "users/profile/",
+
+    // Payments
+    createPaymentIntent: "payments/payment-intent/",
 });
