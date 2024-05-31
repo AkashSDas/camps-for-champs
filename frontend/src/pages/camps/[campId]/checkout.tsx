@@ -44,7 +44,7 @@ export default function CheckoutPage({ camp }: Props): React.JSX.Element {
 
                     <Divider sx={{ borderColor: "grey.200", my: "32px" }} />
 
-                    <CampCheckout perNightCost={perNightCost} />
+                    <CampCheckout camp={camp} />
                 </Grid>
             </Grid>
         </Box>

@@ -1,11 +1,14 @@
 import { headingFont } from "@app/pages/_app";
 import { FetchedCamp } from "@app/services/camps";
 import { Stack, Typography } from "@mui/material";
+import { CampCheckoutForm } from "./CampCheckoutForm";
 
-type Props = Pick<FetchedCamp, "perNightCost">;
+type Props = {
+    camp: FetchedCamp;
+};
 
 export function CampCheckout(props: Props) {
-    const { perNightCost } = props;
+    const { perNightCost } = props.camp;
 
     return (
         <Stack width="100%" gap="1rem">
@@ -22,6 +25,7 @@ export function CampCheckout(props: Props) {
             </Typography>
 
             <Typography variant="body2">For 4 guests</Typography>
+            <CampCheckoutForm camp={props.camp} />
         </Stack>
     );
 }
