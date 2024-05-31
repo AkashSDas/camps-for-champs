@@ -26,6 +26,7 @@ def create_payment_intent(
             automatic_payment_methods={"enabled": True},
             receipt_email=receipt_email,
             customer=customer_id,
+            description="Payment for booking camp",
         )
         return payment_intent
     except stripe.StripeError as e:
@@ -35,7 +36,17 @@ def create_payment_intent(
 
 def get_or_create_customer(user: User) -> stripe.Customer:
     if not user.stripe_customer_id:
-        customer = stripe.Customer.create(email=user.email)
+        customer = stripe.Customer.create(
+            email=user.email,
+            name=f"{user.first_name} {user.last_name}",
+            address={
+                "line1": "510 Townsend St",
+                "postal_code": "98140",
+                "city": "San Francisco",
+                "state": "CA",
+                "country": "US",
+            },
+        )
         user.stripe_customer_id = customer.id
         user.save()
         return customer

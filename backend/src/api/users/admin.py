@@ -20,7 +20,10 @@ class UserAdmin(BaseUserAdmin):
 
     fieldsets = (
         (None, {"fields": ("email", "password")}),
-        ("Personal info", {"fields": ("first_name", "last_name")}),
+        (
+            "Personal info",
+            {"fields": ("first_name", "last_name", "stripe_customer_id")},
+        ),
         ("Permissions", {"fields": ("is_admin", "is_active", "is_staff")}),
     )
 
