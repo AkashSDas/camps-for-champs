@@ -10,6 +10,9 @@ from api.camps.models import Camp, CampOccupancy, CampOccupancyManager
 from api.orders.serializers import CreateOrderSerializer, GetOrderSerializer
 import stripe
 
+from api.reviews.models import Review
+from api.reviews.serializers import GetReviewSerializer
+
 
 stripe.api_key = getenv("STRIPE_SECRET_KEY")
 
@@ -167,4 +170,7 @@ def get_orders(req: Request, *args, **kwargs) -> Response:
     user = req.user
     orders = Order.objects.filter(user=user)
     orders_data = GetOrderSerializer(orders, many=True).data
-    return Response({"orders": orders_data})
+    camp_ids = orders.values_list("camp", flat=True)
+    reviews = Review.objects.filter(camp__in=camp_ids, author_id=user.id)
+    reviews_data = GetReviewSerializer(reviews, many=True).data
+    return Response({"orders": orders_data, "reviews": reviews_data})

@@ -21,7 +21,6 @@ class CampOccupancySerializer(serializers.ModelSerializer):
 class GetOrderSerializer(serializers.ModelSerializer):
     camp = CampSerarchResultSerialiazer()
     camp_occupancy = CampOccupancySerializer()
-    review = serializers.SerializerMethodField()
 
     class Meta:
         model = Order
@@ -34,16 +33,7 @@ class GetOrderSerializer(serializers.ModelSerializer):
             "amount",
             "payment_status",
             "booking_status",
-            "review",
         )
-
-    def get_review(self, obj):
-        # get user id for camp order if exists
-        user_id = self.context.get("user_id")
-        if user_id:
-            review = obj.reviews.filter(user_id=user_id).first()
-            return review.text if review else None
-        return None
 
 
 class CreateOrderSerializer(serializers.Serializer):
