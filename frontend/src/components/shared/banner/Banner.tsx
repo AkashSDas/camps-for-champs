@@ -2,6 +2,7 @@ import { useUser } from "@app/hooks/auth";
 import { useAuthStore } from "@app/store/auth";
 import { Box, Button, Stack, Typography, useTheme } from "@mui/material";
 import Image from "next/image";
+import Link from "next/link";
 
 // const GradientText = styled(Typography)({
 //     backgroundImage: `linear-gradient(to right, #656E60 20%, #ADBCA5 30%, #656E60 70%, #ADBCA5 80%)`,
@@ -22,15 +23,8 @@ import Image from "next/image";
 // }) as typeof Typography;
 
 export function Banner(): React.JSX.Element | null {
-    const { openSignupModal } = useAuthStore((state) => ({
-        openSignupModal: state.openSignupModal,
-    }));
     const theme = useTheme();
     const { isLoggedIn } = useUser();
-
-    if (isLoggedIn) {
-        return null;
-    }
 
     return (
         <Stack
@@ -85,30 +79,7 @@ export function Banner(): React.JSX.Element | null {
                     solo. Find a camp for your needs!
                 </Typography>
 
-                <Button
-                    variant="contained"
-                    disableElevation
-                    sx={(theme) => ({
-                        height: "60px",
-                        width: "fit-content",
-                        px: "2rem",
-                        [theme.breakpoints.down("sm")]: {
-                            width: "100%",
-                        },
-                    })}
-                    onClick={openSignupModal}
-                    startIcon={
-                        <Image
-                            src="/figmoji/tent-with-tree.png"
-                            alt="Tent with Tree"
-                            width={23.81}
-                            height={23.42}
-                            style={{ display: "inline-block" }}
-                        />
-                    }
-                >
-                    Join the Thrill
-                </Button>
+                <ActionButton />
             </Stack>
 
             {/* Image */}
@@ -135,5 +106,69 @@ export function Banner(): React.JSX.Element | null {
                 />
             </Box>
         </Stack>
+    );
+}
+
+function ActionButton() {
+    const { isLoggedIn } = useUser();
+    const { openSignupModal } = useAuthStore((state) => ({
+        openSignupModal: state.openSignupModal,
+    }));
+
+    if (!isLoggedIn) {
+        return (
+            <Button
+                variant="contained"
+                disableElevation
+                sx={(theme) => ({
+                    height: "60px",
+                    width: "fit-content",
+                    px: "2rem",
+                    [theme.breakpoints.down("sm")]: {
+                        width: "100%",
+                    },
+                })}
+                onClick={openSignupModal}
+                startIcon={
+                    <Image
+                        src="/figmoji/tent-with-tree.png"
+                        alt="Tent with Tree"
+                        width={23.81}
+                        height={23.42}
+                        style={{ display: "inline-block" }}
+                    />
+                }
+            >
+                Join the Thrill
+            </Button>
+        );
+    }
+
+    return (
+        <Button
+            variant="contained"
+            disableElevation
+            LinkComponent={Link}
+            href="/search"
+            sx={(theme) => ({
+                height: "60px",
+                width: "fit-content",
+                px: "2rem",
+                [theme.breakpoints.down("sm")]: {
+                    width: "100%",
+                },
+            })}
+            startIcon={
+                <Image
+                    src="/figmoji/tent-with-tree.png"
+                    alt="Tent with Tree"
+                    width={23.81}
+                    height={23.42}
+                    style={{ display: "inline-block" }}
+                />
+            }
+        >
+            Search Camps
+        </Button>
     );
 }
