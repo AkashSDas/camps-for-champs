@@ -1,18 +1,11 @@
 import { Loader } from "@app/components/shared/loader/Loader";
 import { Navbar } from "@app/components/shared/navbar/Navbar";
-import { type Order, getOrders } from "@app/services/orders";
-import { Box, Chip, Divider, Stack, Typography } from "@mui/material";
+import { getOrders } from "@app/services/orders";
+import { Box, Divider, Stack, Typography } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import Head from "next/head";
-import Image from "next/image";
-import { bodyFont, headingFont } from "./_app";
 import { useUser } from "@app/hooks/auth";
-import { CurrencyRupeeRounded } from "@mui/icons-material";
-import PetsRoundedIcon from "@mui/icons-material/PetsRounded";
-import Face4RoundedIcon from "@mui/icons-material/Face4Rounded";
-import FaceRoundedIcon from "@mui/icons-material/FaceRounded";
-import TodayRoundedIcon from "@mui/icons-material/TodayRounded";
-import StarRoundedIcon from "@mui/icons-material/StarRounded";
+import { OrderCard } from "@app/components/orders/OrderCard";
 
 function useGetAllOrders() {
     const { user } = useUser();
@@ -73,139 +66,4 @@ export default function LikedCampsPage(): React.JSX.Element {
             </Stack>
         </Box>
     );
-}
-
-function OrderCard({ order }: { order: Order }) {
-    const { camp, campOccupancy, paymentStatus, bookingStatus, review } = order;
-
-    return (
-        <Stack
-            direction={{ xs: "column", sm: "row" }}
-            gap="24px"
-            width="100%"
-            border="1px solid"
-            borderColor="grey.200"
-            borderRadius="24px"
-            p="12px"
-        >
-            <Box
-                sx={{
-                    position: "relative",
-                    width: { xs: "100%", sm: "400px" },
-                    minWidth: { xs: "100%", sm: "400px" },
-                    height: "360px",
-                }}
-            >
-                <Image
-                    src={camp.images[0].image}
-                    alt={camp.name}
-                    layout="fill"
-                    style={{ objectFit: "cover", borderRadius: "16px" }}
-                />
-            </Box>
-
-            <Stack gap="12px">
-                <Typography
-                    variant="h4"
-                    sx={{
-                        fontSize: "1.5rem",
-                        fontFamily: bodyFont.style.fontFamily,
-                        fontWeight: "600",
-                    }}
-                >
-                    {camp.name}
-                </Typography>
-
-                <Typography variant="body2">{camp.about}</Typography>
-
-                <Stack gap="8px" direction="row">
-                    <Chip
-                        icon={<TodayRoundedIcon fontSize="small" />}
-                        label={`Check in: ${formatToDate(campOccupancy.checkIn)}`}
-                        variant="outlined"
-                        sx={{ fontFamily: bodyFont.style.fontFamily }}
-                    />
-                    <Chip
-                        icon={<TodayRoundedIcon fontSize="small" />}
-                        label={`Check out: ${formatToDate(campOccupancy.checkOut)}`}
-                        variant="outlined"
-                        sx={{ fontFamily: bodyFont.style.fontFamily }}
-                    />
-                </Stack>
-
-                <Stack gap="8px" direction="row">
-                    <Chip
-                        icon={<Face4RoundedIcon fontSize="small" />}
-                        label={`Adults: ${campOccupancy.adultGuestsCount}`}
-                        variant="outlined"
-                        sx={{ fontFamily: bodyFont.style.fontFamily }}
-                    />
-                    <Chip
-                        icon={<FaceRoundedIcon fontSize="small" />}
-                        label={`Children: ${campOccupancy.childGuestsCount}`}
-                        variant="outlined"
-                        sx={{ fontFamily: bodyFont.style.fontFamily }}
-                    />
-                    <Chip
-                        icon={<PetsRoundedIcon fontSize="small" />}
-                        label={`Pets: ${campOccupancy.petsCount}`}
-                        variant="outlined"
-                        sx={{ fontFamily: bodyFont.style.fontFamily }}
-                    />
-                </Stack>
-
-                <Stack gap="8px" direction="row">
-                    <Chip
-                        icon={<CurrencyRupeeRounded fontSize="small" />}
-                        label={`Payment status: ${paymentStatus}`}
-                        variant="outlined"
-                        sx={{ fontFamily: bodyFont.style.fontFamily }}
-                    />
-                    <Chip
-                        icon={<CurrencyRupeeRounded fontSize="small" />}
-                        label={`Booking status: ${bookingStatus}`}
-                        variant="outlined"
-                        sx={{ fontFamily: bodyFont.style.fontFamily }}
-                    />
-                </Stack>
-
-                {review ? (
-                    <Typography>
-                        <Stack gap="8px" direction="row">
-                            {Array.from({ length: review.rating }).map(
-                                (_, index) => (
-                                    <StarRoundedIcon key={index} />
-                                )
-                            )}
-                        </Stack>
-
-                        <Typography
-                            fontFamily={headingFont.style.fontFamily}
-                            fontSize="24px"
-                        >
-                            {`"`}S
-                        </Typography>
-
-                        <Typography>
-                            {review.comment ?? "I liked it."}
-                        </Typography>
-
-                        <Typography
-                            fontFamily={headingFont.style.fontFamily}
-                            fontSize="24px"
-                        >{`"`}</Typography>
-                    </Typography>
-                ) : null}
-            </Stack>
-        </Stack>
-    );
-}
-
-function formatToDate(dateStr: string): string {
-    const date = new Date(dateStr);
-    return date.toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-    });
 }
