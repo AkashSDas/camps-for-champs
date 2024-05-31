@@ -51,7 +51,9 @@ class Camp(models.Model):
         Get overall rating percentage (eg: 83%, 26%). Since rating is out of 5, we multiply
         average rating by 20. So, 4.5 rating will be 90%.
         """
-        return self.average_rating() * 20
+        avg = self.average_rating()
+        avg = avg if avg else 0
+        return avg * 20
 
     def total_reviews(self: Any):
         """Get total reviews count for the camp."""
