@@ -86,7 +86,7 @@ const SearchCampsSuccessCampReviewSchema = z
         helpfulCount: data.helpful_count,
     }));
 
-const SearchCampsSuccessCampSchema = z
+export const SearchCampsSuccessCampSchema = z
     .object({
         id: z.number(),
         name: z.string(),

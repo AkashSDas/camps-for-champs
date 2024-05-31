@@ -100,4 +100,10 @@ export const endpoints = Object.freeze({
 
     // Payments
     createPaymentIntent: "payments/payment-intent/",
+
+    // Orders
+    initializeCampBooking: (campId: number) => `orders/camps/${campId}/`,
+    confirmCampBooking: (campId: number, orderId: number) => {
+        return `orders/camps/${campId}/orders/${orderId}/`;
+    },
 });
