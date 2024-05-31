@@ -18,7 +18,7 @@ export const useCampBookingInputStore = create<CampBookingInput>((set) => ({
     setCheckInDate: (checkInDate) => set({ checkInDate }),
     checkOutDate: null,
     setCheckOutDate: (checkOutDate) => set({ checkOutDate }),
-    adultGuestsCount: 1,
+    adultGuestsCount: 0,
     setAdultGuestsCount: (adultGuestsCount) => set({ adultGuestsCount }),
     childGuestsCount: 0,
     setChildGuestsCount: (childGuestsCount) => set({ childGuestsCount }),
