@@ -55,27 +55,12 @@ export function PaymentForm(props: Props) {
                 const { error } = await stripe!.confirmPayment({
                     elements: elements!,
                     confirmParams: {
-                        return_url: `${window.location.origin}/orders?bookingSuccess=true`,
+                        return_url: `${window.location.origin}/orders?bookingSuccess=true&campId=${props.campId}&orderId=${order!.id}`,
                     },
                 });
 
                 if (error) {
                     setShowErrorSnackbar(true);
-                } else {
-                    // confirm booking
-
-                    if (order) {
-                        const { success } = await confirmCampBooking(
-                            props.campId,
-                            order.id
-                        );
-
-                        if (!success) {
-                            setShowErrorSnackbar(true);
-                        }
-                    } else {
-                        setShowErrorSnackbar(true);
-                    }
                 }
             }
         },
