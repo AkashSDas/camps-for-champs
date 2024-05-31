@@ -168,6 +168,3 @@ def get_orders(req: Request, *args, **kwargs) -> Response:
     orders = Order.objects.filter(user=user)
     orders_data = GetOrderSerializer(orders, many=True).data
     return Response({"orders": orders_data})
-
-
-# http://localhost:3000/orders?bookingSuccess=true&payment_intent=pi_1PMX4CIW9OOyJTj3B0dxb2dU&payment_intent_client_secret=pi_1PMX4CIW9OOyJTj3B0dxb2dU_secret_jI2QVf1GhXmJq4BCLcIa1ZEyt&redirect_status=succeeded
