@@ -38,6 +38,18 @@ def confirm_camp_booking(
 
     if order.user != user:
         return Response({"message": "Unauthorized"}, status=401)
+    if not order.payment_intent:
+        return Response(
+            {"message": "Payment intent not found"},
+            status=400,
+        )
+
+    payment_intent = stripe.PaymentIntent.confirm(intent=order.payment_intent)
+    if payment_intent.status != "succeeded":
+        return Response(
+            {"message": "Payment intent confirmation failed"},
+            status=400,
+        )
 
     order.booking_status = BookingStatus.FULLFILLED.value
     order.save()
@@ -72,6 +84,7 @@ def init_camp_booking(req: Request, camp_id: int, *args, **kwargs) -> Response:
     total_guests: int = adult_guests + round(child_guests / 2) + round(pets / 2)
     check_in: datetime = payload["check_in"]
     check_out: datetime = payload["check_out"]
+    payment_intent: str = payload["payment_intent"]
 
     user = req.user
     camp = Camp.objects.get(pk=camp_id)
@@ -134,6 +147,7 @@ def init_camp_booking(req: Request, camp_id: int, *args, **kwargs) -> Response:
         camp_occupancy=camp_occupancy,
         user=user,
         amount=total_cost,
+        payment_intent=payment_intent,
     )
 
     return Response(
@@ -154,3 +168,6 @@ def get_orders(req: Request, *args, **kwargs) -> Response:
     orders = Order.objects.filter(user=user)
     orders_data = GetOrderSerializer(orders, many=True).data
     return Response({"orders": orders_data})
+
+
+# http://localhost:3000/orders?bookingSuccess=true&payment_intent=pi_1PMX4CIW9OOyJTj3B0dxb2dU&payment_intent_client_secret=pi_1PMX4CIW9OOyJTj3B0dxb2dU_secret_jI2QVf1GhXmJq4BCLcIa1ZEyt&redirect_status=succeeded

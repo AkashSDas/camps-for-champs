@@ -50,6 +50,7 @@ class Order(models.Model):
     booking_status = models.CharField(
         max_length=64, choices=BookingStatus.choices, default=BookingStatus.PENDING
     )
+    payment_intent = models.CharField(max_length=255, blank=True, null=True)
 
     def __str__(self):
         return f"{self.user.get_username()} - {self.camp}"
