@@ -3,7 +3,7 @@ import { FetchedCamp } from "@app/services/camps";
 import { Stack, Typography } from "@mui/material";
 import { CampBookingCardForm } from "./CampBookingCardForm";
 
-type Props = Pick<FetchedCamp, "perNightCost"> & {
+type Props = Pick<FetchedCamp, "perNightCost" | "id"> & {
     fullscreen?: boolean;
 };
 
@@ -34,7 +34,7 @@ export function CampBookingCard(props: Props) {
 
             <Typography variant="body2">For 4 guests</Typography>
 
-            <CampBookingCardForm perNightCost={perNightCost} />
+            <CampBookingCardForm perNightCost={perNightCost} id={props.id} />
         </Stack>
     );
 }

@@ -5,8 +5,10 @@ import { Stack, Button, Typography, Divider } from "@mui/material";
 import { useMemo } from "react";
 import { DatesInput } from "./DatesInput";
 import { GuestsInput } from "./GuestsInput";
+import Image from "next/image";
+import Link from "next/link";
 
-type CampBookingCardFormProps = Pick<FetchedCamp, "perNightCost">;
+type CampBookingCardFormProps = Pick<FetchedCamp, "perNightCost" | "id">;
 
 export function CampBookingCardForm(props: CampBookingCardFormProps) {
     const { perNightCost } = props;
@@ -67,9 +69,20 @@ export function CampBookingCardForm(props: CampBookingCardFormProps) {
             <Button
                 variant="contained"
                 disableElevation
-                sx={{ fontFamily: bodyFont.style.fontFamily, height: "56px" }}
+                LinkComponent={Link}
+                href={`/camps/${props.id}/checkout`}
+                target="_blank"
+                sx={{ height: "56px" }}
+                startIcon={
+                    <Image
+                        src="/figmoji/tent-with-tree.png"
+                        alt="Book camp"
+                        width={20}
+                        height={20}
+                    />
+                }
             >
-                Check Avaialability
+                Book
             </Button>
 
             <Stack gap="0.5rem" mt="1rem">

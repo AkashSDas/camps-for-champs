@@ -3,6 +3,7 @@ import { bodyFont, headingFont } from "@app/pages/_app";
 import { FetchedCamp } from "@app/services/camps";
 import { Button, Divider, Stack, Typography } from "@mui/material";
 import Image from "next/image";
+import Link from "next/link";
 import { MouseEvent, useEffect, useState } from "react";
 
 type Props = Pick<
@@ -83,6 +84,9 @@ function ActionButtonGroup({ campId }: { campId: number }) {
             <Button
                 variant="contained"
                 disableElevation
+                LinkComponent={Link}
+                target="_blank"
+                href={`/camps/${campId}/checkout`}
                 startIcon={
                     <Image
                         src="/figmoji/tent-with-tree.png"

@@ -5,7 +5,7 @@ import { useState } from "react";
 import { CampBookingCard } from "../camp-booking-card/CampBookingCard";
 import Image from "next/image";
 
-type MobileBottomNavigationProps = Pick<FetchedCamp, "perNightCost">;
+type MobileBottomNavigationProps = Pick<FetchedCamp, "perNightCost" | "id">;
 
 export function MobileBottomNavigation(props: MobileBottomNavigationProps) {
     const { perNightCost } = props;
@@ -67,7 +67,11 @@ export function MobileBottomNavigation(props: MobileBottomNavigationProps) {
                 onOpen={() => setOpen(true)}
                 sx={{ display: { xs: "block", md: "none" } }}
             >
-                <CampBookingCard fullscreen perNightCost={perNightCost} />
+                <CampBookingCard
+                    fullscreen
+                    perNightCost={perNightCost}
+                    id={props.id}
+                />
             </SwipeableDrawer>
         </>
     );

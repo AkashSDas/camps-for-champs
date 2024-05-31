@@ -286,13 +286,13 @@ export default function CampInfo(props: Props) {
                         height="fit-content"
                         display={{ xs: "none", md: "block" }}
                     >
-                        <CampBookingCard perNightCost={perNightCost} />
+                        <CampBookingCard perNightCost={perNightCost} id={id} />
                     </Box>
                 </Stack>
             </Stack>
 
             {/* Mobile bottom navigation */}
-            <MobileBottomNavigation perNightCost={perNightCost} />
+            <MobileBottomNavigation perNightCost={perNightCost} id={id} />
         </Box>
     );
 }
