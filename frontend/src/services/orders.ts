@@ -75,6 +75,7 @@ type BookCampPayload = {
     petsCount: number;
     checkIn: Date;
     checkOut: Date;
+    paymentIntent: string;
 };
 
 function formatToDate(date: Date) {
@@ -102,6 +103,7 @@ export async function initializeCampBooking(
                 pets_count: payload.petsCount ?? 0,
                 check_in: formatToDate(payload.checkIn),
                 check_out: formatToDate(payload.checkOut),
+                payment_intent: payload.paymentIntent,
             },
         },
         true
@@ -143,9 +145,13 @@ export async function confirmCampBooking(campId: number, orderId: number) {
     );
     const { data, status } = res;
 
-    if (status === 200 && data != null && "order" in data) {
-        const parsedData = OrderSchema.parse(data);
-        return { success: true, order: parsedData };
+    if (
+        status === 200 &&
+        data != null &&
+        "message" in data &&
+        data.message === "Booking confirmed successfully"
+    ) {
+        return { success: true };
     } else if (
         status == 400 &&
         data != null &&

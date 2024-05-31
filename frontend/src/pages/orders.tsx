@@ -6,6 +6,8 @@ import { useQuery } from "@tanstack/react-query";
 import Head from "next/head";
 import { useUser } from "@app/hooks/auth";
 import { OrderCard } from "@app/components/orders/OrderCard";
+import { useConfirmBooking } from "@app/hooks/orders";
+import { Toast } from "@app/components/shared/toast/Toast";
 
 function useGetAllOrders() {
     const { user } = useUser();
@@ -26,6 +28,7 @@ function useGetAllOrders() {
 
 export default function OrdersPage(): React.JSX.Element {
     const { orders, isPending, reviews } = useGetAllOrders();
+    const { success, close } = useConfirmBooking();
 
     return (
         <Box position="relative">
@@ -76,6 +79,20 @@ export default function OrdersPage(): React.JSX.Element {
                     )}
                 </Stack>
             </Stack>
+
+            <Toast
+                open={success === "success"}
+                onClose={close}
+                severity="success"
+                message="Successfully confirmed booking"
+            />
+
+            <Toast
+                open={success === "failed"}
+                onClose={close}
+                severity="error"
+                message="Failed to confirm booking"
+            />
         </Box>
     );
 }

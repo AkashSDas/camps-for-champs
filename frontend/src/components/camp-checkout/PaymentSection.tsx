@@ -51,6 +51,7 @@ export function PaymentSection(props: Props): React.JSX.Element {
                     <PaymentForm
                         campId={props.campId}
                         changeTab={props.changeTab}
+                        paymentIntent={paymentIntent}
                         disabled={
                             props.amount === 0 ||
                             !inputs.checkInDate ||

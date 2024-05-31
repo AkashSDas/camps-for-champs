@@ -15,12 +15,14 @@ import { useMutation } from "@tanstack/react-query";
 import Image from "next/image";
 import { FormEvent, useState } from "react";
 import { Toast } from "../shared/toast/Toast";
+import { PaymentIntent } from "@stripe/stripe-js";
 
 type Props = {
     disabled: boolean;
     amount: number;
     changeTab: (tab: "inputs" | "payment") => void;
     campId: number;
+    paymentIntent: null | PaymentIntent;
 };
 
 export function PaymentForm(props: Props) {
@@ -33,7 +35,7 @@ export function PaymentForm(props: Props) {
     const handleSubmit = useMutation({
         mutationFn: async function (e: FormEvent<HTMLFormElement>) {
             e.preventDefault();
-            if (!stripe || !elements) {
+            if (!stripe || !elements || !props.paymentIntent) {
                 return;
             }
 
@@ -46,6 +48,7 @@ export function PaymentForm(props: Props) {
                     petsCount: store.petsCount,
                     checkIn: store.checkInDate!,
                     checkOut: store.checkOutDate!,
+                    paymentIntent: props.paymentIntent.id,
                 }
             );
             if (!success) {
