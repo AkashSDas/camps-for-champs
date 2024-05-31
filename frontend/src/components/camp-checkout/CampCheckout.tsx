@@ -50,7 +50,11 @@ export function CampCheckout(props: Props) {
                     />
                 </>
             ) : (
-                <PaymentSection amount={totalCost} changeTab={dispatch} />
+                <PaymentSection
+                    amount={totalCost}
+                    changeTab={dispatch}
+                    campId={props.camp.id}
+                />
             )}
         </Stack>
     );

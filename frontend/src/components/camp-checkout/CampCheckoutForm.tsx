@@ -1,12 +1,10 @@
 import { type FetchedCamp } from "@app/services/camps";
 import { useCampCheckoutStore } from "@app/store/camp-checkout";
 import { Button, Divider, Stack, Typography } from "@mui/material";
-import { FormEvent, useEffect, useMemo, useReducer } from "react";
+import { useEffect, useMemo } from "react";
 import { DatesInput } from "./DatesInput";
 import { GuestsInput } from "./GuestsInput";
 import Image from "next/image";
-import { useMutation } from "@tanstack/react-query";
-import { PaymentSection } from "./PaymentSection";
 
 type Props = {
     camp: FetchedCamp;
