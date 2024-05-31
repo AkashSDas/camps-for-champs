@@ -6,8 +6,8 @@ import PetsRoundedIcon from "@mui/icons-material/PetsRounded";
 import Face4RoundedIcon from "@mui/icons-material/Face4Rounded";
 import FaceRoundedIcon from "@mui/icons-material/FaceRounded";
 import TodayRoundedIcon from "@mui/icons-material/TodayRounded";
-import StarRoundedIcon from "@mui/icons-material/StarRounded";
 import { Order } from "@app/services/orders";
+import { AddReview } from "./AddReview";
 
 export function OrderCard({ order }: { order: Order }) {
     const { camp, campOccupancy, paymentStatus, bookingStatus, review } = order;
@@ -103,33 +103,7 @@ export function OrderCard({ order }: { order: Order }) {
                     />
                 </Stack>
 
-                {review ? (
-                    <Typography>
-                        <Stack gap="8px" direction="row">
-                            {Array.from({ length: review.rating }).map(
-                                (_, index) => (
-                                    <StarRoundedIcon key={index} />
-                                )
-                            )}
-                        </Stack>
-
-                        <Typography
-                            fontFamily={headingFont.style.fontFamily}
-                            fontSize="24px"
-                        >
-                            {`"`}S
-                        </Typography>
-
-                        <Typography>
-                            {review.comment ?? "I liked it."}
-                        </Typography>
-
-                        <Typography
-                            fontFamily={headingFont.style.fontFamily}
-                            fontSize="24px"
-                        >{`"`}</Typography>
-                    </Typography>
-                ) : null}
+                <AddReview review={review} campId={camp.id} />
             </Stack>
         </Stack>
     );

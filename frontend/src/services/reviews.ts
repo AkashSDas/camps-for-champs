@@ -118,3 +118,35 @@ export async function markReviewHelpful(campId: number, reviewId: number) {
         message: res.error?.message ?? "Unknown error",
     };
 }
+
+type AddReviewPayload = {
+    campId: number;
+    rating: number;
+    comment: string;
+};
+
+export async function addReview(payload: AddReviewPayload) {
+    type SuccessResponse = { message: string };
+    type ErrorResponse = { detail: string };
+
+    const res = await fetchFromAPI<SuccessResponse | ErrorResponse>(
+        endpoints.addReview(payload.campId),
+        {
+            method: "POST",
+            data: { rating: payload.rating, comment: payload.rating },
+        },
+        true
+    );
+    const { data, status } = res;
+
+    if (status === 200 && data != null && "message" in data) {
+        return { success: true, message: data.message };
+    } else if (status == 400 && data != null && "detail" in data) {
+        return { success: false, message: data.detail };
+    }
+
+    return {
+        success: false,
+        message: res.error?.message ?? "Unknown error",
+    };
+}

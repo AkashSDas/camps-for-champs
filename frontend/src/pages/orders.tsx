@@ -20,7 +20,7 @@ function useGetAllOrders() {
     return { orders: data?.orders ?? [], isPending };
 }
 
-export default function LikedCampsPage(): React.JSX.Element {
+export default function OrdersPage(): React.JSX.Element {
     const { orders, isPending } = useGetAllOrders();
 
     return (
