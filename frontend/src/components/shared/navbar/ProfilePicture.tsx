@@ -33,7 +33,7 @@ const actions = {
     bookings: {
         label: "Bookings",
         icon: "/icons/receipt.png",
-        href: "/bookings",
+        href: "/orders",
     },
     logout: { label: "Logout", icon: "/icons/logout.png" },
 };

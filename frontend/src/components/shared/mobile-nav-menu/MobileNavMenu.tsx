@@ -17,6 +17,7 @@ import { Loader } from "../loader/Loader";
 import { queryClient } from "@app/lib/react-query";
 import { logout } from "@app/services/auth";
 import { useMutation } from "@tanstack/react-query";
+import Link from "next/link";
 
 const MenuButton = styled(Button)((theme) => {
     return {
@@ -114,12 +115,30 @@ export function MobileNavMenu(): React.JSX.Element {
                         divider={<Divider sx={{ borderColor: "grey.200" }} />}
                         gap="0.5rem"
                     >
-                        <MenuButton endIcon={<ArrowForwardIos />}>
-                            About
-                        </MenuButton>
-
                         {isLoggedIn ? (
                             <>
+                                <MenuButton
+                                    LinkComponent={Link}
+                                    href="/profile"
+                                    endIcon={<ArrowForwardIos />}
+                                >
+                                    Profile
+                                </MenuButton>
+                                <MenuButton
+                                    LinkComponent={Link}
+                                    href="/liked-camps"
+                                    endIcon={<ArrowForwardIos />}
+                                >
+                                    Liked camps
+                                </MenuButton>
+                                <MenuButton
+                                    LinkComponent={Link}
+                                    href="/orders"
+                                    endIcon={<ArrowForwardIos />}
+                                >
+                                    Bookings
+                                </MenuButton>
+
                                 <MenuButton
                                     endIcon={<ArrowForwardIos />}
                                     onClick={() => logoutMutation.mutateAsync()}
