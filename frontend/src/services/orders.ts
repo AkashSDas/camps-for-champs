@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { SearchCampsSuccessCampSchema } from "./camps";
 import { endpoints, fetchFromAPI } from "@app/lib/api";
+import { ReviewSchema } from "./reviews";
 
 // ========================================
 // Schema
@@ -45,6 +46,7 @@ const OrderSchema = z
         amount: z.string(),
         payment_status: PaymentStatusSchema,
         booking_status: BookingStatusSchema,
+        review: ReviewSchema.optional().nullable(),
     })
     .transform((data) => ({
         id: data.id,
@@ -55,7 +57,14 @@ const OrderSchema = z
         amount: Number(data.amount),
         paymentStatus: data.payment_status,
         bookingStatus: data.booking_status,
+        review: data.review ?? null,
     }));
+
+const GetOrdersSchema = z.object({
+    orders: z.array(OrderSchema),
+});
+
+export type Order = z.infer<typeof OrderSchema>;
 
 // ========================================
 // Services
@@ -145,6 +154,34 @@ export async function confirmCampBooking(campId: number, orderId: number) {
     ) {
         // @ts-ignore
         return { success: false, message: data?.detail ?? data?.message };
+    }
+
+    return {
+        success: false,
+        message: res.error?.message ?? "Unknown error",
+    };
+}
+
+export async function getOrders() {
+    type SuccessResponse = {
+        message: string;
+        orders: z.infer<typeof GetOrdersSchema>["orders"];
+    };
+    type ErrorResponse = { detail: string };
+
+    const res = await fetchFromAPI<SuccessResponse | ErrorResponse>(
+        endpoints.getOrders,
+        { method: "GET" },
+        true
+    );
+    const { data, status } = res;
+
+    console.log({ mm: data });
+    if (status === 200 && data != null && "orders" in data) {
+        const parsedData = GetOrdersSchema.parse(data);
+        return { success: true, orders: parsedData.orders };
+    } else if (status == 400 && data != null && "detail" in data) {
+        return { success: false, message: data?.detail };
     }
 
     return {

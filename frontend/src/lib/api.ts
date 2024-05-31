@@ -106,4 +106,5 @@ export const endpoints = Object.freeze({
     confirmCampBooking: (campId: number, orderId: number) => {
         return `orders/camps/${campId}/orders/${orderId}/`;
     },
+    getOrders: "orders/",
 });

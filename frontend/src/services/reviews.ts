@@ -5,7 +5,7 @@ import { z } from "zod";
 // Schema
 // ========================================
 
-const ReviewSchema = z
+export const ReviewSchema = z
     .object({
         id: z.number(),
         author: z.object({

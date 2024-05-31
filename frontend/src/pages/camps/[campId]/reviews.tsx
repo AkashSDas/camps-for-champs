@@ -11,7 +11,7 @@ import {
 import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 
 export const config = {
     runtime: "nodejs", // or "edge"
