@@ -1,15 +1,17 @@
 import { type FetchedCamp } from "@app/services/camps";
 import { useCampCheckoutStore } from "@app/store/camp-checkout";
 import { Button, Divider, Stack, Typography } from "@mui/material";
-import { FormEvent, useMemo } from "react";
+import { FormEvent, useEffect, useMemo, useReducer } from "react";
 import { DatesInput } from "./DatesInput";
 import { GuestsInput } from "./GuestsInput";
 import Image from "next/image";
 import { useMutation } from "@tanstack/react-query";
-import { PaymentInput } from "./PaymentInput";
+import { PaymentSection } from "./PaymentSection";
 
 type Props = {
     camp: FetchedCamp;
+    changeTab: (tab: "inputs" | "payment") => void;
+    updateTotalCost: (cost: number) => void;
 };
 
 export function CampCheckoutForm(props: Props): React.JSX.Element {
@@ -63,19 +65,15 @@ export function CampCheckoutForm(props: Props): React.JSX.Element {
         [numOfDays, costOfGuestsPerNight]
     );
 
-    const handleSubmit = useMutation({
-        async mutationFn(e: FormEvent<HTMLFormElement>) {
-            e.preventDefault();
+    useEffect(
+        function () {
+            props.updateTotalCost(totalCost);
         },
-    });
-    console.log(inputs);
+        [totalCost]
+    );
+
     return (
-        <Stack
-            component="form"
-            gap="1rem"
-            my="1rem"
-            onSubmit={handleSubmit.mutateAsync}
-        >
+        <Stack gap="1rem" my="1rem">
             <DatesInput />
             <GuestsInput />
 
@@ -103,19 +101,16 @@ export function CampCheckoutForm(props: Props): React.JSX.Element {
                     <Typography fontWeight="bold">₹{totalCost}</Typography>
                 </Stack>
 
-                <PaymentInput />
-
                 <Button
-                    type="submit"
                     variant="contained"
                     disableElevation
+                    onClick={() => props.changeTab("payment")}
                     sx={{ height: "56px", mt: "2rem" }}
                     disabled={
                         totalCost === 0 ||
                         !inputs.checkInDate ||
                         !inputs.checkOutDate ||
-                        inputs.adultGuestsCount === 0 ||
-                        handleSubmit.isPending
+                        inputs.adultGuestsCount === 0
                     }
                     startIcon={
                         <Image
