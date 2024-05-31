@@ -27,11 +27,11 @@ class GetOrderSerializer(serializers.ModelSerializer):
         fields = (
             "camp",
             "camp_occupancy",
+            "user",
             "created_at",
             "amount",
             "payment_status",
-            "payment_id",
-            "user",
+            "booking_status",
         )
 
 
@@ -43,7 +43,6 @@ class CreateOrderSerializer(serializers.Serializer):
     adult_guests_count = serializers.IntegerField()
     child_guests_count = serializers.IntegerField()
     pets_count = serializers.IntegerField()
-    payment_method = serializers.CharField()
 
     def validate_check_in(self, value: datetime) -> datetime:
         """Validate the check_in field."""

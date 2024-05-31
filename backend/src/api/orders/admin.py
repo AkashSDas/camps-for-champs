@@ -10,7 +10,7 @@ class OrderModel(admin.ModelAdmin):
         "created_at",
         "amount",
         "payment_status",
-        "payment_id",
+        "booking_status",
     ]
     list_filter = ["payment_status"]
     search_fields = ["camp", "user"]

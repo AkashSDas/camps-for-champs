@@ -7,7 +7,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
-from api.orders.models import Order
+from api.orders.models import BookingStatus, Order
 from api.users.models import User
 from api.camps.models import Camp, CampOccupancy, CampOccupancyManager
 from api.orders.serializers import CreateOrderSerializer, GetOrderSerializer
@@ -17,84 +17,54 @@ import stripe
 stripe.api_key = getenv("STRIPE_SECRET_KEY")
 
 
-def get_or_create_customer(user: User) -> stripe.Customer:
-    if not user.stripe_customer_id:
-        customer = stripe.Customer.create(email=user.email)
-        user.stripe_customer_id = customer.id
-        user.save()
-        return customer
+@api_view(["PUT"])
+@permission_classes([IsAuthenticated])
+def confirm_camp_booking(
+    req: Request, camp_id: int, order_id: int, *args, **kwargs
+) -> Response:
+    """
+    Confirm camp booking process.
 
-    customer = stripe.Customer.retrieve(id=user.stripe_customer_id)
-    if not customer:
-        customer = stripe.Customer.create(email=user.email)
-        user.stripe_customer_id = customer.id
-        user.save()
-        return customer
+    1. get order and camp
+    2. verify the user
+    3. confirm booking
+    """
 
-    return customer
+    user = req.user
+    order = Order.objects.get(pk=order_id)
+    if not order:
+        return Response({"message": "Order not found"}, status=404)
 
+    camp = Camp.objects.get(pk=camp_id)
+    if not camp:
+        return Response({"message": "Camp not found"}, status=404)
 
-@deprecated(version="1.0", reason="Use payment intents instead.")
-def charge_user(user: User, amount: float) -> stripe.Charge:
-    try:
-        customer = get_or_create_customer(user)
-        charge = stripe.Charge.create(
-            customer=customer.id,
-            amount=int(amount * 100),
-            currency="usd",
-            description="Camp booking",
-        )
+    if order.user != user:
+        return Response({"message": "Unauthorized"}, status=401)
 
-        return charge
-    except stripe.StripeError as e:
-        print(e)
-        raise ValueError("Failed to charge customer")
+    order.booking_status = BookingStatus.FULLFILLED.value
+    order.save()
 
-
-def create_payment_intent_and_charge(
-    user_id: int, amount: float, payment_method: str = "card"
-) -> stripe.PaymentIntent:
-    try:
-        user = User.objects.get(pk=user_id)
-        if not user:
-            raise ValueError("User not found")
-
-        customer = get_or_create_customer(user)
-        stripe.PaymentMethod.attach(payment_method, customer=customer.id)
-        stripe.Customer.modify(
-            customer.id,
-            invoice_settings={"default_payment_method": payment_method},
-        )
-
-        payment_intent = stripe.PaymentIntent.create(
-            customer=customer.id,
-            amount=int(amount * 100),
-            currency="usd",
-            off_session=True,
-            confirm=True,
-            receipt_email=user.email,
-            payment_method=payment_method,
-        )
-
-        return payment_intent
-    except stripe.StripeError as e:
-        print(e)
-        raise ValueError("Failed to charge customer")
+    return Response(
+        {
+            "message": "Booking confirmed successfully",
+            "order": GetOrderSerializer(order).data,
+        }
+    )
 
 
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
-def book_camp(req: Request, camp_id: int, *args, **kwargs) -> Response:
+def init_camp_booking(req: Request, camp_id: int, *args, **kwargs) -> Response:
     """
-    Handle booking camp space and charging the user.
+    Initialize camp booking process.
 
     1. validate booking payload
-    2. get camp for amount calculation and available occupancy
-    3. check if the camp is available for the given dates
-    4. create an order
-    5. charge the user
-    6. return the order details
+    2. check if the camp is available for the given dates
+    3. create an order
     """
+
+    # validate booking payload
 
     serializer = CreateOrderSerializer(data=req.data)
     serializer.is_valid(raise_exception=True)
@@ -105,14 +75,13 @@ def book_camp(req: Request, camp_id: int, *args, **kwargs) -> Response:
     total_guests: int = adult_guests + round(child_guests / 2) + round(pets / 2)
     check_in: datetime = payload["check_in"]
     check_out: datetime = payload["check_out"]
-    payment_method: str = payload["payment_method"]
 
     user = req.user
     camp = Camp.objects.get(pk=camp_id)
     if not camp:
         return Response({"message": "Camp not found"}, status=404)
 
-    # check if space is available
+    # check if the camp is available for the given dates
 
     occupany = (
         cast(CampOccupancyManager, CampOccupancy.objects)
@@ -136,8 +105,6 @@ def book_camp(req: Request, camp_id: int, *args, **kwargs) -> Response:
             status=400,
         )
 
-    # get price for the booking
-
     num_of_days = (check_out - check_in).days
     num_of_days = num_of_days if num_of_days > 0 else 1
     occupancy_to_be_considered = floor(total_guests / 4)
@@ -147,7 +114,7 @@ def book_camp(req: Request, camp_id: int, *args, **kwargs) -> Response:
     cost = occupancy_to_be_considered * int(camp.per_night_cost)
     total_cost = cost * num_of_days
 
-    # create camp occupancy and order
+    # create an order
 
     camp_occupancy = CampOccupancy.objects.create(
         camp=camp,
@@ -165,27 +132,13 @@ def book_camp(req: Request, camp_id: int, *args, **kwargs) -> Response:
         amount=total_cost,
     )
 
-    # charge the user
-
-    try:
-        payment_intent = create_payment_intent_and_charge(
-            user_id=user.pk,
-            amount=total_cost,
-            payment_method=payment_method,
-        )
-        order.payment_status = payment_intent.status
-        order.payment_id = payment_intent.id
-        order.save()
-
-        return Response(
-            {
-                "message": "Camp booked successfully",
-                "order": GetOrderSerializer(order).data,
-                "success": True,
-            }
-        )
-    except ValueError as e:
-        return Response({"message": str(e), "success": False}, status=400)
+    return Response(
+        {
+            "message": "Booking initialized successfully",
+            "order": GetOrderSerializer(order).data,
+        },
+        status=201,
+    )
 
 
 @api_view(["GET"])
