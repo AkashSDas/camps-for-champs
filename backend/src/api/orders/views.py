@@ -47,20 +47,19 @@ def confirm_camp_booking(
             status=400,
         )
 
-    payment_intent = stripe.PaymentIntent.confirm(intent=order.payment_intent)
+    payment_intent = stripe.PaymentIntent.retrieve(order.payment_intent)
     if payment_intent.status != "succeeded":
         return Response(
             {"message": "Payment intent confirmation failed"},
             status=400,
         )
 
-    order.booking_status = BookingStatus.FULLFILLED.value
+    order.payment_status = PaymentStatus.COMPLETED.value
     order.save()
 
     return Response(
         {
             "message": "Booking confirmed successfully",
-            "order": GetOrderSerializer(order).data,
         }
     )
 
