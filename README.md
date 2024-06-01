@@ -73,3 +73,7 @@ Backend:
 - Add notification system
 - Refactor FE and create common UI components
 - Add animations
+
+## License
+
+[MIT License](./LICENSE)
