@@ -4,7 +4,7 @@ A camping service where you find place to relax, connect with nature, and yourse
 
 ![Presentation](./media/presentation.png)
 
-[Demo](https://youtu.be/IXhIfAi1fXw)
+[Demo](https://youtu.be/hWZk8-4SW0E)
 
 ## Features
 
