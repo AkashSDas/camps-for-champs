@@ -83,6 +83,7 @@ export function SignupModal(): React.JSX.Element {
     return (
         <>
             <Dialog
+                data-test="signup-modal"
                 open={isOpen}
                 onClose={onClose}
                 fullScreen={fullScreen}
@@ -116,6 +117,7 @@ export function SignupModal(): React.JSX.Element {
                     </DialogContentText>
 
                     <Stack
+                        data-test="signup-form"
                         component="form"
                         gap="1.5rem"
                         onSubmit={handleSubmit((data) =>
@@ -124,12 +126,16 @@ export function SignupModal(): React.JSX.Element {
                     >
                         <Stack gap="1.5rem">
                             <TextField
+                                data-test="signup-email-input"
                                 label="Email address"
                                 placeholder="Email address"
                                 variant="outlined"
                                 {...register("email")}
                                 error={!!errors.email}
                                 helperText={errors.email?.message}
+                                FormHelperTextProps={{
+                                    className: "helper-text",
+                                }}
                             />
 
                             <Stack
@@ -142,6 +148,7 @@ export function SignupModal(): React.JSX.Element {
                                 })}
                             >
                                 <TextField
+                                    data-test="signup-firstname-input"
                                     label="First name"
                                     placeholder="First name"
                                     variant="outlined"
@@ -149,9 +156,13 @@ export function SignupModal(): React.JSX.Element {
                                     error={!!errors.firstName}
                                     helperText={errors.firstName?.message}
                                     sx={{ width: "100%" }}
+                                    FormHelperTextProps={{
+                                        className: "helper-text",
+                                    }}
                                 />
 
                                 <TextField
+                                    data-test="signup-lastname-input"
                                     label="Last name"
                                     placeholder="Last name"
                                     variant="outlined"
@@ -159,19 +170,27 @@ export function SignupModal(): React.JSX.Element {
                                     error={!!errors.lastName}
                                     helperText={errors.lastName?.message}
                                     sx={{ width: "100%" }}
+                                    FormHelperTextProps={{
+                                        className: "helper-text",
+                                    }}
                                 />
                             </Stack>
 
                             <TextField
+                                data-test="signup-password-input"
                                 label="Password"
                                 placeholder="Password"
                                 variant="outlined"
                                 {...register("password")}
                                 error={!!errors.password}
                                 helperText={errors.password?.message}
+                                FormHelperTextProps={{
+                                    className: "helper-text",
+                                }}
                             />
 
                             <Button
+                                data-test="signup-submit-button"
                                 type="submit"
                                 variant="contained"
                                 disableElevation

@@ -76,6 +76,10 @@ Backend:
 - Refactor FE and create common UI components
 - Add animations
 
+## Issues
+
+- [Cypress Installation Issue](https://github.com/cypress-io/cypress/issues/2610)
+
 ## License
 
 [MIT License](./LICENSE)

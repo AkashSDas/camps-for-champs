@@ -3,7 +3,7 @@ describe("Login", () => {
         cy.visit("/");
     });
 
-    describe("when user not logged in", () => {
+    describe("when a user is not logged in", () => {
         it("should contain login button", () => {
             cy.get("[data-test='login-button']").should("be.visible");
         });

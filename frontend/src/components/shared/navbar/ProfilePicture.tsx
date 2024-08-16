@@ -61,6 +61,7 @@ export function ProfilePicture(): React.JSX.Element {
     return (
         <>
             <Image
+                data-test="profile-image"
                 src={user?.profilePic ?? "/images/user.png"}
                 alt="User"
                 width={40}
@@ -153,6 +154,7 @@ export function ProfilePicture(): React.JSX.Element {
                 </Link>
 
                 <MenuItem
+                    data-test="logout-button"
                     sx={{
                         "&:hover": { bgcolor: "grey.200" },
                         "&:active": { bgcolor: "grey.300" },

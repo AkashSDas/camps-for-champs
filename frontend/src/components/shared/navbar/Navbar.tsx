@@ -115,6 +115,7 @@ export function Navbar(props: Props): React.JSX.Element {
                             </Button>
 
                             <Button
+                                data-test="signup-button"
                                 variant="contained"
                                 disableElevation
                                 onClick={openSignupModal}
