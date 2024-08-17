@@ -18,8 +18,9 @@ describe("Login", () => {
         });
 
         it("should show error message when login form is submitted with invalid data", () => {
-            cy.get("[data-test='login-button']").click();
-            cy.get("[data-test='login-form']").submit();
+            cy.getData("login-button").click();
+            cy.getData("login-form").submit();
+
             cy.get("[data-test='login-email-input'] > .helper-text").should(
                 "be.visible"
             );
