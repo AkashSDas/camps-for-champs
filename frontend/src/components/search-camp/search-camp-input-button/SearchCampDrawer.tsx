@@ -26,6 +26,7 @@ export function SearchCampDrawer(props: Props) {
 
     return (
         <SwipeableDrawer
+            data-test="search-camps-drawer"
             anchor="top"
             open={openSearchDrawer}
             onOpen={() => setOpenSearchDrawer(true)}

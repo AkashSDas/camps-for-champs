@@ -8,17 +8,17 @@ export function SearchCampInputButton() {
     const { openSearchDrawer, setOpenSearchDrawer } = useSearchCampInputStore();
     const router = useRouter();
 
-    if (router.pathname === "/") {
-        return null;
-    }
-
     return (
         <>
             <Stack
+                data-test="search-camps-input-button"
                 direction="row"
                 gap="0.5rem"
                 display={{ xs: "none", md: "flex" }}
-                sx={{ cursor: "pointer" }}
+                sx={{
+                    cursor: "pointer",
+                    display: router.pathname === "/" ? "none" : "flex",
+                }}
                 onClick={() => setOpenSearchDrawer(true)}
             >
                 <Stack
