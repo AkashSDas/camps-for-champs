@@ -38,6 +38,26 @@ describe("Login", () => {
             );
         });
 
+        // it.only("should show error when password is not provided", () => {
+        //     // For HTML required and other validation messages
+
+        //     cy.get("[data-test='login-button']").click();
+        //     cy.get("[data-test='login-email-input']").type(
+        //         "valid@email.com{enter}"
+        //     );
+
+        //     cy.get("[data-test='login-password-input']:invalid");
+
+        //     cy.get("[data-test='login-password-input']:invalid")
+        //         .invoke("prop", "validationMessage")
+        //         .should("contain", "Please fill in this field.");
+
+        //     cy.get("[data-test='login-password-input']:invalid")
+        //         .invoke("prop", "validity")
+        //         .its("valueMissing")
+        //         .should("be.true");
+        // });
+
         it("should submit login form successfully", () => {
             cy.get("[data-test='login-button']").click();
             cy.get("[data-test='login-email-input']").type("akash@gmail.com");
