@@ -1,0 +1,10 @@
+{
+    "access": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzIzOTA0NTAyLCJpYXQiOjE3MjM5MDQyMDIsImp0aSI6ImRjNjM0YTJjZDM5YTQyYzJhMGRiYmJmOWY4Y2FkMmQ0IiwidXNlcl9pZCI6MTMsImVtYWlsIjoiYWthc2hAZ21haWwuY29tIn0.NJH0xNRY_m_Ck8tYr6HpLTuX3qoDp61AeR4D5ijcVls",
+    "user": {
+        "id": 13,
+        "email": "akash@gmail.com",
+        "first_name": "Akash",
+        "last_name": "Das",
+        "profile_pic": "https://res.cloudinary.com/akashsdas/image/upload/v1/camps-for-champs/images/users/Friedrich-Nietzsche_copy_exolse"
+    }
+}

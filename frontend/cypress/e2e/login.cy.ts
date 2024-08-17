@@ -1,6 +1,16 @@
 describe("Login", () => {
     beforeEach(() => {
         cy.visit("/");
+
+        // cy.intercept("/api/users/login/").as("api");
+
+        cy.intercept("/api/users/login", { fixture: "login" }).as("loginApi");
+        cy.intercept("/api/users/login/refresh", {
+            fixture: "refresh-access-token",
+        }).as("refreshApi");
+        cy.intercept("/api/users/me", {
+            fixture: "user-info",
+        }).as("loggedInUserInfo");
     });
 
     describe("when a user is not logged in", () => {
@@ -64,6 +74,21 @@ describe("Login", () => {
             cy.get("[data-test='login-email-input']").type("akash@gmail.com");
             cy.get("[data-test='login-password-input']").type("Testing123");
             cy.get("[data-test='login-form']").submit();
+        });
+
+        it("should call the API when login form is submitted successfully", () => {
+            cy.get("[data-test='login-button']").click();
+            cy.get("[data-test='login-email-input']").type("akash@gmail.com");
+            cy.get("[data-test='login-password-input']").type("Testing123");
+            cy.get("[data-test='login-form']").submit();
+
+            cy.wait("@loginApi").then((interception) =>
+                console.log({ interception })
+            );
+            cy.wait("@refreshApi");
+            cy.wait("@loggedInUserInfo");
+
+            cy.get("[data-test='profile-image']").should("be.visible");
         });
     });
 });
