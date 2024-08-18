@@ -1,5 +1,10 @@
-import { SearchCampsInput as SearchInput } from "@app/components/shared/search-camps-input/SearchCampsInput";
-import { SwipeableDrawer, Stack, Typography } from "@mui/material";
+import { type SearchCampsInput as SearchInput } from "@app/components/shared/search-camps-input/SearchCampsInput";
+import { Stack, Typography } from "@mui/material";
+
+// importing it from @mui/material is giving error in Storybook
+// (not while running normally)
+import SwipeableDrawer from "@mui/material/SwipeableDrawer";
+
 import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
 
