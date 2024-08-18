@@ -74,9 +74,16 @@ export default function ForgotPassword(): React.JSX.Element {
                                 {...register("email")}
                                 error={!!errors.email}
                                 helperText={errors.email?.message}
+                                InputProps={{
+                                    inputProps: {
+                                        // @ts-ignore
+                                        "data-testid": "forgot-password-email",
+                                    },
+                                }}
                             />
 
                             <Button
+                                data-testid="forgot-password-button"
                                 type="submit"
                                 variant="contained"
                                 disableElevation
