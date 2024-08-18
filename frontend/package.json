@@ -11,7 +11,8 @@
         "build-storybook": "storybook build",
         "test": "jest",
         "cy:open": "pnpx cypress open",
-        "cy:run": "pnpx cypress run"
+        "cy:run": "pnpx cypress run",
+        "test-storybook": "test-storybook"
     },
     "dependencies": {
         "@emotion/react": "^11.11.4",
@@ -42,6 +43,7 @@
     },
     "devDependencies": {
         "@chromatic-com/storybook": "^1.3.3",
+        "@storybook/addon-a11y": "^7.6.16",
         "@storybook/addon-essentials": "^8.0.8",
         "@storybook/addon-interactions": "^8.0.8",
         "@storybook/addon-links": "^8.0.8",
@@ -51,6 +53,7 @@
         "@storybook/nextjs": "^8.0.8",
         "@storybook/react": "^8.0.8",
         "@storybook/test": "^8.0.8",
+        "@storybook/test-runner": "^0.19.1",
         "@testing-library/jest-dom": "^6.4.2",
         "@testing-library/react": "^15.0.2",
         "@testing-library/user-event": "^14.5.2",

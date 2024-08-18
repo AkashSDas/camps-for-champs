@@ -8,8 +8,8 @@ const config: StorybookConfig = {
         "@storybook/addon-essentials",
         "@chromatic-com/storybook",
         "@storybook/addon-interactions",
-
         "@storybook/addon-viewport",
+        "@storybook/addon-a11y",
     ],
     framework: {
         name: "@storybook/nextjs",
@@ -19,6 +19,9 @@ const config: StorybookConfig = {
         // autodocs: "tag",
     },
     staticDirs: ["../public"],
+    core: {
+        disableTelemetry: true, // 👈 Used to ignore update notifications.
+    },
 };
 
 export default config;
