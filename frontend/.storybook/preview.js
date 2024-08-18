@@ -28,6 +28,11 @@ const preview = {
             },
         },
     },
+    loaders: [
+        async () => {
+            return { theme: "light" };
+        },
+    ],
     decorators: [
         (Story, context) => {
             const { theme: themeKey } = context.globals;
