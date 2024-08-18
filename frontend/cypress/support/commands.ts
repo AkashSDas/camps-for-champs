@@ -32,10 +32,25 @@ declare global {
     namespace Cypress {
         interface Chainable<Subject = any> {
             getData(attribute: string): Chainable<JQuery>;
+            interceptApisForSuccessfulInitialLogin(): void;
         }
     }
 }
 
 Cypress.Commands.add("getData", (attribute: string) => {
     return cy.get(`[data-test=${attribute}]`);
+});
+
+Cypress.Commands.add("interceptApisForSuccessfulInitialLogin", () => {
+    // cy.intercept("/api/users/login/").as("api");
+    cy.intercept("/api/users/login", { fixture: "login" }).as("loginApi");
+    cy.intercept("/api/users/login/refresh", {
+        fixture: "refresh-access-token",
+    }).as("refreshApi");
+    cy.intercept("/api/users/me", {
+        fixture: "user-info",
+    }).as("loggedInUserInfo");
+    cy.intercept("/api/camps/likes/user", {
+        fixture: "liked-camps",
+    }).as("likedCamps");
 });

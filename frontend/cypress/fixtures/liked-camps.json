@@ -1,0 +1,1700 @@
+{
+    "camps": [
+        {
+            "id": 35,
+            "name": "Winter Wonderland Camp",
+            "about": "Enjoy camping in the snow-covered landscapes.",
+            "check_in_at": "20:00:00",
+            "check_out_at": "05:00:00",
+            "occupancy_count": 2,
+            "per_night_cost": "25.00",
+            "is_active": true,
+            "tags": [
+                {
+                    "id": 12,
+                    "label": "Instagram Worthy"
+                },
+                {
+                    "id": 15,
+                    "label": "Rustic Charm"
+                },
+                {
+                    "id": 14,
+                    "label": "Scenic Trails"
+                },
+                {
+                    "id": 8,
+                    "label": "Thrill Seeker's Paradise"
+                },
+                {
+                    "id": 19,
+                    "label": "Trending Trailblazer"
+                }
+            ],
+            "created_at": "2024-05-07T17:58:01.677819Z",
+            "updated_at": "2024-05-07T17:58:01.677824Z",
+            "created_by": 22,
+            "features": [
+                {
+                    "id": 223,
+                    "camp": {
+                        "id": 35,
+                        "name": "Winter Wonderland Camp"
+                    },
+                    "feature": {
+                        "id": 96,
+                        "feature_type": "highlight",
+                        "label": "Family Friendly",
+                        "description": "A campsite suitable for families."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 224,
+                    "camp": {
+                        "id": 35,
+                        "name": "Winter Wonderland Camp"
+                    },
+                    "feature": {
+                        "id": 98,
+                        "feature_type": "highlight",
+                        "label": "Beach Access",
+                        "description": "A campsite with direct access to the beach."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 225,
+                    "camp": {
+                        "id": 35,
+                        "name": "Winter Wonderland Camp"
+                    },
+                    "feature": {
+                        "id": 99,
+                        "feature_type": "highlight",
+                        "label": "RV Friendly",
+                        "description": "A campsite suitable for RVs."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 226,
+                    "camp": {
+                        "id": 35,
+                        "name": "Winter Wonderland Camp"
+                    },
+                    "feature": {
+                        "id": 100,
+                        "feature_type": "surrounding",
+                        "label": "Mountain View",
+                        "description": "A campsite with scenic mountain views."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 227,
+                    "camp": {
+                        "id": 35,
+                        "name": "Winter Wonderland Camp"
+                    },
+                    "feature": {
+                        "id": 102,
+                        "feature_type": "surrounding",
+                        "label": "River View",
+                        "description": "A campsite with a view of a nearby river."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 228,
+                    "camp": {
+                        "id": 35,
+                        "name": "Winter Wonderland Camp"
+                    },
+                    "feature": {
+                        "id": 103,
+                        "feature_type": "surrounding",
+                        "label": "Forest View",
+                        "description": "A campsite surrounded by lush forests."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 229,
+                    "camp": {
+                        "id": 35,
+                        "name": "Winter Wonderland Camp"
+                    },
+                    "feature": {
+                        "id": 101,
+                        "feature_type": "surrounding",
+                        "label": "Lake View",
+                        "description": "A campsite overlooking a serene lake."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 230,
+                    "camp": {
+                        "id": 35,
+                        "name": "Winter Wonderland Camp"
+                    },
+                    "feature": {
+                        "id": 106,
+                        "feature_type": "activity",
+                        "label": "Fishing Spots",
+                        "description": "Access to nearby fishing spots."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 231,
+                    "camp": {
+                        "id": 35,
+                        "name": "Winter Wonderland Camp"
+                    },
+                    "feature": {
+                        "id": 105,
+                        "feature_type": "activity",
+                        "label": "Biking Trails",
+                        "description": "Access to nearby biking trails."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 232,
+                    "camp": {
+                        "id": 35,
+                        "name": "Winter Wonderland Camp"
+                    },
+                    "feature": {
+                        "id": 107,
+                        "feature_type": "activity",
+                        "label": "Swimming Spots",
+                        "description": "Access to nearby swimming spots."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 233,
+                    "camp": {
+                        "id": 35,
+                        "name": "Winter Wonderland Camp"
+                    },
+                    "feature": {
+                        "id": 104,
+                        "feature_type": "activity",
+                        "label": "Hiking Trails",
+                        "description": "Access to nearby hiking trails."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 234,
+                    "camp": {
+                        "id": 35,
+                        "name": "Winter Wonderland Camp"
+                    },
+                    "feature": {
+                        "id": 109,
+                        "feature_type": "amenity",
+                        "label": "Pet-friendly",
+                        "description": "Pets are allowed."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 235,
+                    "camp": {
+                        "id": 35,
+                        "name": "Winter Wonderland Camp"
+                    },
+                    "feature": {
+                        "id": 113,
+                        "feature_type": "amenity",
+                        "label": "Parking",
+                        "description": "Parking available."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 236,
+                    "camp": {
+                        "id": 35,
+                        "name": "Winter Wonderland Camp"
+                    },
+                    "feature": {
+                        "id": 112,
+                        "feature_type": "amenity",
+                        "label": "Shower",
+                        "description": "Hot water shower available."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 237,
+                    "camp": {
+                        "id": 35,
+                        "name": "Winter Wonderland Camp"
+                    },
+                    "feature": {
+                        "id": 110,
+                        "feature_type": "amenity",
+                        "label": "Wi-Fi",
+                        "description": "Free Wi-Fi available."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 238,
+                    "camp": {
+                        "id": 35,
+                        "name": "Winter Wonderland Camp"
+                    },
+                    "feature": {
+                        "id": 114,
+                        "feature_type": "amenity",
+                        "label": "Electricity",
+                        "description": "Electricity available."
+                    },
+                    "is_available": true
+                }
+            ],
+            "images": [
+                {
+                    "id": 191,
+                    "camp": 35,
+                    "image": "https://res.cloudinary.com/akashsdas/image/upload/v1/camps-for-champs/images/camps/unsplash_MwYBzsaSAGQ_r6qnqu.png",
+                    "alt_text": null,
+                    "created_at": "2024-05-07T17:58:06.259265Z",
+                    "total_images": 8
+                },
+                {
+                    "id": 190,
+                    "camp": 35,
+                    "image": "https://res.cloudinary.com/akashsdas/image/upload/v1/camps-for-champs/images/camps/unsplash_MwYBzsaSAGQ_r6qnqu.png",
+                    "alt_text": null,
+                    "created_at": "2024-05-07T17:58:06.258904Z",
+                    "total_images": 8
+                },
+                {
+                    "id": 189,
+                    "camp": 35,
+                    "image": "https://res.cloudinary.com/akashsdas/image/upload/v1/camps-for-champs/images/camps/unsplash_MwYBzsaSAGQ_r6qnqu.png",
+                    "alt_text": null,
+                    "created_at": "2024-05-07T17:58:06.258458Z",
+                    "total_images": 8
+                },
+                {
+                    "id": 188,
+                    "camp": 35,
+                    "image": "https://res.cloudinary.com/akashsdas/image/upload/v1/camps-for-champs/images/camps/unsplash_MwYBzsaSAGQ_r6qnqu.png",
+                    "alt_text": null,
+                    "created_at": "2024-05-07T17:58:06.257764Z",
+                    "total_images": 8
+                },
+                {
+                    "id": 187,
+                    "camp": 35,
+                    "image": "https://res.cloudinary.com/akashsdas/image/upload/v1/camps-for-champs/images/camps/unsplash_MwYBzsaSAGQ_r6qnqu.png",
+                    "alt_text": null,
+                    "created_at": "2024-05-07T17:58:06.257298Z",
+                    "total_images": 8
+                },
+                {
+                    "id": 186,
+                    "camp": 35,
+                    "image": "https://res.cloudinary.com/akashsdas/image/upload/v1/camps-for-champs/images/camps/unsplash_MwYBzsaSAGQ_r6qnqu.png",
+                    "alt_text": null,
+                    "created_at": "2024-05-07T17:58:06.256945Z",
+                    "total_images": 8
+                },
+                {
+                    "id": 185,
+                    "camp": 35,
+                    "image": "https://res.cloudinary.com/akashsdas/image/upload/v1/camps-for-champs/images/camps/unsplash_MwYBzsaSAGQ_r6qnqu.png",
+                    "alt_text": null,
+                    "created_at": "2024-05-07T17:58:06.256550Z",
+                    "total_images": 8
+                },
+                {
+                    "id": 184,
+                    "camp": 35,
+                    "image": "https://res.cloudinary.com/akashsdas/image/upload/v1/camps-for-champs/images/camps/unsplash_MwYBzsaSAGQ_r6qnqu.png",
+                    "alt_text": null,
+                    "created_at": "2024-05-07T17:58:06.256157Z",
+                    "total_images": 8
+                }
+            ],
+            "address": "Murphy, Cherokee, North Carolina",
+            "latitude": "78.901200",
+            "longitude": "-178.901200",
+            "reviews": [],
+            "average_rating": 0,
+            "overall_rating": 0,
+            "total_reviews": 0
+        },
+        {
+            "id": 30,
+            "name": "Lakeside Camping",
+            "about": "Camp by the lake and enjoy the serene views.",
+            "check_in_at": "13:00:00",
+            "check_out_at": "10:00:00",
+            "occupancy_count": 5,
+            "per_night_cost": "60.00",
+            "is_active": true,
+            "tags": [
+                {
+                    "id": 3,
+                    "label": "Adventure Haven"
+                },
+                {
+                    "id": 34,
+                    "label": "Breathtaking Views"
+                },
+                {
+                    "id": 49,
+                    "label": "Mental Clarity"
+                },
+                {
+                    "id": 42,
+                    "label": "Stress Relief"
+                },
+                {
+                    "id": 38,
+                    "label": "Untouched Wilderness"
+                }
+            ],
+            "created_at": "2024-05-07T17:58:01.670794Z",
+            "updated_at": "2024-05-07T17:58:01.670801Z",
+            "created_by": 13,
+            "features": [
+                {
+                    "id": 143,
+                    "camp": {
+                        "id": 30,
+                        "name": "Lakeside Camping"
+                    },
+                    "feature": {
+                        "id": 96,
+                        "feature_type": "highlight",
+                        "label": "Family Friendly",
+                        "description": "A campsite suitable for families."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 144,
+                    "camp": {
+                        "id": 30,
+                        "name": "Lakeside Camping"
+                    },
+                    "feature": {
+                        "id": 98,
+                        "feature_type": "highlight",
+                        "label": "Beach Access",
+                        "description": "A campsite with direct access to the beach."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 145,
+                    "camp": {
+                        "id": 30,
+                        "name": "Lakeside Camping"
+                    },
+                    "feature": {
+                        "id": 99,
+                        "feature_type": "highlight",
+                        "label": "RV Friendly",
+                        "description": "A campsite suitable for RVs."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 146,
+                    "camp": {
+                        "id": 30,
+                        "name": "Lakeside Camping"
+                    },
+                    "feature": {
+                        "id": 100,
+                        "feature_type": "surrounding",
+                        "label": "Mountain View",
+                        "description": "A campsite with scenic mountain views."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 147,
+                    "camp": {
+                        "id": 30,
+                        "name": "Lakeside Camping"
+                    },
+                    "feature": {
+                        "id": 102,
+                        "feature_type": "surrounding",
+                        "label": "River View",
+                        "description": "A campsite with a view of a nearby river."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 148,
+                    "camp": {
+                        "id": 30,
+                        "name": "Lakeside Camping"
+                    },
+                    "feature": {
+                        "id": 103,
+                        "feature_type": "surrounding",
+                        "label": "Forest View",
+                        "description": "A campsite surrounded by lush forests."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 149,
+                    "camp": {
+                        "id": 30,
+                        "name": "Lakeside Camping"
+                    },
+                    "feature": {
+                        "id": 101,
+                        "feature_type": "surrounding",
+                        "label": "Lake View",
+                        "description": "A campsite overlooking a serene lake."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 150,
+                    "camp": {
+                        "id": 30,
+                        "name": "Lakeside Camping"
+                    },
+                    "feature": {
+                        "id": 106,
+                        "feature_type": "activity",
+                        "label": "Fishing Spots",
+                        "description": "Access to nearby fishing spots."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 151,
+                    "camp": {
+                        "id": 30,
+                        "name": "Lakeside Camping"
+                    },
+                    "feature": {
+                        "id": 105,
+                        "feature_type": "activity",
+                        "label": "Biking Trails",
+                        "description": "Access to nearby biking trails."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 152,
+                    "camp": {
+                        "id": 30,
+                        "name": "Lakeside Camping"
+                    },
+                    "feature": {
+                        "id": 107,
+                        "feature_type": "activity",
+                        "label": "Swimming Spots",
+                        "description": "Access to nearby swimming spots."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 153,
+                    "camp": {
+                        "id": 30,
+                        "name": "Lakeside Camping"
+                    },
+                    "feature": {
+                        "id": 104,
+                        "feature_type": "activity",
+                        "label": "Hiking Trails",
+                        "description": "Access to nearby hiking trails."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 154,
+                    "camp": {
+                        "id": 30,
+                        "name": "Lakeside Camping"
+                    },
+                    "feature": {
+                        "id": 109,
+                        "feature_type": "amenity",
+                        "label": "Pet-friendly",
+                        "description": "Pets are allowed."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 155,
+                    "camp": {
+                        "id": 30,
+                        "name": "Lakeside Camping"
+                    },
+                    "feature": {
+                        "id": 113,
+                        "feature_type": "amenity",
+                        "label": "Parking",
+                        "description": "Parking available."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 156,
+                    "camp": {
+                        "id": 30,
+                        "name": "Lakeside Camping"
+                    },
+                    "feature": {
+                        "id": 112,
+                        "feature_type": "amenity",
+                        "label": "Shower",
+                        "description": "Hot water shower available."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 157,
+                    "camp": {
+                        "id": 30,
+                        "name": "Lakeside Camping"
+                    },
+                    "feature": {
+                        "id": 110,
+                        "feature_type": "amenity",
+                        "label": "Wi-Fi",
+                        "description": "Free Wi-Fi available."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 158,
+                    "camp": {
+                        "id": 30,
+                        "name": "Lakeside Camping"
+                    },
+                    "feature": {
+                        "id": 114,
+                        "feature_type": "amenity",
+                        "label": "Electricity",
+                        "description": "Electricity available."
+                    },
+                    "is_available": true
+                }
+            ],
+            "images": [
+                {
+                    "id": 151,
+                    "camp": 30,
+                    "image": "https://res.cloudinary.com/akashsdas/image/upload/v1/camps-for-champs/images/camps/unsplash_MwYBzsaSAGQ_r6qnqu.png",
+                    "alt_text": null,
+                    "created_at": "2024-05-07T17:58:06.243845Z",
+                    "total_images": 8
+                },
+                {
+                    "id": 150,
+                    "camp": 30,
+                    "image": "https://res.cloudinary.com/akashsdas/image/upload/v1/camps-for-champs/images/camps/unsplash_MwYBzsaSAGQ_r6qnqu.png",
+                    "alt_text": null,
+                    "created_at": "2024-05-07T17:58:06.243470Z",
+                    "total_images": 8
+                },
+                {
+                    "id": 149,
+                    "camp": 30,
+                    "image": "https://res.cloudinary.com/akashsdas/image/upload/v1/camps-for-champs/images/camps/unsplash_MwYBzsaSAGQ_r6qnqu.png",
+                    "alt_text": null,
+                    "created_at": "2024-05-07T17:58:06.243000Z",
+                    "total_images": 8
+                },
+                {
+                    "id": 148,
+                    "camp": 30,
+                    "image": "https://res.cloudinary.com/akashsdas/image/upload/v1/camps-for-champs/images/camps/unsplash_MwYBzsaSAGQ_r6qnqu.png",
+                    "alt_text": null,
+                    "created_at": "2024-05-07T17:58:06.242543Z",
+                    "total_images": 8
+                },
+                {
+                    "id": 147,
+                    "camp": 30,
+                    "image": "https://res.cloudinary.com/akashsdas/image/upload/v1/camps-for-champs/images/camps/unsplash_MwYBzsaSAGQ_r6qnqu.png",
+                    "alt_text": null,
+                    "created_at": "2024-05-07T17:58:06.242076Z",
+                    "total_images": 8
+                },
+                {
+                    "id": 146,
+                    "camp": 30,
+                    "image": "https://res.cloudinary.com/akashsdas/image/upload/v1/camps-for-champs/images/camps/unsplash_MwYBzsaSAGQ_r6qnqu.png",
+                    "alt_text": null,
+                    "created_at": "2024-05-07T17:58:06.241668Z",
+                    "total_images": 8
+                },
+                {
+                    "id": 145,
+                    "camp": 30,
+                    "image": "https://res.cloudinary.com/akashsdas/image/upload/v1/camps-for-champs/images/camps/unsplash_MwYBzsaSAGQ_r6qnqu.png",
+                    "alt_text": null,
+                    "created_at": "2024-05-07T17:58:06.241218Z",
+                    "total_images": 8
+                },
+                {
+                    "id": 144,
+                    "camp": 30,
+                    "image": "https://res.cloudinary.com/akashsdas/image/upload/v1/camps-for-champs/images/camps/unsplash_MwYBzsaSAGQ_r6qnqu.png",
+                    "alt_text": null,
+                    "created_at": "2024-05-07T17:58:06.240679Z",
+                    "total_images": 8
+                }
+            ],
+            "address": "Murphy, Cherokee, North Carolina",
+            "latitude": "34.567800",
+            "longitude": "-123.456700",
+            "reviews": [],
+            "average_rating": 0,
+            "overall_rating": 0,
+            "total_reviews": 0
+        },
+        {
+            "id": 29,
+            "name": "Mountain View Campground",
+            "about": "Enjoy stunning views of the mountains at this campsite.\r\n\r\nOur six-acre solar-powered goat farm is a quiet and peaceful slice of paradise away from the chaos and noise but close to so many places to adventure.\r\n\r\nSpring is in the air and goats are having kids (babies). Visit during March or April and you may just see a live birth plus play with baby goats!  Feed and play with the goats, picnic along our grass-covered brook, hang out around the large fire pit, and rejuvenate while being close to the many Smoky and Blue Ridge Mountain activities.",
+            "check_in_at": "14:00:00",
+            "check_out_at": "12:00:00",
+            "occupancy_count": 6,
+            "per_night_cost": "70.00",
+            "is_active": true,
+            "tags": [
+                {
+                    "id": 7,
+                    "label": "Eco-Friendly Haven"
+                },
+                {
+                    "id": 11,
+                    "label": "Hidden Gem"
+                },
+                {
+                    "id": 31,
+                    "label": "Scenic Beauty"
+                },
+                {
+                    "id": 14,
+                    "label": "Scenic Trails"
+                },
+                {
+                    "id": 8,
+                    "label": "Thrill Seeker's Paradise"
+                }
+            ],
+            "created_at": "2024-05-07T17:58:01.669252Z",
+            "updated_at": "2024-05-08T14:47:48.647100Z",
+            "created_by": 13,
+            "features": [
+                {
+                    "id": 127,
+                    "camp": {
+                        "id": 29,
+                        "name": "Mountain View Campground"
+                    },
+                    "feature": {
+                        "id": 96,
+                        "feature_type": "highlight",
+                        "label": "Family Friendly",
+                        "description": "A campsite suitable for families."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 128,
+                    "camp": {
+                        "id": 29,
+                        "name": "Mountain View Campground"
+                    },
+                    "feature": {
+                        "id": 98,
+                        "feature_type": "highlight",
+                        "label": "Beach Access",
+                        "description": "A campsite with direct access to the beach."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 129,
+                    "camp": {
+                        "id": 29,
+                        "name": "Mountain View Campground"
+                    },
+                    "feature": {
+                        "id": 99,
+                        "feature_type": "highlight",
+                        "label": "RV Friendly",
+                        "description": "A campsite suitable for RVs."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 130,
+                    "camp": {
+                        "id": 29,
+                        "name": "Mountain View Campground"
+                    },
+                    "feature": {
+                        "id": 100,
+                        "feature_type": "surrounding",
+                        "label": "Mountain View",
+                        "description": "A campsite with scenic mountain views."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 131,
+                    "camp": {
+                        "id": 29,
+                        "name": "Mountain View Campground"
+                    },
+                    "feature": {
+                        "id": 102,
+                        "feature_type": "surrounding",
+                        "label": "River View",
+                        "description": "A campsite with a view of a nearby river."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 132,
+                    "camp": {
+                        "id": 29,
+                        "name": "Mountain View Campground"
+                    },
+                    "feature": {
+                        "id": 103,
+                        "feature_type": "surrounding",
+                        "label": "Forest View",
+                        "description": "A campsite surrounded by lush forests."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 133,
+                    "camp": {
+                        "id": 29,
+                        "name": "Mountain View Campground"
+                    },
+                    "feature": {
+                        "id": 101,
+                        "feature_type": "surrounding",
+                        "label": "Lake View",
+                        "description": "A campsite overlooking a serene lake."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 134,
+                    "camp": {
+                        "id": 29,
+                        "name": "Mountain View Campground"
+                    },
+                    "feature": {
+                        "id": 106,
+                        "feature_type": "activity",
+                        "label": "Fishing Spots",
+                        "description": "Access to nearby fishing spots."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 135,
+                    "camp": {
+                        "id": 29,
+                        "name": "Mountain View Campground"
+                    },
+                    "feature": {
+                        "id": 105,
+                        "feature_type": "activity",
+                        "label": "Biking Trails",
+                        "description": "Access to nearby biking trails."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 136,
+                    "camp": {
+                        "id": 29,
+                        "name": "Mountain View Campground"
+                    },
+                    "feature": {
+                        "id": 107,
+                        "feature_type": "activity",
+                        "label": "Swimming Spots",
+                        "description": "Access to nearby swimming spots."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 137,
+                    "camp": {
+                        "id": 29,
+                        "name": "Mountain View Campground"
+                    },
+                    "feature": {
+                        "id": 104,
+                        "feature_type": "activity",
+                        "label": "Hiking Trails",
+                        "description": "Access to nearby hiking trails."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 138,
+                    "camp": {
+                        "id": 29,
+                        "name": "Mountain View Campground"
+                    },
+                    "feature": {
+                        "id": 109,
+                        "feature_type": "amenity",
+                        "label": "Pet-friendly",
+                        "description": "Pets are allowed."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 139,
+                    "camp": {
+                        "id": 29,
+                        "name": "Mountain View Campground"
+                    },
+                    "feature": {
+                        "id": 113,
+                        "feature_type": "amenity",
+                        "label": "Parking",
+                        "description": "Parking available."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 140,
+                    "camp": {
+                        "id": 29,
+                        "name": "Mountain View Campground"
+                    },
+                    "feature": {
+                        "id": 112,
+                        "feature_type": "amenity",
+                        "label": "Shower",
+                        "description": "Hot water shower available."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 141,
+                    "camp": {
+                        "id": 29,
+                        "name": "Mountain View Campground"
+                    },
+                    "feature": {
+                        "id": 110,
+                        "feature_type": "amenity",
+                        "label": "Wi-Fi",
+                        "description": "Free Wi-Fi available."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 142,
+                    "camp": {
+                        "id": 29,
+                        "name": "Mountain View Campground"
+                    },
+                    "feature": {
+                        "id": 114,
+                        "feature_type": "amenity",
+                        "label": "Electricity",
+                        "description": "Electricity available."
+                    },
+                    "is_available": true
+                }
+            ],
+            "images": [
+                {
+                    "id": 143,
+                    "camp": 29,
+                    "image": "https://res.cloudinary.com/akashsdas/image/upload/v1/camps-for-champs/images/camps/unsplash_MwYBzsaSAGQ_r6qnqu.png",
+                    "alt_text": null,
+                    "created_at": "2024-05-07T17:58:06.240323Z",
+                    "total_images": 8
+                },
+                {
+                    "id": 142,
+                    "camp": 29,
+                    "image": "https://res.cloudinary.com/akashsdas/image/upload/v1/camps-for-champs/images/camps/unsplash_MwYBzsaSAGQ_r6qnqu.png",
+                    "alt_text": null,
+                    "created_at": "2024-05-07T17:58:06.239918Z",
+                    "total_images": 8
+                },
+                {
+                    "id": 141,
+                    "camp": 29,
+                    "image": "https://res.cloudinary.com/akashsdas/image/upload/v1/camps-for-champs/images/camps/unsplash_MwYBzsaSAGQ_r6qnqu.png",
+                    "alt_text": null,
+                    "created_at": "2024-05-07T17:58:06.239507Z",
+                    "total_images": 8
+                },
+                {
+                    "id": 140,
+                    "camp": 29,
+                    "image": "https://res.cloudinary.com/akashsdas/image/upload/v1/camps-for-champs/images/camps/unsplash_MwYBzsaSAGQ_r6qnqu.png",
+                    "alt_text": null,
+                    "created_at": "2024-05-07T17:58:06.239096Z",
+                    "total_images": 8
+                },
+                {
+                    "id": 139,
+                    "camp": 29,
+                    "image": "https://res.cloudinary.com/akashsdas/image/upload/v1/camps-for-champs/images/camps/unsplash_MwYBzsaSAGQ_r6qnqu.png",
+                    "alt_text": null,
+                    "created_at": "2024-05-07T17:58:06.238685Z",
+                    "total_images": 8
+                },
+                {
+                    "id": 138,
+                    "camp": 29,
+                    "image": "https://res.cloudinary.com/akashsdas/image/upload/v1/camps-for-champs/images/camps/unsplash_MwYBzsaSAGQ_r6qnqu.png",
+                    "alt_text": null,
+                    "created_at": "2024-05-07T17:58:06.238264Z",
+                    "total_images": 8
+                },
+                {
+                    "id": 137,
+                    "camp": 29,
+                    "image": "https://res.cloudinary.com/akashsdas/image/upload/v1/camps-for-champs/images/camps/unsplash_MwYBzsaSAGQ_r6qnqu.png",
+                    "alt_text": null,
+                    "created_at": "2024-05-07T17:58:06.237795Z",
+                    "total_images": 8
+                },
+                {
+                    "id": 136,
+                    "camp": 29,
+                    "image": "https://res.cloudinary.com/akashsdas/image/upload/v1/camps-for-champs/images/camps/unsplash_MwYBzsaSAGQ_r6qnqu.png",
+                    "alt_text": null,
+                    "created_at": "2024-05-07T17:58:06.237332Z",
+                    "total_images": 8
+                }
+            ],
+            "address": "Murphy, Cherokee, North Carolina",
+            "latitude": "36.789000",
+            "longitude": "-112.345600",
+            "reviews": [
+                {
+                    "id": 208,
+                    "author": {
+                        "id": 13,
+                        "fullname": "Akash Das"
+                    },
+                    "camp": 29,
+                    "rating": 3,
+                    "created_at": "2024-05-31T17:59:44.260649Z",
+                    "comment": "This is amazing.",
+                    "helpful_count": 0
+                }
+            ],
+            "average_rating": 3,
+            "overall_rating": 60,
+            "total_reviews": 1
+        },
+        {
+            "id": 37,
+            "name": "Safari Adventure Camp",
+            "about": "Experience camping in the wild and spot exotic animals.",
+            "check_in_at": "22:00:00",
+            "check_out_at": "03:00:00",
+            "occupancy_count": 6,
+            "per_night_cost": "65.00",
+            "is_active": true,
+            "tags": [
+                {
+                    "id": 2,
+                    "label": "Coastal Escape"
+                },
+                {
+                    "id": 7,
+                    "label": "Eco-Friendly Haven"
+                },
+                {
+                    "id": 37,
+                    "label": "Greenery"
+                },
+                {
+                    "id": 11,
+                    "label": "Hidden Gem"
+                },
+                {
+                    "id": 33,
+                    "label": "Wilderness"
+                }
+            ],
+            "created_at": "2024-05-07T17:58:01.680258Z",
+            "updated_at": "2024-05-11T13:01:54.550390Z",
+            "created_by": 13,
+            "features": [
+                {
+                    "id": 255,
+                    "camp": {
+                        "id": 37,
+                        "name": "Safari Adventure Camp"
+                    },
+                    "feature": {
+                        "id": 96,
+                        "feature_type": "highlight",
+                        "label": "Family Friendly",
+                        "description": "A campsite suitable for families."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 256,
+                    "camp": {
+                        "id": 37,
+                        "name": "Safari Adventure Camp"
+                    },
+                    "feature": {
+                        "id": 98,
+                        "feature_type": "highlight",
+                        "label": "Beach Access",
+                        "description": "A campsite with direct access to the beach."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 257,
+                    "camp": {
+                        "id": 37,
+                        "name": "Safari Adventure Camp"
+                    },
+                    "feature": {
+                        "id": 99,
+                        "feature_type": "highlight",
+                        "label": "RV Friendly",
+                        "description": "A campsite suitable for RVs."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 258,
+                    "camp": {
+                        "id": 37,
+                        "name": "Safari Adventure Camp"
+                    },
+                    "feature": {
+                        "id": 100,
+                        "feature_type": "surrounding",
+                        "label": "Mountain View",
+                        "description": "A campsite with scenic mountain views."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 259,
+                    "camp": {
+                        "id": 37,
+                        "name": "Safari Adventure Camp"
+                    },
+                    "feature": {
+                        "id": 102,
+                        "feature_type": "surrounding",
+                        "label": "River View",
+                        "description": "A campsite with a view of a nearby river."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 260,
+                    "camp": {
+                        "id": 37,
+                        "name": "Safari Adventure Camp"
+                    },
+                    "feature": {
+                        "id": 103,
+                        "feature_type": "surrounding",
+                        "label": "Forest View",
+                        "description": "A campsite surrounded by lush forests."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 261,
+                    "camp": {
+                        "id": 37,
+                        "name": "Safari Adventure Camp"
+                    },
+                    "feature": {
+                        "id": 101,
+                        "feature_type": "surrounding",
+                        "label": "Lake View",
+                        "description": "A campsite overlooking a serene lake."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 262,
+                    "camp": {
+                        "id": 37,
+                        "name": "Safari Adventure Camp"
+                    },
+                    "feature": {
+                        "id": 106,
+                        "feature_type": "activity",
+                        "label": "Fishing Spots",
+                        "description": "Access to nearby fishing spots."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 263,
+                    "camp": {
+                        "id": 37,
+                        "name": "Safari Adventure Camp"
+                    },
+                    "feature": {
+                        "id": 105,
+                        "feature_type": "activity",
+                        "label": "Biking Trails",
+                        "description": "Access to nearby biking trails."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 264,
+                    "camp": {
+                        "id": 37,
+                        "name": "Safari Adventure Camp"
+                    },
+                    "feature": {
+                        "id": 107,
+                        "feature_type": "activity",
+                        "label": "Swimming Spots",
+                        "description": "Access to nearby swimming spots."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 265,
+                    "camp": {
+                        "id": 37,
+                        "name": "Safari Adventure Camp"
+                    },
+                    "feature": {
+                        "id": 104,
+                        "feature_type": "activity",
+                        "label": "Hiking Trails",
+                        "description": "Access to nearby hiking trails."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 266,
+                    "camp": {
+                        "id": 37,
+                        "name": "Safari Adventure Camp"
+                    },
+                    "feature": {
+                        "id": 109,
+                        "feature_type": "amenity",
+                        "label": "Pet-friendly",
+                        "description": "Pets are allowed."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 267,
+                    "camp": {
+                        "id": 37,
+                        "name": "Safari Adventure Camp"
+                    },
+                    "feature": {
+                        "id": 113,
+                        "feature_type": "amenity",
+                        "label": "Parking",
+                        "description": "Parking available."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 268,
+                    "camp": {
+                        "id": 37,
+                        "name": "Safari Adventure Camp"
+                    },
+                    "feature": {
+                        "id": 112,
+                        "feature_type": "amenity",
+                        "label": "Shower",
+                        "description": "Hot water shower available."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 269,
+                    "camp": {
+                        "id": 37,
+                        "name": "Safari Adventure Camp"
+                    },
+                    "feature": {
+                        "id": 110,
+                        "feature_type": "amenity",
+                        "label": "Wi-Fi",
+                        "description": "Free Wi-Fi available."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 270,
+                    "camp": {
+                        "id": 37,
+                        "name": "Safari Adventure Camp"
+                    },
+                    "feature": {
+                        "id": 114,
+                        "feature_type": "amenity",
+                        "label": "Electricity",
+                        "description": "Electricity available."
+                    },
+                    "is_available": true
+                }
+            ],
+            "images": [
+                {
+                    "id": 207,
+                    "camp": 37,
+                    "image": "https://res.cloudinary.com/akashsdas/image/upload/v1/camps-for-champs/images/camps/unsplash_MwYBzsaSAGQ_r6qnqu.png",
+                    "alt_text": null,
+                    "created_at": "2024-05-07T17:58:06.265209Z",
+                    "total_images": 8
+                },
+                {
+                    "id": 206,
+                    "camp": 37,
+                    "image": "https://res.cloudinary.com/akashsdas/image/upload/v1/camps-for-champs/images/camps/unsplash_MwYBzsaSAGQ_r6qnqu.png",
+                    "alt_text": null,
+                    "created_at": "2024-05-07T17:58:06.264833Z",
+                    "total_images": 8
+                },
+                {
+                    "id": 205,
+                    "camp": 37,
+                    "image": "https://res.cloudinary.com/akashsdas/image/upload/v1/camps-for-champs/images/camps/unsplash_MwYBzsaSAGQ_r6qnqu.png",
+                    "alt_text": null,
+                    "created_at": "2024-05-07T17:58:06.264480Z",
+                    "total_images": 8
+                },
+                {
+                    "id": 204,
+                    "camp": 37,
+                    "image": "https://res.cloudinary.com/akashsdas/image/upload/v1/camps-for-champs/images/camps/unsplash_MwYBzsaSAGQ_r6qnqu.png",
+                    "alt_text": null,
+                    "created_at": "2024-05-07T17:58:06.264133Z",
+                    "total_images": 8
+                },
+                {
+                    "id": 203,
+                    "camp": 37,
+                    "image": "https://res.cloudinary.com/akashsdas/image/upload/v1/camps-for-champs/images/camps/unsplash_MwYBzsaSAGQ_r6qnqu.png",
+                    "alt_text": null,
+                    "created_at": "2024-05-07T17:58:06.263755Z",
+                    "total_images": 8
+                },
+                {
+                    "id": 202,
+                    "camp": 37,
+                    "image": "https://res.cloudinary.com/akashsdas/image/upload/v1/camps-for-champs/images/camps/unsplash_MwYBzsaSAGQ_r6qnqu.png",
+                    "alt_text": null,
+                    "created_at": "2024-05-07T17:58:06.263379Z",
+                    "total_images": 8
+                },
+                {
+                    "id": 201,
+                    "camp": 37,
+                    "image": "https://res.cloudinary.com/akashsdas/image/upload/v1/camps-for-champs/images/camps/unsplash_MwYBzsaSAGQ_r6qnqu.png",
+                    "alt_text": null,
+                    "created_at": "2024-05-07T17:58:06.262986Z",
+                    "total_images": 8
+                },
+                {
+                    "id": 200,
+                    "camp": 37,
+                    "image": "https://res.cloudinary.com/akashsdas/image/upload/v1/camps-for-champs/images/camps/unsplash_MwYBzsaSAGQ_r6qnqu.png",
+                    "alt_text": null,
+                    "created_at": "2024-05-07T17:58:06.262618Z",
+                    "total_images": 8
+                }
+            ],
+            "address": "Murphy, Cherokee, North Carolina",
+            "latitude": "19.076000",
+            "longitude": "72.877700",
+            "reviews": [
+                {
+                    "id": 209,
+                    "author": {
+                        "id": 13,
+                        "fullname": "Akash Das"
+                    },
+                    "camp": 37,
+                    "rating": 3,
+                    "created_at": "2024-06-01T10:06:29.549224Z",
+                    "comment": "3",
+                    "helpful_count": 0
+                }
+            ],
+            "average_rating": 3,
+            "overall_rating": 60,
+            "total_reviews": 1
+        },
+        {
+            "id": 28,
+            "name": "Riverside Retreat",
+            "about": "Experience the tranquility of camping by the river.",
+            "check_in_at": "15:00:00",
+            "check_out_at": "11:00:00",
+            "occupancy_count": 4,
+            "per_night_cost": "50.00",
+            "is_active": true,
+            "tags": [
+                {
+                    "id": 26,
+                    "label": "Bargain"
+                },
+                {
+                    "id": 21,
+                    "label": "Budget-Friendly"
+                },
+                {
+                    "id": 41,
+                    "label": "Relaxation"
+                },
+                {
+                    "id": 42,
+                    "label": "Stress Relief"
+                },
+                {
+                    "id": 9,
+                    "label": "Tranquil Forest"
+                }
+            ],
+            "created_at": "2024-05-07T17:58:01.666750Z",
+            "updated_at": "2024-05-07T17:58:01.666887Z",
+            "created_by": 13,
+            "features": [
+                {
+                    "id": 111,
+                    "camp": {
+                        "id": 28,
+                        "name": "Riverside Retreat"
+                    },
+                    "feature": {
+                        "id": 96,
+                        "feature_type": "highlight",
+                        "label": "Family Friendly",
+                        "description": "A campsite suitable for families."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 112,
+                    "camp": {
+                        "id": 28,
+                        "name": "Riverside Retreat"
+                    },
+                    "feature": {
+                        "id": 98,
+                        "feature_type": "highlight",
+                        "label": "Beach Access",
+                        "description": "A campsite with direct access to the beach."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 113,
+                    "camp": {
+                        "id": 28,
+                        "name": "Riverside Retreat"
+                    },
+                    "feature": {
+                        "id": 99,
+                        "feature_type": "highlight",
+                        "label": "RV Friendly",
+                        "description": "A campsite suitable for RVs."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 114,
+                    "camp": {
+                        "id": 28,
+                        "name": "Riverside Retreat"
+                    },
+                    "feature": {
+                        "id": 100,
+                        "feature_type": "surrounding",
+                        "label": "Mountain View",
+                        "description": "A campsite with scenic mountain views."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 115,
+                    "camp": {
+                        "id": 28,
+                        "name": "Riverside Retreat"
+                    },
+                    "feature": {
+                        "id": 102,
+                        "feature_type": "surrounding",
+                        "label": "River View",
+                        "description": "A campsite with a view of a nearby river."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 116,
+                    "camp": {
+                        "id": 28,
+                        "name": "Riverside Retreat"
+                    },
+                    "feature": {
+                        "id": 103,
+                        "feature_type": "surrounding",
+                        "label": "Forest View",
+                        "description": "A campsite surrounded by lush forests."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 117,
+                    "camp": {
+                        "id": 28,
+                        "name": "Riverside Retreat"
+                    },
+                    "feature": {
+                        "id": 101,
+                        "feature_type": "surrounding",
+                        "label": "Lake View",
+                        "description": "A campsite overlooking a serene lake."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 118,
+                    "camp": {
+                        "id": 28,
+                        "name": "Riverside Retreat"
+                    },
+                    "feature": {
+                        "id": 106,
+                        "feature_type": "activity",
+                        "label": "Fishing Spots",
+                        "description": "Access to nearby fishing spots."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 119,
+                    "camp": {
+                        "id": 28,
+                        "name": "Riverside Retreat"
+                    },
+                    "feature": {
+                        "id": 105,
+                        "feature_type": "activity",
+                        "label": "Biking Trails",
+                        "description": "Access to nearby biking trails."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 120,
+                    "camp": {
+                        "id": 28,
+                        "name": "Riverside Retreat"
+                    },
+                    "feature": {
+                        "id": 107,
+                        "feature_type": "activity",
+                        "label": "Swimming Spots",
+                        "description": "Access to nearby swimming spots."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 121,
+                    "camp": {
+                        "id": 28,
+                        "name": "Riverside Retreat"
+                    },
+                    "feature": {
+                        "id": 104,
+                        "feature_type": "activity",
+                        "label": "Hiking Trails",
+                        "description": "Access to nearby hiking trails."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 122,
+                    "camp": {
+                        "id": 28,
+                        "name": "Riverside Retreat"
+                    },
+                    "feature": {
+                        "id": 109,
+                        "feature_type": "amenity",
+                        "label": "Pet-friendly",
+                        "description": "Pets are allowed."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 123,
+                    "camp": {
+                        "id": 28,
+                        "name": "Riverside Retreat"
+                    },
+                    "feature": {
+                        "id": 113,
+                        "feature_type": "amenity",
+                        "label": "Parking",
+                        "description": "Parking available."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 124,
+                    "camp": {
+                        "id": 28,
+                        "name": "Riverside Retreat"
+                    },
+                    "feature": {
+                        "id": 112,
+                        "feature_type": "amenity",
+                        "label": "Shower",
+                        "description": "Hot water shower available."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 125,
+                    "camp": {
+                        "id": 28,
+                        "name": "Riverside Retreat"
+                    },
+                    "feature": {
+                        "id": 110,
+                        "feature_type": "amenity",
+                        "label": "Wi-Fi",
+                        "description": "Free Wi-Fi available."
+                    },
+                    "is_available": true
+                },
+                {
+                    "id": 126,
+                    "camp": {
+                        "id": 28,
+                        "name": "Riverside Retreat"
+                    },
+                    "feature": {
+                        "id": 114,
+                        "feature_type": "amenity",
+                        "label": "Electricity",
+                        "description": "Electricity available."
+                    },
+                    "is_available": true
+                }
+            ],
+            "images": [
+                {
+                    "id": 135,
+                    "camp": 28,
+                    "image": "https://res.cloudinary.com/akashsdas/image/upload/v1/camps-for-champs/images/camps/unsplash_MwYBzsaSAGQ_r6qnqu.png",
+                    "alt_text": null,
+                    "created_at": "2024-05-07T17:58:06.236701Z",
+                    "total_images": 8
+                },
+                {
+                    "id": 134,
+                    "camp": 28,
+                    "image": "https://res.cloudinary.com/akashsdas/image/upload/v1/camps-for-champs/images/camps/unsplash_MwYBzsaSAGQ_r6qnqu.png",
+                    "alt_text": null,
+                    "created_at": "2024-05-07T17:58:06.236288Z",
+                    "total_images": 8
+                },
+                {
+                    "id": 133,
+                    "camp": 28,
+                    "image": "https://res.cloudinary.com/akashsdas/image/upload/v1/camps-for-champs/images/camps/unsplash_MwYBzsaSAGQ_r6qnqu.png",
+                    "alt_text": null,
+                    "created_at": "2024-05-07T17:58:06.235852Z",
+                    "total_images": 8
+                },
+                {
+                    "id": 132,
+                    "camp": 28,
+                    "image": "https://res.cloudinary.com/akashsdas/image/upload/v1/camps-for-champs/images/camps/unsplash_MwYBzsaSAGQ_r6qnqu.png",
+                    "alt_text": null,
+                    "created_at": "2024-05-07T17:58:06.235439Z",
+                    "total_images": 8
+                },
+                {
+                    "id": 131,
+                    "camp": 28,
+                    "image": "https://res.cloudinary.com/akashsdas/image/upload/v1/camps-for-champs/images/camps/unsplash_MwYBzsaSAGQ_r6qnqu.png",
+                    "alt_text": null,
+                    "created_at": "2024-05-07T17:58:06.234989Z",
+                    "total_images": 8
+                },
+                {
+                    "id": 130,
+                    "camp": 28,
+                    "image": "https://res.cloudinary.com/akashsdas/image/upload/v1/camps-for-champs/images/camps/unsplash_MwYBzsaSAGQ_r6qnqu.png",
+                    "alt_text": null,
+                    "created_at": "2024-05-07T17:58:06.234577Z",
+                    "total_images": 8
+                },
+                {
+                    "id": 129,
+                    "camp": 28,
+                    "image": "https://res.cloudinary.com/akashsdas/image/upload/v1/camps-for-champs/images/camps/unsplash_MwYBzsaSAGQ_r6qnqu.png",
+                    "alt_text": null,
+                    "created_at": "2024-05-07T17:58:06.234128Z",
+                    "total_images": 8
+                },
+                {
+                    "id": 128,
+                    "camp": 28,
+                    "image": "https://res.cloudinary.com/akashsdas/image/upload/v1/camps-for-champs/images/camps/unsplash_MwYBzsaSAGQ_r6qnqu.png",
+                    "alt_text": null,
+                    "created_at": "2024-05-07T17:58:06.233059Z",
+                    "total_images": 8
+                }
+            ],
+            "address": "Murphy, Cherokee, North Carolina",
+            "latitude": "45.678900",
+            "longitude": "-121.234500",
+            "reviews": [],
+            "average_rating": 0,
+            "overall_rating": 0,
+            "total_reviews": 0
+        }
+    ]
+}
